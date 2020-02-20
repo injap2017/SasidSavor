@@ -1,0 +1,6 @@
+framework module Pods_Savor {
+  umbrella header "Pods-Savor-umbrella.h"
+
+  export *
+  module * { export * }
+}

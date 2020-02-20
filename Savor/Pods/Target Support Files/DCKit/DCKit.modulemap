@@ -1,0 +1,6 @@
+framework module DCKit {
+  umbrella header "DCKit-umbrella.h"
+
+  export *
+  module * { export * }
+}

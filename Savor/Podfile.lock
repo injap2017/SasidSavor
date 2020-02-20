@@ -1,0 +1,41 @@
+PODS:
+  - Cosmos (20.0.1)
+  - DCKit (1.0.13)
+  - FTPopOverMenu_Swift (0.2.1)
+  - GooglePlacesSearchController (0.2.3)
+  - Permission/Camera (3.1.2):
+    - Permission/Core
+  - Permission/Core (3.1.2)
+  - Permission/Photos (3.1.2):
+    - Permission/Core
+  - RSSelectionMenu (6.0.8)
+
+DEPENDENCIES:
+  - Cosmos
+  - DCKit
+  - FTPopOverMenu_Swift
+  - GooglePlacesSearchController
+  - Permission/Camera
+  - Permission/Photos
+  - RSSelectionMenu
+
+SPEC REPOS:
+  trunk:
+    - Cosmos
+    - DCKit
+    - FTPopOverMenu_Swift
+    - GooglePlacesSearchController
+    - Permission
+    - RSSelectionMenu
+
+SPEC CHECKSUMS:
+  Cosmos: b47fddf2102bb48580cd3025d9ce0a5c658a65da
+  DCKit: ca310752c3a4d442e772de66ce4e4168ea906d62
+  FTPopOverMenu_Swift: c91ce7301c358264743de028bc28177ee9d8e1a4
+  GooglePlacesSearchController: f8c7da8c3bf0bcf901c5873c22fda7db5fbfc15e
+  Permission: 4821359fb4d4367fb59aa16df38fbba5722ac842
+  RSSelectionMenu: 5bc5ceb57fe248b9b1657b3148360de877c96f4f
+
+PODFILE CHECKSUM: dadd05e3bd67a15a2d8c2f4ce5dc15fec6545e20
+
+COCOAPODS: 1.8.4

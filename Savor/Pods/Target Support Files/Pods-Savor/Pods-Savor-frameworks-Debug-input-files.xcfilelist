@@ -1,0 +1,7 @@
+${PODS_ROOT}/Target Support Files/Pods-Savor/Pods-Savor-frameworks.sh
+${BUILT_PRODUCTS_DIR}/Cosmos/Cosmos.framework
+${BUILT_PRODUCTS_DIR}/DCKit/DCKit.framework
+${BUILT_PRODUCTS_DIR}/FTPopOverMenu_Swift/FTPopOverMenu_Swift.framework
+${BUILT_PRODUCTS_DIR}/GooglePlacesSearchController/GooglePlacesSearchController.framework
+${BUILT_PRODUCTS_DIR}/Permission/Permission.framework
+${BUILT_PRODUCTS_DIR}/RSSelectionMenu/RSSelectionMenu.framework
