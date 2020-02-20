@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		4B13E6F323A39632009EA167 /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B13E6F223A39632009EA167 /* FeedItem.swift */; };
 		4B28064123FE970C001E9736 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B28064023FE970C001E9736 /* GoogleService-Info.plist */; };
+		4B28064323FEB104001E9736 /* Authentication.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B28064223FEB104001E9736 /* Authentication.storyboard */; };
+		4B28064623FEB14D001E9736 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B28064523FEB14D001E9736 /* SignInViewController.swift */; };
+		4B28064823FEB171001E9736 /* CreateNewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B28064723FEB171001E9736 /* CreateNewAccountViewController.swift */; };
 		4B2E9CF6239FF3A5008508CD /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E9CF5239FF3A5008508CD /* FeedViewController.swift */; };
 		4B2E9CF8239FF3BB008508CD /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E9CF7239FF3BB008508CD /* ExploreViewController.swift */; };
 		4B2E9CFA239FF3CB008508CD /* NewPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E9CF9239FF3CB008508CD /* NewPostViewController.swift */; };
@@ -32,6 +35,9 @@
 		2FD3E36564360BFE55F494CB /* Pods_Savor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Savor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B13E6F223A39632009EA167 /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
 		4B28064023FE970C001E9736 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4B28064223FEB104001E9736 /* Authentication.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Authentication.storyboard; sourceTree = "<group>"; };
+		4B28064523FEB14D001E9736 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		4B28064723FEB171001E9736 /* CreateNewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewAccountViewController.swift; sourceTree = "<group>"; };
 		4B2E9CF5239FF3A5008508CD /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		4B2E9CF7239FF3BB008508CD /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		4B2E9CF9239FF3CB008508CD /* NewPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
@@ -72,6 +78,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4B28064423FEB114001E9736 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				4B28064223FEB104001E9736 /* Authentication.storyboard */,
+				4B28064523FEB14D001E9736 /* SignInViewController.swift */,
+				4B28064723FEB171001E9736 /* CreateNewAccountViewController.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
 		4B66DE3723A1FA8E00C0F147 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +100,7 @@
 		4B66DE3823A1FA9A00C0F147 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4B28064423FEB114001E9736 /* Authentication */,
 				4B2E9CF5239FF3A5008508CD /* FeedViewController.swift */,
 				4B2E9CF7239FF3BB008508CD /* ExploreViewController.swift */,
 				4BB998BB23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift */,
@@ -228,6 +245,7 @@
 				4B28064123FE970C001E9736 /* GoogleService-Info.plist in Resources */,
 				4B9E1030239CC7CA0045DBE2 /* Assets.xcassets in Resources */,
 				4B9E102E239CC7C80045DBE2 /* Main.storyboard in Resources */,
+				4B28064323FEB104001E9736 /* Authentication.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,6 +298,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B28064623FEB14D001E9736 /* SignInViewController.swift in Sources */,
 				4B66DE3D23A1FB1100C0F147 /* FeedCell.swift in Sources */,
 				4B3F50DD23CF051900117E3F /* Post.swift in Sources */,
 				4BB998BC23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift in Sources */,
@@ -289,6 +308,7 @@
 				4B2E9CF8239FF3BB008508CD /* ExploreViewController.swift in Sources */,
 				4B2E9CFC239FF3E0008508CD /* ActivityViewController.swift in Sources */,
 				4B2E9CF6239FF3A5008508CD /* FeedViewController.swift in Sources */,
+				4B28064823FEB171001E9736 /* CreateNewAccountViewController.swift in Sources */,
 				4B9E1029239CC7C80045DBE2 /* AppDelegate.swift in Sources */,
 				4BB8CE1523CF108300F40733 /* TabBarController.swift in Sources */,
 				4B13E6F323A39632009EA167 /* FeedItem.swift in Sources */,
