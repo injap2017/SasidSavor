@@ -14,6 +14,8 @@ target 'Savor' do
   pod 'Permission/Photos'
   pod 'GooglePlacesSearchController'
   pod 'SwiftLocation'
+  pod 'SVProgressHUD'
+  pod 'IQKeyboardManagerSwift'
   
   pod 'Firebase/Analytics'
   pod 'Firebase/Auth'

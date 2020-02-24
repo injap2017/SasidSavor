@@ -25,6 +25,10 @@
 		4B9E102E239CC7C80045DBE2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B9E102C239CC7C80045DBE2 /* Main.storyboard */; };
 		4B9E1030239CC7CA0045DBE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B9E102F239CC7CA0045DBE2 /* Assets.xcassets */; };
 		4B9E1033239CC7CA0045DBE2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B9E1031239CC7CA0045DBE2 /* LaunchScreen.storyboard */; };
+		4BB52A3323FF92F9006647FF /* InputFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB52A3123FF92F9006647FF /* InputFieldCell.swift */; };
+		4BB52A3423FF92F9006647FF /* InputFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BB52A3223FF92F9006647FF /* InputFieldCell.xib */; };
+		4BB52A3723FF9B3C006647FF /* ActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB52A3523FF9B3C006647FF /* ActionCell.swift */; };
+		4BB52A3823FF9B3C006647FF /* ActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BB52A3623FF9B3C006647FF /* ActionCell.xib */; };
 		4BB8CE1523CF108300F40733 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB8CE1423CF108300F40733 /* TabBarController.swift */; };
 		4BB998BC23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB998BB23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift */; };
 		89038FFAC3290ECA386D30C7 /* Pods_Savor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FD3E36564360BFE55F494CB /* Pods_Savor.framework */; };
@@ -53,6 +57,10 @@
 		4B9E102F239CC7CA0045DBE2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4B9E1032239CC7CA0045DBE2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4B9E1034239CC7CA0045DBE2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4BB52A3123FF92F9006647FF /* InputFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldCell.swift; sourceTree = "<group>"; };
+		4BB52A3223FF92F9006647FF /* InputFieldCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InputFieldCell.xib; sourceTree = "<group>"; };
+		4BB52A3523FF9B3C006647FF /* ActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCell.swift; sourceTree = "<group>"; };
+		4BB52A3623FF9B3C006647FF /* ActionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ActionCell.xib; sourceTree = "<group>"; };
 		4BB8CE1423CF108300F40733 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4BB998BB23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostPlaceHolderViewController.swift; sourceTree = "<group>"; };
 		4F69641B8A7A01F19C7920A5 /* Pods-Savor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Savor.release.xcconfig"; path = "Target Support Files/Pods-Savor/Pods-Savor.release.xcconfig"; sourceTree = "<group>"; };
@@ -93,6 +101,10 @@
 			children = (
 				4B66DE3C23A1FB1100C0F147 /* FeedCell.swift */,
 				4B13E6F223A39632009EA167 /* FeedItem.swift */,
+				4BB52A3123FF92F9006647FF /* InputFieldCell.swift */,
+				4BB52A3223FF92F9006647FF /* InputFieldCell.xib */,
+				4BB52A3523FF9B3C006647FF /* ActionCell.swift */,
+				4BB52A3623FF9B3C006647FF /* ActionCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -243,7 +255,9 @@
 			files = (
 				4B9E1033239CC7CA0045DBE2 /* LaunchScreen.storyboard in Resources */,
 				4B28064123FE970C001E9736 /* GoogleService-Info.plist in Resources */,
+				4BB52A3823FF9B3C006647FF /* ActionCell.xib in Resources */,
 				4B9E1030239CC7CA0045DBE2 /* Assets.xcassets in Resources */,
+				4BB52A3423FF92F9006647FF /* InputFieldCell.xib in Resources */,
 				4B9E102E239CC7C80045DBE2 /* Main.storyboard in Resources */,
 				4B28064323FEB104001E9736 /* Authentication.storyboard in Resources */,
 			);
@@ -301,6 +315,7 @@
 				4B28064623FEB14D001E9736 /* SignInViewController.swift in Sources */,
 				4B66DE3D23A1FB1100C0F147 /* FeedCell.swift in Sources */,
 				4B3F50DD23CF051900117E3F /* Post.swift in Sources */,
+				4BB52A3323FF92F9006647FF /* InputFieldCell.swift in Sources */,
 				4BB998BC23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift in Sources */,
 				4B66DE4223A2424A00C0F147 /* FeedDataProvider.swift in Sources */,
 				4B66DE3F23A235A400C0F147 /* Feed.swift in Sources */,
@@ -311,6 +326,7 @@
 				4B28064823FEB171001E9736 /* CreateNewAccountViewController.swift in Sources */,
 				4B9E1029239CC7C80045DBE2 /* AppDelegate.swift in Sources */,
 				4BB8CE1523CF108300F40733 /* TabBarController.swift in Sources */,
+				4BB52A3723FF9B3C006647FF /* ActionCell.swift in Sources */,
 				4B13E6F323A39632009EA167 /* FeedItem.swift in Sources */,
 				4B2E9CFA239FF3CB008508CD /* NewPostViewController.swift in Sources */,
 			);

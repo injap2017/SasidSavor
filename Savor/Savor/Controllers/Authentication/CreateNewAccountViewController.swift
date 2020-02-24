@@ -51,7 +51,7 @@ extension CreateNewAccountViewController {
 extension CreateNewAccountViewController {
     
     func cancelBarButtonItem() -> UIBarButtonItem {
-        let item = UIBarButtonItem.init(title: "Cancel", style: .plain, target: self, action: #selector(self.cancelAction))
+        let item = UIBarButtonItem.init(title: "Cancel", style: .plain, target: self, action: #selector(cancelAction))
         return item
     }
     
@@ -62,7 +62,7 @@ extension CreateNewAccountViewController {
     }
     
     func doneBarButtonItem() -> UIBarButtonItem {
-        let item = UIBarButtonItem.init(title: "Done", style: .done, target: self, action: #selector(self.doneAction))
+        let item = UIBarButtonItem.init(title: "Done", style: .done, target: self, action: #selector(doneAction))
         item.isEnabled = false
         return item
     }
