@@ -14,6 +14,9 @@ import SwifterSwift
 
 class CreateNewAccountViewController: UITableViewController {
 
+    // MARK: - IBOutlets
+    @IBOutlet weak var photoView: UIImageView!
+    
     // MARK: - Properties
     var firstNameInputCell: InputFieldCell?
     var lastNameInputCell: InputFieldCell?
@@ -23,6 +26,8 @@ class CreateNewAccountViewController: UITableViewController {
     var confirmInputCell: InputFieldCell?
     
     var emailInputCell: InputFieldCell?
+    
+    var photo: UIImage?
     
     var firstName: String = ""
     var lastName: String = ""
@@ -75,6 +80,9 @@ extension CreateNewAccountViewController {
         // keyboard
         self.returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
         self.returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.done
+        
+        // profile photo
+        self.photoView.image = photo
     }
 }
 
@@ -102,6 +110,8 @@ extension CreateNewAccountViewController {
         
         self.createNewAccount()
     }
+    
+    func takePhoto
 }
 
 // MARK: - TableView
