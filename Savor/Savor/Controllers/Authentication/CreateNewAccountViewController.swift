@@ -7,9 +7,33 @@
 //
 
 import UIKit
+import IQKeyboardManagerSwift
+import SVProgressHUD
+import FirebaseAuth
+import SwifterSwift
 
 class CreateNewAccountViewController: UITableViewController {
 
+    // MARK: - Properties
+    var firstNameInputCell: InputFieldCell?
+    var lastNameInputCell: InputFieldCell?
+    
+    var userNameInputCell: InputFieldCell?
+    var passwordInputCell: InputFieldCell?
+    var confirmInputCell: InputFieldCell?
+    
+    var emailInputCell: InputFieldCell?
+    
+    var firstName: String = ""
+    var lastName: String = ""
+    
+    var userName: String = ""
+    var password: String = ""
+    var confirm: String = ""
+    
+    var email: String = ""
+    
+    var returnKeyHandler : IQKeyboardReturnKeyHandler!
 }
 
 // MARK: - Lifecycle
@@ -44,6 +68,13 @@ extension CreateNewAccountViewController {
         
         // title
         self.title = "Create New Account"
+        
+        // cell
+        self.tableView.register(InputFieldCell.nib, forCellReuseIdentifier: InputFieldCell.identifier)
+        
+        // keyboard
+        self.returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
+        self.returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.done
     }
 }
 
@@ -63,11 +94,276 @@ extension CreateNewAccountViewController {
     
     func doneBarButtonItem() -> UIBarButtonItem {
         let item = UIBarButtonItem.init(title: "Done", style: .done, target: self, action: #selector(doneAction))
-        item.isEnabled = false
+        item.isEnabled = self.isCreateNewAccountActionAvailable()
         return item
     }
     
     @objc func doneAction() {
         
+        self.createNewAccount()
+    }
+}
+
+// MARK: - TableView
+extension CreateNewAccountViewController {
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return 2
+        case 1:
+            return 3
+        default:
+            return 1
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch indexPath.section {
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: InputFieldCell.identifier) as! InputFieldCell
+            switch indexPath.row {
+            case 0:
+                cell.title = "First Name"
+                cell.isRequired = true
+                cell.value = self.firstName
+                cell.inputField.textContentType = .givenName
+                cell.inputField.tag = 1
+                cell.inputField.delegate = self
+                self.returnKeyHandler.addTextFieldView(cell.inputField)
+                self.firstNameInputCell = cell
+                
+            default:
+                cell.title = "Last Name"
+                cell.isRequired = true
+                cell.value = self.lastName
+                cell.inputField.textContentType = .familyName
+                cell.inputField.tag = 2
+                cell.inputField.delegate = self
+                self.returnKeyHandler.addTextFieldView(cell.inputField)
+                self.lastNameInputCell = cell
+            }
+            
+            return cell
+            
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: InputFieldCell.identifier) as! InputFieldCell
+            switch indexPath.row {
+            case 0:
+                cell.title = "User Name"
+                cell.isRequired = true
+                cell.value = self.userName
+                cell.inputField.textContentType = .username
+                cell.inputField.tag = 3
+                cell.inputField.delegate = self
+                self.returnKeyHandler.addTextFieldView(cell.inputField)
+                self.userNameInputCell = cell
+                
+            case 1:
+                cell.title = "Password"
+                cell.isRequired = true
+                cell.value = self.password
+                cell.inputField.textContentType = .password
+                cell.inputField.isSecureTextEntry = true
+                cell.inputField.tag = 4
+                cell.inputField.delegate = self
+                self.returnKeyHandler.addTextFieldView(cell.inputField)
+                self.passwordInputCell = cell
+                
+            default:
+                cell.title = "Confirm"
+                cell.isRequired = true
+                cell.value = self.confirm
+                cell.inputField.textContentType = .password
+                cell.inputField.isSecureTextEntry = true
+                cell.inputField.tag = 5
+                cell.inputField.delegate = self
+                self.returnKeyHandler.addTextFieldView(cell.inputField)
+                self.confirmInputCell = cell
+            }
+            
+            return cell
+            
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: InputFieldCell.identifier) as! InputFieldCell
+            cell.title = "Email"
+            cell.isRequired = true
+            cell.value = self.email
+            cell.inputField.textContentType = .emailAddress
+            cell.inputField.keyboardType = .emailAddress
+            cell.inputField.tag = 6
+            cell.inputField.delegate = self
+            self.returnKeyHandler.addTextFieldView(cell.inputField)
+            self.emailInputCell = cell
+            
+            return cell
+        }
+    }
+}
+
+// MARK: - TextField
+extension CreateNewAccountViewController: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // disable username space input
+        if textField == self.userNameInputCell?.inputField, string == " " {
+            return false
+        }
+        
+        if let text = textField.text, let textRange = Range(range, in: text) {
+            let updatedText = text.replacingCharacters(in: textRange, with: string)
+            
+            switch textField {
+            case self.firstNameInputCell?.inputField:
+                firstNameChanged(updatedText)
+            case self.lastNameInputCell?.inputField:
+                lastNameChanged(updatedText)
+            case self.userNameInputCell?.inputField:
+                userNameChanged(updatedText)
+            case self.passwordInputCell?.inputField:
+                passwordChanged(updatedText)
+            case self.confirmInputCell?.inputField:
+                confirmChanged(updatedText)
+            case self.emailInputCell?.inputField:
+                emailChanged(updatedText)
+            default:
+                break
+            }
+            
+            return true
+        }
+        
+        return false
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        switch textField {
+        case self.firstNameInputCell?.inputField:
+            firstNameChanged("")
+        case self.lastNameInputCell?.inputField:
+            lastNameChanged("")
+        case self.userNameInputCell?.inputField:
+            userNameChanged("")
+        case self.passwordInputCell?.inputField:
+            passwordChanged("")
+        case self.confirmInputCell?.inputField:
+            confirmChanged("")
+        case self.emailInputCell?.inputField:
+            emailChanged("")
+        default:
+            break
+        }
+        
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // done
+        if textField == self.emailInputCell?.inputField, isCreateNewAccountActionAvailable() {
+            
+            self.createNewAccount()
+        }
+        
+        return true
+    }
+    
+    func firstNameChanged(_ text: String) {
+        self.firstName = text
+        // validate field
+        valueChanged()
+    }
+    
+    func lastNameChanged(_ text: String) {
+        self.lastName = text
+        // validate field
+        valueChanged()
+    }
+    
+    func userNameChanged(_ text: String) {
+        self.userName = text
+        // validate field
+        valueChanged()
+    }
+    
+    func passwordChanged(_ text: String) {
+        self.password = text
+        // validate field
+        valueChanged()
+    }
+    
+    func confirmChanged(_ text: String) {
+        self.confirm = text
+        // validate field
+        valueChanged()
+    }
+    
+    func emailChanged(_ text: String) {
+        self.email = text
+        // validate field
+        valueChanged()
+    }
+    
+    private func valueChanged() {
+        self.navigationItem.rightBarButtonItem?.isEnabled = isCreateNewAccountActionAvailable()
+    }
+    
+    private func isCreateNewAccountActionAvailable() -> Bool {
+        guard  !self.firstName.isWhitespace
+            && !self.lastName.isWhitespace
+            && !self.userName.isWhitespace
+            && !self.password.isEmpty
+            && !self.confirm.isEmpty
+            && !self.email.isWhitespace else {
+                return false
+        }
+        
+        // password equal to confirm
+        // email validate
+        return self.password == self.confirm
+            && self.email.isValidEmail
+    }
+}
+
+// MARK: - Server API Calls
+extension CreateNewAccountViewController {
+    
+    func createNewAccount() {
+        
+        // trim
+        self.firstName.trim()
+        self.lastName.trim()
+        
+        SVProgressHUD.show(withStatus: "Creating new account...")
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
+            guard let strongSelf = self else { return }
+            
+            if let error = error {
+                print(error)
+                SVProgressHUD.showError(withStatus: error.localizedDescription)
+                return
+            }
+            
+            if let user = result?.user {
+                let request = user.createProfileChangeRequest()
+                request.displayName = strongSelf.userName
+                
+                request.commitChanges { (error) in
+                    
+                    if let error = error {
+                        print(error)
+                        SVProgressHUD.showError(withStatus: error.localizedDescription)
+                        return
+                    }
+                    
+                    SVProgressHUD.dismiss()
+                    
+                    strongSelf.cancelAction()
+                }
+            }
+        }
     }
 }

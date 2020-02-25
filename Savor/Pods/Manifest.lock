@@ -300,6 +300,27 @@ PODS:
   - PromisesObjC (1.2.8)
   - RSSelectionMenu (6.0.8)
   - SVProgressHUD (2.2.5)
+  - SwifterSwift (5.1.0):
+    - SwifterSwift/AppKit (= 5.1.0)
+    - SwifterSwift/CoreGraphics (= 5.1.0)
+    - SwifterSwift/CoreLocation (= 5.1.0)
+    - SwifterSwift/Dispatch (= 5.1.0)
+    - SwifterSwift/Foundation (= 5.1.0)
+    - SwifterSwift/MapKit (= 5.1.0)
+    - SwifterSwift/SceneKit (= 5.1.0)
+    - SwifterSwift/SpriteKit (= 5.1.0)
+    - SwifterSwift/SwiftStdlib (= 5.1.0)
+    - SwifterSwift/UIKit (= 5.1.0)
+  - SwifterSwift/AppKit (5.1.0)
+  - SwifterSwift/CoreGraphics (5.1.0)
+  - SwifterSwift/CoreLocation (5.1.0)
+  - SwifterSwift/Dispatch (5.1.0)
+  - SwifterSwift/Foundation (5.1.0)
+  - SwifterSwift/MapKit (5.1.0)
+  - SwifterSwift/SceneKit (5.1.0)
+  - SwifterSwift/SpriteKit (5.1.0)
+  - SwifterSwift/SwiftStdlib (5.1.0)
+  - SwifterSwift/UIKit (5.1.0)
   - SwiftLocation (4.2.0)
 
 DEPENDENCIES:
@@ -317,6 +338,7 @@ DEPENDENCIES:
   - Permission/Photos
   - RSSelectionMenu
   - SVProgressHUD
+  - SwifterSwift
   - SwiftLocation
 
 SPEC REPOS:
@@ -353,6 +375,7 @@ SPEC REPOS:
     - PromisesObjC
     - RSSelectionMenu
     - SVProgressHUD
+    - SwifterSwift
     - SwiftLocation
 
 SPEC CHECKSUMS:
@@ -388,8 +411,9 @@ SPEC CHECKSUMS:
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   RSSelectionMenu: 5bc5ceb57fe248b9b1657b3148360de877c96f4f
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  SwifterSwift: a9e8e144832638c2850b43da5feaf9598c6ad65b
   SwiftLocation: 609ac8859f2c5d48a6cadd2a58c63b1dae02dc25
 
-PODFILE CHECKSUM: dc75eabef04e2288035095769216e3c8df971abc
+PODFILE CHECKSUM: 933657a3be273c6957ce42d0bf2047d2802c8609
 
 COCOAPODS: 1.8.4

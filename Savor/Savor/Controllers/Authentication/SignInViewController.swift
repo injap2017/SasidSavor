@@ -14,6 +14,7 @@ import UIKit
 import IQKeyboardManagerSwift
 import SVProgressHUD
 import FirebaseAuth
+import SwifterSwift
 
 class SignInViewController: UITableViewController {
 
@@ -200,18 +201,27 @@ extension SignInViewController: UITextFieldDelegate {
     
     func userNameChanged(_ text: String) {
         self.userName = text
-        // validate user name
-        self.signInActionCell?.isEnabled = isSignInActionAvailable()
+        // validate field
+        valueChanged()
     }
     
     func passwordChanged(_ text: String) {
         self.password = text
-        // validate password
+        // validate field
+        valueChanged()
+    }
+    
+    private func valueChanged() {
         self.signInActionCell?.isEnabled = isSignInActionAvailable()
     }
     
     private func isSignInActionAvailable() -> Bool {
-        return !self.userName.isEmpty && !self.password.isEmpty
+        guard  !self.userName.isWhitespace
+            && !self.password.isWhitespace else {
+                return false
+        }
+        
+        return true
     }
 }
 
@@ -221,7 +231,7 @@ extension SignInViewController {
     func signIn() {
         
         SVProgressHUD.show(withStatus: "Signing in...")
-        Auth.auth().signIn(withEmail: userName, password: password) { [weak self] authResult, error in
+        Auth.auth().signIn(withEmail: userName, password: password) { [weak self] result, error in
             guard let strongSelf = self else { return }
             
             if let error = error {

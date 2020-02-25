@@ -16,6 +16,7 @@ target 'Savor' do
   pod 'SwiftLocation'
   pod 'SVProgressHUD'
   pod 'IQKeyboardManagerSwift'
+  pod 'SwifterSwift'
   
   pod 'Firebase/Analytics'
   pod 'Firebase/Auth'
