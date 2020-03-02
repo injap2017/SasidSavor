@@ -372,7 +372,7 @@ extension CreateNewAccountViewController {
                 
                 // upload profile picture
                 if let photo = strongSelf.photo, let data = photo.jpegData(compressionQuality: 0.5) {
-                    let reference = SavorData.profilePicturesStorageReference(of: user.uid)
+                    let reference = Storage.storage().reference().child("profilePictures").child("\(user.uid).png")
                     reference.putData(data, metadata: nil) { (metaData, error) in
                         
                         if let error = error {
@@ -501,7 +501,7 @@ extension CreateNewAccountViewController: UIImagePickerControllerDelegate, UINav
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
-        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             
             self.photo = image
             
