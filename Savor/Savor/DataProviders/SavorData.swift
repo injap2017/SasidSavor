@@ -7,10 +7,17 @@
 //
 
 import Foundation
+import FirebaseAuth
 import FirebaseStorage
 
 class SavorData {
     class func profilePicturesStorageReference(of uid: String) -> StorageReference {
         return Storage.storage().reference().child("profilePictures").child("\(uid).png")
+    }
+    
+    class var isAuthenticated: Bool {
+        get {
+            return Auth.auth().currentUser != nil
+        }
     }
 }

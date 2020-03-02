@@ -48,7 +48,7 @@
 		4B2E9CF7239FF3BB008508CD /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		4B2E9CF9239FF3CB008508CD /* NewPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
 		4B2E9CFB239FF3E0008508CD /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
-		4B2E9CFD239FF3EB008508CD /* MoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
+		4B2E9CFD239FF3EB008508CD /* MoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MoreViewController.swift; path = "../New Group/MoreViewController.swift"; sourceTree = "<group>"; };
 		4B3F50DC23CF051900117E3F /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		4B66DE3C23A1FB1100C0F147 /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		4B66DE3E23A235A400C0F147 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
@@ -98,6 +98,14 @@
 			path = Authentication;
 			sourceTree = "<group>";
 		};
+		4B66CE23240CFB1500063621 /* More */ = {
+			isa = PBXGroup;
+			children = (
+				4B2E9CFD239FF3EB008508CD /* MoreViewController.swift */,
+			);
+			path = More;
+			sourceTree = "<group>";
+		};
 		4B66DE3723A1FA8E00C0F147 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -114,13 +122,13 @@
 		4B66DE3823A1FA9A00C0F147 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4B66CE23240CFB1500063621 /* More */,
 				4B28064423FEB114001E9736 /* Authentication */,
 				4B2E9CF5239FF3A5008508CD /* FeedViewController.swift */,
 				4B2E9CF7239FF3BB008508CD /* ExploreViewController.swift */,
 				4BB998BB23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift */,
 				4B2E9CF9239FF3CB008508CD /* NewPostViewController.swift */,
 				4B2E9CFB239FF3E0008508CD /* ActivityViewController.swift */,
-				4B2E9CFD239FF3EB008508CD /* MoreViewController.swift */,
 				4BB8CE1423CF108300F40733 /* TabBarController.swift */,
 			);
 			path = Controllers;

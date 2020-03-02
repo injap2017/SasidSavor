@@ -44,6 +44,8 @@ class CreateNewAccountViewController: UITableViewController {
     var email: String = ""
     
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
+    
+    var completion: (() -> Void)?
 }
 
 // MARK: - Lifecycle
@@ -59,14 +61,15 @@ extension CreateNewAccountViewController {
 // MARK: - Functions
 extension CreateNewAccountViewController {
     
-    class func instance() -> CreateNewAccountViewController {
+    class func instance(completion: @escaping () -> Void) -> CreateNewAccountViewController {
         let storyboard = UIStoryboard.init(name: "Authentication", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "createNewAccount") as! CreateNewAccountViewController
+        viewController.completion = completion
         return viewController
     }
     
-    class func instanceOnNavigationController() -> UINavigationController {
-        let viewController = self.instance()
+    class func instanceOnNavigationController(completion: @escaping () -> Void) -> UINavigationController {
+        let viewController = self.instance(completion: completion)
         viewController.navigationItem.leftBarButtonItem = viewController.cancelBarButtonItem()
         let navigationController = UINavigationController.init(rootViewController: viewController)
         return navigationController
@@ -402,6 +405,10 @@ extension CreateNewAccountViewController {
                                 SVProgressHUD.dismiss()
                                 
                                 strongSelf.cancelAction()
+                                
+                                DispatchQueue.main.async {
+                                    strongSelf.completion?()
+                                }
                             }
                         }
                     }

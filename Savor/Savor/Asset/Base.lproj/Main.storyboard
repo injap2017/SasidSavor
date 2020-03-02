@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Nnw-fa-PYI">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Nnw-fa-PYI">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -51,7 +49,7 @@
         <!--Feed-->
         <scene sceneID="MTp-eu-b17">
             <objects>
-                <viewController id="ReY-Sy-qrW" customClass="FeedViewController" customModule="Savor" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="feed" id="ReY-Sy-qrW" customClass="FeedViewController" customModule="Savor" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vWV-Cw-Ak5">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -64,7 +62,7 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="143"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZKm-na-J5S" id="0at-Yh-8Xh">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="142.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="143"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3BC-ww-UIK" customClass="DCBorderedView" customModule="DCKit">
@@ -331,29 +329,28 @@ Yorba Linda, CA</string>
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
-                    <connections>
-                        <segue destination="c45-Ja-aLv" kind="relationship" relationship="rootViewController" id="0cf-t9-5f5"/>
-                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T0f-LK-Bjq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-822" y="1156"/>
         </scene>
         <!--More View Controller-->
-        <scene sceneID="Ejf-vO-1JY">
+        <scene sceneID="AHF-xt-Bq5">
             <objects>
-                <viewController id="c45-Ja-aLv" customClass="MoreViewController" customModule="Savor" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="TxH-Au-tML">
+                <tableViewController storyboardIdentifier="more" id="2il-YS-kSd" customClass="MoreViewController" customModule="Savor" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="rpA-jZ-Dc3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="whx-u0-sxX"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="THJ-gE-W73"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="51R-f6-BgR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <connections>
+                            <outlet property="dataSource" destination="2il-YS-kSd" id="Qjd-fG-o0M"/>
+                            <outlet property="delegate" destination="2il-YS-kSd" id="WFN-I2-ZqX"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wch-0c-d6n" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-17" y="1156"/>
+            <point key="canvasLocation" x="-22" y="1156"/>
         </scene>
         <!--Activity-->
         <scene sceneID="cbX-vb-wBl">
@@ -375,7 +372,7 @@ Yorba Linda, CA</string>
         <!--Activity View Controller-->
         <scene sceneID="vRv-zg-3Dw">
             <objects>
-                <viewController id="PJi-TS-FQM" customClass="ActivityViewController" customModule="Savor" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="activity" id="PJi-TS-FQM" customClass="ActivityViewController" customModule="Savor" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="LvF-P5-E7K">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -391,7 +388,7 @@ Yorba Linda, CA</string>
         <!--Navigation Controller-->
         <scene sceneID="lfA-Co-PkS">
             <objects>
-                <navigationController id="3bL-lU-h0L" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="newPostNav" id="3bL-lU-h0L" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="XMq-zG-c4u">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -407,7 +404,7 @@ Yorba Linda, CA</string>
         <!--New Post View Controller-->
         <scene sceneID="umH-cF-WT8">
             <objects>
-                <viewController id="G3V-tG-46q" customClass="NewPostViewController" customModule="Savor" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="newPost" id="G3V-tG-46q" customClass="NewPostViewController" customModule="Savor" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2X1-er-yUj">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -440,7 +437,7 @@ Yorba Linda, CA</string>
         <!--New Post-->
         <scene sceneID="1qa-24-lXd">
             <objects>
-                <viewController id="Zd4-Ik-pq8" customClass="NewPostPlaceHolderViewController" customModule="Savor" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="newPostPlaceHolder" id="Zd4-Ik-pq8" customClass="NewPostPlaceHolderViewController" customModule="Savor" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NjP-tj-UIT">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -456,7 +453,7 @@ Yorba Linda, CA</string>
         <!--Explore View Controller-->
         <scene sceneID="y7b-pS-HPU">
             <objects>
-                <viewController id="aH4-iM-b4o" customClass="ExploreViewController" customModule="Savor" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="explore" id="aH4-iM-b4o" customClass="ExploreViewController" customModule="Savor" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Nda-XQ-xwO">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

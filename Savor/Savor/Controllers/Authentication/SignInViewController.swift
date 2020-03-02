@@ -16,6 +16,11 @@ import SVProgressHUD
 import FirebaseAuth
 import SwifterSwift
 
+enum ViewPresentationStyle {
+    case Push
+    case Present
+}
+
 class SignInViewController: UITableViewController {
 
     // MARK: - Properties
@@ -27,6 +32,10 @@ class SignInViewController: UITableViewController {
     var password: String = ""
     
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
+    
+    var presentationStyle : ViewPresentationStyle = .Push
+    
+    var completion: (() -> Void)?
 }
 
 // MARK: - Lifecycle
@@ -42,15 +51,17 @@ extension SignInViewController {
 // MARK: - Functions
 extension SignInViewController {
     
-    class func instance() -> SignInViewController {
+    class func instance(completion: @escaping () -> Void) -> SignInViewController {
         let storyboard = UIStoryboard.init(name: "Authentication", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "signIn") as! SignInViewController
+        viewController.completion = completion
         return viewController
     }
     
-    class func instanceOnNavigationController() -> UINavigationController {
-        let viewController = self.instance()
+    class func instanceOnNavigationController(completion: @escaping () -> Void) -> UINavigationController {
+        let viewController = self.instance(completion: completion)
         viewController.navigationItem.leftBarButtonItem = viewController.cancelBarButtonItem()
+        viewController.presentationStyle = .Present
         let navigationController = UINavigationController.init(rootViewController: viewController)
         return navigationController
     }
@@ -78,9 +89,14 @@ extension SignInViewController {
     }
     
     @objc func cancelAction() {
-        self.navigationController?.dismiss(animated: true, completion: {
-            
-        })
+        switch presentationStyle {
+        case .Present:
+            self.navigationController?.dismiss(animated: true, completion: {
+                
+            })
+        default:
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 }
 
@@ -243,6 +259,10 @@ extension SignInViewController {
             SVProgressHUD.dismiss()
             
             strongSelf.cancelAction()
+            
+            DispatchQueue.main.async {
+                strongSelf.completion?()
+            }
         }
     }
 }
