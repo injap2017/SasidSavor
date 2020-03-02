@@ -49,6 +49,9 @@
                                         </imageView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VR7-QL-PmV">
                                             <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                            <connections>
+                                                <action selector="profilePicture:" destination="nb7-s0-1FK" eventType="touchUpInside" id="UKY-FU-R0S"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>

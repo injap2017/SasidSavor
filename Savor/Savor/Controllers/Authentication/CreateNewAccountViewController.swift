@@ -357,6 +357,8 @@ extension CreateNewAccountViewController {
         self.lastName.trim()
         
         SVProgressHUD.show(withStatus: "Creating new account...")
+        
+        // create user
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
             guard let strongSelf = self else { return }
             
@@ -368,8 +370,9 @@ extension CreateNewAccountViewController {
             
             if let user = result?.user {
                 
+                // upload profile picture
                 if let photo = strongSelf.photo, let data = photo.jpegData(compressionQuality: 0.5) {
-                    let reference = Storage.storage().reference().child("profile pictures").child("\(user.uid).png")
+                    let reference = SavorData.profilePicturesStorageReference(of: user.uid)
                     reference.putData(data, metadata: nil) { (metaData, error) in
                         
                         if let error = error {
@@ -378,11 +381,13 @@ extension CreateNewAccountViewController {
                             return
                         }
                         
+                        // get download URL
                         reference.downloadURL { (url, error) in
                             guard let photoURL = url else {
                                 return
                             }
                             
+                            // request profile change
                             let request = user.createProfileChangeRequest()
                             request.displayName = strongSelf.userName
                             request.photoURL = photoURL
@@ -499,6 +504,9 @@ extension CreateNewAccountViewController: UIImagePickerControllerDelegate, UINav
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             
             self.photo = image
+            
+            self.photoView.image = photo
+            
             valueChanged()
         }
         
