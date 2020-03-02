@@ -13,7 +13,7 @@ import GooglePlacesSearchController
 class TabBarController: UITabBarController {
     
     // MARK: - Properties
-    let permission: Permission = .camera
+    let permissionCamera: Permission = .camera
 }
 
 // MARK: - Lifecycle
@@ -45,17 +45,17 @@ extension TabBarController {
     
     func takePhoto() {
         
-        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary/*.camera*/) {
-            switch self.permission.status {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            switch self.permissionCamera.status {
             case .notDetermined, .denied, .disabled:
-                self.requestPermission()
+                self.requestPermissionCamera()
             case .authorized:
                 self.cameraRoll()
             }
         }
     }
     
-    func requestPermission() {
+    func requestPermissionCamera() {
         let callBack: Permission.Callback = { status in
             switch status {
             case .authorized:
@@ -65,7 +65,7 @@ extension TabBarController {
             }
         }
         
-        self.permission.request(callBack)
+        self.permissionCamera.request(callBack)
     }
     
     func cameraRoll() {

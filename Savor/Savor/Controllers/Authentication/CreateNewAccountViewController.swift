@@ -10,7 +10,9 @@ import UIKit
 import IQKeyboardManagerSwift
 import SVProgressHUD
 import FirebaseAuth
+import FirebaseStorage
 import SwifterSwift
+import Permission
 
 class CreateNewAccountViewController: UITableViewController {
 
@@ -18,6 +20,9 @@ class CreateNewAccountViewController: UITableViewController {
     @IBOutlet weak var photoView: UIImageView!
     
     // MARK: - Properties
+    let permissionCamera: Permission = .camera
+    let permissionPhotos: Permission = .photos
+    
     var firstNameInputCell: InputFieldCell?
     var lastNameInputCell: InputFieldCell?
     
@@ -111,7 +116,10 @@ extension CreateNewAccountViewController {
         self.createNewAccount()
     }
     
-    func takePhoto
+    @IBAction func profilePicture(_ sender: UIButton) {
+        
+        self.promptSourceType()
+    }
 }
 
 // MARK: - TableView
@@ -327,7 +335,8 @@ extension CreateNewAccountViewController: UITextFieldDelegate {
             && !self.userName.isWhitespace
             && !self.password.isEmpty
             && !self.confirm.isEmpty
-            && !self.email.isWhitespace else {
+            && !self.email.isWhitespace
+            && self.photo != nil else {
                 return false
         }
         
@@ -358,22 +367,143 @@ extension CreateNewAccountViewController {
             }
             
             if let user = result?.user {
-                let request = user.createProfileChangeRequest()
-                request.displayName = strongSelf.userName
                 
-                request.commitChanges { (error) in
-                    
-                    if let error = error {
-                        print(error)
-                        SVProgressHUD.showError(withStatus: error.localizedDescription)
-                        return
+                if let photo = strongSelf.photo, let data = photo.jpegData(compressionQuality: 0.5) {
+                    let reference = Storage.storage().reference().child("profile pictures").child("\(user.uid).png")
+                    reference.putData(data, metadata: nil) { (metaData, error) in
+                        
+                        if let error = error {
+                            print(error)
+                            SVProgressHUD.showError(withStatus: error.localizedDescription)
+                            return
+                        }
+                        
+                        reference.downloadURL { (url, error) in
+                            guard let photoURL = url else {
+                                return
+                            }
+                            
+                            let request = user.createProfileChangeRequest()
+                            request.displayName = strongSelf.userName
+                            request.photoURL = photoURL
+                            request.commitChanges { (error) in
+                                
+                                if let error = error {
+                                    print(error)
+                                    SVProgressHUD.showError(withStatus: error.localizedDescription)
+                                    return
+                                }
+                                
+                                SVProgressHUD.dismiss()
+                                
+                                strongSelf.cancelAction()
+                            }
+                        }
                     }
-                    
-                    SVProgressHUD.dismiss()
-                    
-                    strongSelf.cancelAction()
                 }
             }
+        }
+    }
+}
+
+// MARK: - Camera Roll
+extension CreateNewAccountViewController {
+    
+    func promptSourceType() {
+        let alertController = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let takePhoto = UIAlertAction.init(title: "Take Photo", style: .default) { (action) in
+                switch self.permissionCamera.status {
+                case .notDetermined, .denied, .disabled:
+                    self.requestPermissionCamera()
+                case .authorized:
+                    self.cameraRoll()
+                }
+            }
+            alertController.addAction(takePhoto)
+        }
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let choosePhoto = UIAlertAction.init(title: "Choose Photo", style: .default) { (action) in
+                switch self.permissionPhotos.status {
+                case .notDetermined, .denied, .disabled:
+                    self.requestPermissionPhotos()
+                case .authorized:
+                    self.photoLibrary()
+                }
+            }
+            alertController.addAction(choosePhoto)
+        }
+        let cancel = UIAlertAction.init(title: "Cancel", style: .cancel) { (action) in
+            
+        }
+        alertController.addAction(cancel)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func cameraRoll() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .camera
+        imagePicker.allowsEditing = true
+        imagePicker.modalPresentationStyle = .fullScreen
+        
+        self.present(imagePicker, animated: true) {
+            
+        }
+    }
+    
+    func photoLibrary() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.allowsEditing = true
+        imagePicker.modalPresentationStyle = .fullScreen
+        
+        self.present(imagePicker, animated: true) {
+            
+        }
+    }
+    
+    func requestPermissionCamera() {
+        let callBack: Permission.Callback = { status in
+            switch status {
+            case .authorized:
+                self.cameraRoll()
+            default:
+                break
+            }
+        }
+        
+        self.permissionCamera.request(callBack)
+    }
+    
+    func requestPermissionPhotos() {
+        let callBack: Permission.Callback = { status in
+            switch status {
+            case .authorized:
+                self.photoLibrary()
+            default:
+                break
+            }
+        }
+        
+        self.permissionPhotos.request(callBack)
+    }
+}
+
+// MARK: - UIImagePickerController Delegate
+extension CreateNewAccountViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            
+            self.photo = image
+            valueChanged()
+        }
+        
+        picker.dismiss(animated: true) {
+            
         }
     }
 }
