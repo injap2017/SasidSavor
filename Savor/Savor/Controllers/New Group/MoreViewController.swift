@@ -12,6 +12,13 @@ import FirebaseAuth
 class MoreViewController: UITableViewController {
     
     
+    // MARK: - Properties
+    private var handle: AuthStateDidChangeListenerHandle?
+    
+    deinit {
+        // remove auth state change listener
+        Auth.auth().removeStateDidChangeListener(self.handle!)
+    }
 }
 
 // MARK: - Lifecycle
@@ -21,12 +28,11 @@ extension MoreViewController {
         super.viewDidLoad()
         
         self.initView()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
-        self.refreshView()
+        // listen auth state change to refresh
+        self.handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+            self.refreshView()
+        }
     }
 }
 
@@ -59,6 +65,8 @@ extension MoreViewController {
     @objc func signOutAction() {
         do {
             try Auth.auth().signOut()
+            
+            // refresh view will be called automatically by statedidchangelistner
             
         } catch let error {
             print(error.localizedDescription)
@@ -112,14 +120,14 @@ extension MoreViewController {
         case 0:
             // sign in
             let viewController = SignInViewController.instance {
-                // refreshview will be called automatic when view popover
+                // refresh view will be called automatically by statedidchangelistner
             }
             self.navigationController?.pushViewController(viewController)
             
         case 1:
             // create new account
             let viewController = CreateNewAccountViewController.instanceOnNavigationController {
-                self.refreshView()
+                // refresh view will be called automatically by statedidchangelistner
             }
             self.present(viewController, animated: true, completion: nil)
             

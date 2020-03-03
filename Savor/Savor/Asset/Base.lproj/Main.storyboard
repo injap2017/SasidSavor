@@ -329,12 +329,15 @@ Yorba Linda, CA</string>
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
+                    <connections>
+                        <segue destination="2il-YS-kSd" kind="relationship" relationship="rootViewController" id="lZU-QL-Rfx"/>
+                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T0f-LK-Bjq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-822" y="1156"/>
         </scene>
-        <!--More View Controller-->
+        <!--More-->
         <scene sceneID="AHF-xt-Bq5">
             <objects>
                 <tableViewController storyboardIdentifier="more" id="2il-YS-kSd" customClass="MoreViewController" customModule="Savor" customModuleProvider="target" sceneMemberID="viewController">
@@ -347,6 +350,7 @@ Yorba Linda, CA</string>
                             <outlet property="delegate" destination="2il-YS-kSd" id="WFN-I2-ZqX"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="More" id="Lrc-A9-VNz"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wch-0c-d6n" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
