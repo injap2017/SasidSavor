@@ -6,9 +6,6 @@
 //  Copyright © 2020 Edgar Sia. All rights reserved.
 //
 
-// username Keyboard No Space Bar
-// keyboard next / done
-// scroll textfield outside of keyboard
 
 import UIKit
 import IQKeyboardManagerSwift
@@ -24,11 +21,11 @@ enum ViewPresentationStyle {
 class SignInViewController: UITableViewController {
 
     // MARK: - Properties
-    var userNameInputCell: InputFieldCell?
+    var emailInputCell: InputFieldCell?
     var passwordInputCell: InputFieldCell?
     var signInActionCell: ActionCell?
     
-    var userName: String = ""
+    var email: String = ""
     var password: String = ""
     
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
@@ -122,14 +119,15 @@ extension SignInViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: InputFieldCell.identifier) as! InputFieldCell
             switch indexPath.row {
             case 0:
-                cell.title = "User Name"
+                cell.title = "Email"
                 cell.isRequired = true
-                cell.value = self.userName
-                cell.inputField.textContentType = .username
+                cell.value = self.email
+                cell.inputField.textContentType = .emailAddress
+                cell.inputField.keyboardType = .emailAddress
                 cell.inputField.tag = 1
                 cell.inputField.delegate = self
                 self.returnKeyHandler.addTextFieldView(cell.inputField)
-                self.userNameInputCell = cell
+                self.emailInputCell = cell
                 
             default:
                 cell.title = "Password"
@@ -169,17 +167,12 @@ extension SignInViewController {
 extension SignInViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        // disable username space input
-        if textField == self.userNameInputCell?.inputField, string == " " {
-            return false
-        }
-        
         if let text = textField.text, let textRange = Range(range, in: text) {
             let updatedText = text.replacingCharacters(in: textRange, with: string)
             
             switch textField {
-            case self.userNameInputCell?.inputField:
-                userNameChanged(updatedText)
+            case self.emailInputCell?.inputField:
+                emailChanged(updatedText)
             case self.passwordInputCell?.inputField:
                 passwordChanged(updatedText)
             default:
@@ -194,8 +187,8 @@ extension SignInViewController: UITextFieldDelegate {
     
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         switch textField {
-        case self.userNameInputCell?.inputField:
-            userNameChanged("")
+        case self.emailInputCell?.inputField:
+            emailChanged("")
         case self.passwordInputCell?.inputField:
             passwordChanged("")
         default:
@@ -215,8 +208,8 @@ extension SignInViewController: UITextFieldDelegate {
         return true
     }
     
-    func userNameChanged(_ text: String) {
-        self.userName = text
+    func emailChanged(_ text: String) {
+        self.email = text
         // validate field
         valueChanged()
     }
@@ -232,12 +225,13 @@ extension SignInViewController: UITextFieldDelegate {
     }
     
     private func isSignInActionAvailable() -> Bool {
-        guard  !self.userName.isWhitespace
+        guard  !self.email.isWhitespace
             && !self.password.isWhitespace else {
                 return false
         }
         
-        return true
+        // email validate
+        return self.email.isValidEmail
     }
 }
 
@@ -247,12 +241,12 @@ extension SignInViewController {
     func signIn() {
         
         SVProgressHUD.show(withStatus: "Signing in...")
-        Auth.auth().signIn(withEmail: userName, password: password) { [weak self] result, error in
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
             guard let strongSelf = self else { return }
             
             if let error = error {
                 print(error)
-                SVProgressHUD.showError(withStatus: "Invalid user name or password entered. Please try again.")
+                SVProgressHUD.showError(withStatus: "Invalid email or password entered. Please try again.")
                 return
             }
             
