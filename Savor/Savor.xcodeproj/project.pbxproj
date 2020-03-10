@@ -15,6 +15,7 @@
 		4B28064823FEB171001E9736 /* CreateNewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B28064723FEB171001E9736 /* CreateNewAccountViewController.swift */; };
 		4B29A6EB241738B8004D520E /* NewPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B29A6EA241738B8004D520E /* NewPostViewController.swift */; };
 		4B29A6EE241738C7004D520E /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B29A6ED241738C7004D520E /* MoreViewController.swift */; };
+		4B29A6F0241739E8004D520E /* NewPost.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B29A6EF241739E8004D520E /* NewPost.storyboard */; };
 		4B2E9CF6239FF3A5008508CD /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E9CF5239FF3A5008508CD /* FeedViewController.swift */; };
 		4B2E9CF8239FF3BB008508CD /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E9CF7239FF3BB008508CD /* ExploreViewController.swift */; };
 		4B2E9CFC239FF3E0008508CD /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E9CFB239FF3E0008508CD /* ActivityViewController.swift */; };
@@ -46,6 +47,7 @@
 		4B28064723FEB171001E9736 /* CreateNewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewAccountViewController.swift; sourceTree = "<group>"; };
 		4B29A6EA241738B8004D520E /* NewPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
 		4B29A6ED241738C7004D520E /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
+		4B29A6EF241739E8004D520E /* NewPost.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NewPost.storyboard; sourceTree = "<group>"; };
 		4B2E9CF5239FF3A5008508CD /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		4B2E9CF7239FF3BB008508CD /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		4B2E9CFB239FF3E0008508CD /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 		4B41D389241734BD00C54897 /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				4B29A6EF241739E8004D520E /* NewPost.storyboard */,
 				4BB998BB23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift */,
 				4B29A6EA241738B8004D520E /* NewPostViewController.swift */,
 			);
@@ -273,6 +276,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B9E1033239CC7CA0045DBE2 /* LaunchScreen.storyboard in Resources */,
+				4B29A6F0241739E8004D520E /* NewPost.storyboard in Resources */,
 				4B28064123FE970C001E9736 /* GoogleService-Info.plist in Resources */,
 				4BB52A3823FF9B3C006647FF /* ActionCell.xib in Resources */,
 				4B9E1030239CC7CA0045DBE2 /* Assets.xcassets in Resources */,

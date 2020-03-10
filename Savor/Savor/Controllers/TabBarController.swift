@@ -7,13 +7,9 @@
 //
 
 import UIKit
-import Permission
-import GooglePlacesSearchController
 
 class TabBarController: UITabBarController {
     
-    // MARK: - Properties
-    let permissionCamera: Permission = .camera
 }
 
 // MARK: - Lifecycle
@@ -32,7 +28,7 @@ extension TabBarController: UITabBarControllerDelegate {
         
         if viewController is NewPostPlaceHolderViewController {
             if SavorData.isAuthenticated {
-                self.takePhoto()
+                self.newPost()
             } else {
                 self.promptAuthentication()
             }
@@ -44,63 +40,6 @@ extension TabBarController: UITabBarControllerDelegate {
     }
 }
 
-// MARK: - Camera Roll
-extension TabBarController {
-    
-    func takePhoto() {
-        
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            switch self.permissionCamera.status {
-            case .notDetermined, .denied, .disabled:
-                self.requestPermissionCamera()
-            case .authorized:
-                self.cameraRoll()
-            }
-        }
-    }
-    
-    func requestPermissionCamera() {
-        let callBack: Permission.Callback = { status in
-            switch status {
-            case .authorized:
-                self.cameraRoll()
-            default:
-                break
-            }
-        }
-        
-        self.permissionCamera.request(callBack)
-    }
-    
-    func cameraRoll() {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .camera
-        imagePicker.allowsEditing = true
-        imagePicker.modalPresentationStyle = .fullScreen
-        
-        self.present(imagePicker, animated: true) {
-            
-        }
-    }
-}
-
-// MARK: - UIImagePickerController Delegate
-extension TabBarController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
-        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-            
-            // store photo
-        }
-        
-        picker.dismiss(animated: true) {
-            
-        }
-    }
-}
-
 // MARK: - Authentication
 extension TabBarController {
     
@@ -108,13 +47,13 @@ extension TabBarController {
         let alertController = UIAlertController.init(title: "New Post", message: "You must be a registered user to access this feature.", preferredStyle: .alert)
         let signUp = UIAlertAction.init(title: "Sign Up", style: .default) { (action) in
             let viewController = CreateNewAccountViewController.instanceOnNavigationController {
-                self.takePhoto()
+                self.newPost()
             }
             self.present(viewController, animated: true, completion: nil)
         }
         let signIn = UIAlertAction.init(title: "Sign In", style: .default) { (action) in
             let viewController = SignInViewController.instanceOnNavigationController {
-                self.takePhoto()
+                self.newPost()
             }
             self.present(viewController, animated: true, completion: nil)
         }
@@ -125,5 +64,12 @@ extension TabBarController {
         alertController.addAction(signIn)
         alertController.addAction(cancel)
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func newPost() {
+        let viewController = NewPostViewController.instanceOnNavigationController {
+            
+        }
+        self.present(viewController, animated: true, completion: nil)
     }
 }
