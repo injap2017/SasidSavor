@@ -7,16 +7,19 @@ target 'Savor' do
 
   # Pods for Savor
   pod 'FTPopOverMenu_Swift'
+  pod 'SearchTextField'
+  pod 'UITextView+Placeholder'
   pod 'Cosmos'
   
   pod 'DCKit'
   pod 'SVProgressHUD'
   pod 'IQKeyboardManagerSwift'
   pod 'SwifterSwift'
-  pod 'UITextView+Placeholder'
   
   pod 'Permission/Camera'
   pod 'Permission/Photos'
+  
+  pod 'CDYelpFusionKit'
   
   pod 'Firebase/Analytics'
   pod 'Firebase/Auth'
