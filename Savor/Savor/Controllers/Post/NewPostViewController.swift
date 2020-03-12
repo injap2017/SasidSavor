@@ -10,15 +10,22 @@ import UIKit
 import Permission
 import Cosmos
 import UITextView_Placeholder
+import CDYelpFusionKit
 
 class NewPostViewController: UIViewController {
     
     // MARK: - IBOutlets
     @IBOutlet weak var cosmosView: CosmosView!
     @IBOutlet weak var descriptionTextView: UITextView!
+    @IBOutlet weak var collectionView: UICollectionView!
     
     // MARK: - Properties
     let permissionCamera: Permission = .camera
+    
+    var business: CDYelpBusiness?
+    var rating: Double = 0
+    var descriptionText: String = ""
+    var photos: [UIImage] = []
     
     var completion: (() -> Void)?
 }
@@ -59,9 +66,17 @@ extension NewPostViewController {
         
         // cosmos view for iOS 13
         self.cosmosView.settings.disablePanGestures = true
+        self.cosmosView.rating = rating
+        self.cosmosView.didFinishTouchingCosmos = { rating in
+            self.rating = rating
+        }
         
         // uitextview placeholder
         self.descriptionTextView.placeholder = "Comment (optional)"
+        self.descriptionTextView.text = descriptionText
+        
+        // uicollectionview cell
+        self.collectionView.register(AddPhotoItem.nib, forCellWithReuseIdentifier: AddPhotoItem.identifier)
     }
 }
 
@@ -81,12 +96,84 @@ extension NewPostViewController {
     
     func postBarButtonItem() -> UIBarButtonItem {
         let item = UIBarButtonItem.init(title: "Post", style: .done, target: self, action: #selector(postAction))
-        // post is enabled?
+        item.isEnabled = self.isNewPostActionAvailable()
         return item
     }
     
     @objc func postAction() {
         
+    }
+}
+
+// MARK: - TextView
+extension NewPostViewController: UITextViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if let fullText = textView.text, let textRange = Range(range, in: fullText) {
+            let updatedText = fullText.replacingCharacters(in: textRange, with: text)
+            
+            switch textView {
+            case self.descriptionTextView:
+                descriptionChanged(updatedText)
+            default:
+                break
+            }
+            
+            return true
+        }
+        
+        return false
+    }
+    
+    func descriptionChanged(_ text: String) {
+        self.descriptionText = text
+        // validate field
+        print(text)
+        valueChanged()
+    }
+    
+    private func valueChanged() {
+        self.navigationItem.rightBarButtonItem?.isEnabled = isNewPostActionAvailable()
+    }
+    
+    private func isNewPostActionAvailable() -> Bool {
+        guard self.business != nil
+            && self.rating > 0.0
+            && self.descriptionText.isWhitespace
+            && self.photos.count > 0 else {
+                return false
+        }
+        
+        return true
+    }
+}
+
+// MARK: - UICollectionView
+extension NewPostViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let item = collectionView.dequeueReusableCell(withReuseIdentifier: AddPhotoItem.identifier, for: indexPath)
+        return item
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let layout = collectionViewLayout as! UICollectionViewFlowLayout
+        let leftInset = layout.sectionInset.left
+        let rightInset = layout.sectionInset.right
+        let cellSpace = layout.minimumInteritemSpacing
+        let collectionViewSize = collectionView.bounds.size
+        
+        let columnSize = CGFloat(3)
+        
+        let width = (collectionViewSize.width - leftInset - rightInset - (columnSize - 1) * cellSpace) / columnSize
+        let height = width
+        
+        return CGSize.init(width: width, height: height)
     }
 }
 

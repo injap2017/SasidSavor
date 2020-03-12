@@ -158,21 +158,24 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E0q-V5-9Ax">
-                                        <rect key="frame" x="0.0" y="180" width="414" height="510"/>
+                                        <rect key="frame" x="0.0" y="180" width="414" height="128"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AFQ-8N-sCt">
-                                                <rect key="frame" x="0.0" y="509.5" width="414" height="0.5"/>
+                                                <rect key="frame" x="0.0" y="127.5" width="414" height="0.5"/>
                                                 <color key="backgroundColor" systemColor="separatorColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="0.5" id="kGe-GC-FV8"/>
                                                 </constraints>
                                             </view>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="5c3-H7-zsf">
-                                                <rect key="frame" x="4" y="0.0" width="406" height="509.5"/>
+                                                <rect key="frame" x="4" y="0.0" width="406" height="127.5"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="ygc-Aw-92s" id="egp-Y3-Z5A"/>
+                                                </connections>
                                             </textView>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -181,16 +184,37 @@
                                             <constraint firstAttribute="bottom" secondItem="AFQ-8N-sCt" secondAttribute="bottom" id="5aa-RK-HGp"/>
                                             <constraint firstItem="5c3-H7-zsf" firstAttribute="leading" secondItem="E0q-V5-9Ax" secondAttribute="leading" constant="4" id="Zm9-6L-BGE"/>
                                             <constraint firstItem="5c3-H7-zsf" firstAttribute="top" secondItem="E0q-V5-9Ax" secondAttribute="top" id="jAR-84-wPW"/>
+                                            <constraint firstAttribute="height" constant="128" id="qol-R4-LK4"/>
                                             <constraint firstItem="AFQ-8N-sCt" firstAttribute="top" secondItem="5c3-H7-zsf" secondAttribute="bottom" id="tDc-3h-uWG"/>
                                             <constraint firstAttribute="trailing" secondItem="5c3-H7-zsf" secondAttribute="trailing" constant="4" id="uGV-Rr-o5e"/>
                                             <constraint firstItem="AFQ-8N-sCt" firstAttribute="leading" secondItem="E0q-V5-9Ax" secondAttribute="leading" id="wKc-85-Fee"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZcU-rm-P1b">
-                                        <rect key="frame" x="0.0" y="690" width="414" height="128"/>
+                                        <rect key="frame" x="0.0" y="308" width="414" height="510"/>
+                                        <subviews>
+                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Yug-7h-Jac">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="510"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="1" minimumInteritemSpacing="1" id="28M-QP-8v7">
+                                                    <size key="itemSize" width="130" height="130"/>
+                                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                </collectionViewFlowLayout>
+                                                <cells/>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="ygc-Aw-92s" id="rQ6-cF-xaU"/>
+                                                    <outlet property="delegate" destination="ygc-Aw-92s" id="4bx-ph-KQV"/>
+                                                </connections>
+                                            </collectionView>
+                                        </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="128" id="XTF-AO-Wi2"/>
+                                            <constraint firstItem="Yug-7h-Jac" firstAttribute="top" secondItem="ZcU-rm-P1b" secondAttribute="top" id="Kxm-ho-fzE"/>
+                                            <constraint firstItem="Yug-7h-Jac" firstAttribute="leading" secondItem="ZcU-rm-P1b" secondAttribute="leading" id="Mg2-C5-eS4"/>
+                                            <constraint firstAttribute="bottom" secondItem="Yug-7h-Jac" secondAttribute="bottom" id="eSu-h0-n0d"/>
+                                            <constraint firstAttribute="trailing" secondItem="Yug-7h-Jac" secondAttribute="trailing" id="u3h-n9-XsE"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -212,13 +236,14 @@
                     </view>
                     <navigationItem key="navigationItem" id="xjA-8V-Klr"/>
                     <connections>
+                        <outlet property="collectionView" destination="Yug-7h-Jac" id="Uoj-Ih-sxb"/>
                         <outlet property="cosmosView" destination="Pan-fF-t3y" id="fsf-wt-hYb"/>
                         <outlet property="descriptionTextView" destination="5c3-H7-zsf" id="Hmd-KP-Ffl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SkY-MV-zCu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="297" y="156"/>
+            <point key="canvasLocation" x="295.6521739130435" y="155.35714285714286"/>
         </scene>
     </scenes>
 </document>
