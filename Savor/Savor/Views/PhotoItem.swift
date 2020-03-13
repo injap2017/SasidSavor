@@ -10,9 +10,17 @@ import UIKit
 
 class PhotoItem: UICollectionViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    // MARK: - IBOutlets
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var deleteButton: UIButton!
+    
+    // MARK: - Properties
+    static let identifier = "PhotoItem"
+    static let nib = UINib.init(nibName: "PhotoItem", bundle: nil)
+    
+    var image: UIImage? {
+        didSet {
+            self.imageView.image = image
+        }
     }
-
 }

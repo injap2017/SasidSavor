@@ -18,27 +18,41 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="si9-6I-b6c" customClass="DCDashedBorderedView" customModule="DCKit">
-                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                        <rect key="frame" x="8" y="8" width="84" height="84"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera-enhance-gray" translatesAutoresizingMaskIntoConstraints="NO" id="tYt-rP-rP3">
-                                <rect key="frame" x="38" y="38" width="24" height="24"/>
-                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="17z-j2-LOb">
+                                <rect key="frame" x="0.0" y="0.0" width="84" height="84"/>
+                                <state key="normal" image="camera-enhance-gray"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="tYt-rP-rP3" firstAttribute="centerY" secondItem="si9-6I-b6c" secondAttribute="centerY" id="AJr-GM-XIW"/>
-                            <constraint firstItem="tYt-rP-rP3" firstAttribute="centerX" secondItem="si9-6I-b6c" secondAttribute="centerX" id="Wl8-j0-plR"/>
+                            <constraint firstItem="17z-j2-LOb" firstAttribute="top" secondItem="si9-6I-b6c" secondAttribute="top" id="1oh-Yr-IJz"/>
+                            <constraint firstAttribute="trailing" secondItem="17z-j2-LOb" secondAttribute="trailing" id="AM0-H0-szG"/>
+                            <constraint firstAttribute="bottom" secondItem="17z-j2-LOb" secondAttribute="bottom" id="S6Y-7A-eFK"/>
+                            <constraint firstItem="17z-j2-LOb" firstAttribute="leading" secondItem="si9-6I-b6c" secondAttribute="leading" id="lsJ-BF-xIC"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                <real key="value" value="2"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="dashLength">
+                                <real key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </view>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="si9-6I-b6c" secondAttribute="trailing" id="jjl-wb-7gy"/>
-                <constraint firstItem="si9-6I-b6c" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="lBa-vY-Mrw"/>
-                <constraint firstAttribute="bottom" secondItem="si9-6I-b6c" secondAttribute="bottom" id="lKL-nc-wsV"/>
-                <constraint firstItem="si9-6I-b6c" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="plk-RE-p6q"/>
+                <constraint firstAttribute="trailing" secondItem="si9-6I-b6c" secondAttribute="trailing" constant="8" id="jjl-wb-7gy"/>
+                <constraint firstItem="si9-6I-b6c" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="lBa-vY-Mrw"/>
+                <constraint firstAttribute="bottom" secondItem="si9-6I-b6c" secondAttribute="bottom" constant="8" id="lKL-nc-wsV"/>
+                <constraint firstItem="si9-6I-b6c" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="plk-RE-p6q"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <connections>
+                <outlet property="cameraRollButton" destination="17z-j2-LOb" id="Sqd-7g-kiQ"/>
+            </connections>
             <point key="canvasLocation" x="132" y="135"/>
         </collectionViewCell>
     </objects>

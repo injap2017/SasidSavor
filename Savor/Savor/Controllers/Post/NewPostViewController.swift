@@ -77,6 +77,7 @@ extension NewPostViewController {
         
         // uicollectionview cell
         self.collectionView.register(AddPhotoItem.nib, forCellWithReuseIdentifier: AddPhotoItem.identifier)
+        self.collectionView.register(PhotoItem.nib, forCellWithReuseIdentifier: PhotoItem.identifier)
     }
 }
 
@@ -102,6 +103,23 @@ extension NewPostViewController {
     
     @objc func postAction() {
         
+    }
+    
+    @objc func addPhotoAction() {
+        self.takePhoto()
+    }
+    
+    @objc func deletePhotoAction(_ sender: UIButton) {
+        let senderPosition = sender.convert(sender.center, to: self.collectionView)
+        guard let indexPath = self.collectionView.indexPathForItem(at: senderPosition) else {
+            return
+        }
+        
+        // delete photo
+        self.photos.remove(at: indexPath.row)
+        
+        // uicollectionview delete photo
+        self.collectionView.deleteItems(at: [indexPath])
     }
 }
 
@@ -152,11 +170,21 @@ extension NewPostViewController: UITextViewDelegate {
 extension NewPostViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return self.photos.count + 1 /* plus item */
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let item = collectionView.dequeueReusableCell(withReuseIdentifier: AddPhotoItem.identifier, for: indexPath)
+        
+        // the last is plus item
+        if indexPath.row == self.photos.count  {
+            let item = collectionView.dequeueReusableCell(withReuseIdentifier: AddPhotoItem.identifier, for: indexPath) as! AddPhotoItem
+            item.cameraRollButton.addTarget(self, action: #selector(addPhotoAction), for: .touchUpInside)
+            return item
+        }
+        
+        let item = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoItem.identifier, for: indexPath) as! PhotoItem
+        item.deleteButton.addTarget(self, action: #selector(deletePhotoAction), for: .touchUpInside)
+        item.image = self.photos[indexPath.row]
         return item
     }
     
@@ -226,6 +254,11 @@ extension NewPostViewController: UIImagePickerControllerDelegate, UINavigationCo
         if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             
             // store photo
+            self.photos.append(image)
+            
+            // uicollectionview add photo to the last - 1
+            let indexPath = IndexPath.init(row: self.photos.count - 1, section: 0)
+            self.collectionView.insertItems(at: [indexPath])
         }
         
         picker.dismiss(animated: true) {
