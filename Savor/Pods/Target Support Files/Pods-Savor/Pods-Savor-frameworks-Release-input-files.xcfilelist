@@ -13,7 +13,6 @@ ${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework
 ${BUILT_PRODUCTS_DIR}/Permission/Permission.framework
 ${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework
 ${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework
-${BUILT_PRODUCTS_DIR}/SearchTextField/SearchTextField.framework
 ${BUILT_PRODUCTS_DIR}/SwifterSwift/SwifterSwift.framework
 ${BUILT_PRODUCTS_DIR}/UITextView+Placeholder/UITextView_Placeholder.framework
 ${BUILT_PRODUCTS_DIR}/abseil/absl.framework

@@ -20,4 +20,6 @@ class SavorData {
             return Auth.auth().currentUser != nil
         }
     }
+    
+    static let googlePlacesAPIKey = ""
 }

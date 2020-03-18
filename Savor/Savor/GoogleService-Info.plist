@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>966513220076-v0uaf84jptk0d1h02cb6kh1dodsqslce.apps.googleusercontent.com</string>
+	<string>437163068952-r7eonmids47deeqgu014f8da9nmudfg9.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.966513220076-v0uaf84jptk0d1h02cb6kh1dodsqslce</string>
+	<string>com.googleusercontent.apps.437163068952-r7eonmids47deeqgu014f8da9nmudfg9</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDnbNlQgfSpp4IhU8WjXbKY2iGEzgut29g</string>
+	<string>AIzaSyCAGoZhlGKrFfbGQxl5fgp1nEACaYF1fyw</string>
 	<key>GCM_SENDER_ID</key>
-	<string>966513220076</string>
+	<string>437163068952</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.edgarsia.Savor</string>
+	<string>com.edgarsia.sasisavor</string>
 	<key>PROJECT_ID</key>
-	<string>savor-32f1c</string>
+	<string>sasisavor</string>
 	<key>STORAGE_BUCKET</key>
-	<string>savor-32f1c.appspot.com</string>
+	<string>sasisavor.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:966513220076:ios:9a3b85d8a6aa310de4c8c9</string>
+	<string>1:437163068952:ios:8a923ae4786b06d1977d6d</string>
 	<key>DATABASE_URL</key>
-	<string>https://savor-32f1c.firebaseio.com</string>
+	<string>https://sasisavor.firebaseio.com</string>
 </dict>
 </plist>

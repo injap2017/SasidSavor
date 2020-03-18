@@ -15,6 +15,9 @@ import CDYelpFusionKit
 class NewPostViewController: UIViewController {
     
     // MARK: - IBOutlets
+    @IBOutlet weak var restaurantAddressField: UITextField!
+    @IBOutlet weak var restaurantNameField: UITextField!
+    @IBOutlet weak var foodNameField: UITextField!
     @IBOutlet weak var cosmosView: CosmosView!
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -85,7 +88,7 @@ extension NewPostViewController {
 extension NewPostViewController {
     
     func cancelBarButtonItem() -> UIBarButtonItem {
-        let item = UIBarButtonItem.init(title: "Cancel", style: .plain, target: self, action: #selector(cancelAction))
+        let item = UIBarButtonItem.init(barButtonSystemItem: .cancel, target: self, action: #selector(self.cancelAction))
         return item
     }
     

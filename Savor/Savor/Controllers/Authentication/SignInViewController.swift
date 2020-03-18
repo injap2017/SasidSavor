@@ -81,7 +81,7 @@ extension SignInViewController {
 extension SignInViewController {
     
     func cancelBarButtonItem() -> UIBarButtonItem {
-        let item = UIBarButtonItem.init(title: "Cancel", style: .plain, target: self, action: #selector(self.cancelAction))
+        let item = UIBarButtonItem.init(barButtonSystemItem: .cancel, target: self, action: #selector(self.cancelAction))
         return item
     }
     

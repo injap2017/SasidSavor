@@ -11,7 +11,7 @@
         <!--New Post View Controller-->
         <scene sceneID="1mf-ND-ezJ">
             <objects>
-                <viewController storyboardIdentifier="newPost" id="ygc-Aw-92s" customClass="NewPostViewController" customModule="Savor" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="newPost" id="ygc-Aw-92s" customClass="NewPostViewController" customModule="SasiSavor" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PpC-BJ-54R">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -32,7 +32,7 @@
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter a Location" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Gii-cF-6gB">
                                                 <rect key="frame" x="8" y="0.0" width="398" height="44.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                             </textField>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -60,7 +60,7 @@
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search for a Place" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="moD-sH-jAX">
                                                 <rect key="frame" x="8" y="0.0" width="398" height="44.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                             </textField>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -87,7 +87,7 @@
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Choose or Add a Menu Item" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="bcF-op-6NT">
                                                 <rect key="frame" x="8" y="0.0" width="398" height="44.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                             </textField>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -172,7 +172,10 @@
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="doneAccessory" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <outlet property="delegate" destination="ygc-Aw-92s" id="egp-Y3-Z5A"/>
                                                 </connections>
@@ -239,6 +242,9 @@
                         <outlet property="collectionView" destination="Yug-7h-Jac" id="Uoj-Ih-sxb"/>
                         <outlet property="cosmosView" destination="Pan-fF-t3y" id="fsf-wt-hYb"/>
                         <outlet property="descriptionTextView" destination="5c3-H7-zsf" id="Hmd-KP-Ffl"/>
+                        <outlet property="foodNameField" destination="bcF-op-6NT" id="Akn-eP-K0v"/>
+                        <outlet property="restaurantAddressField" destination="Gii-cF-6gB" id="9zC-eP-tpn"/>
+                        <outlet property="restaurantNameField" destination="moD-sH-jAX" id="jvK-3d-1fL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SkY-MV-zCu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

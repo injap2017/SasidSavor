@@ -255,6 +255,9 @@ PODS:
   - GoogleDataTransportCCTSupport (1.4.0):
     - GoogleDataTransport (~> 4.0)
     - nanopb (~> 0.3.901)
+  - GoogleMaps/Base (3.8.0)
+  - GooglePlaces (3.8.0):
+    - GoogleMaps/Base (= 3.8.0)
   - GoogleUtilities/AppDelegateSwizzler (6.5.1):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -304,7 +307,6 @@ PODS:
   - Permission/Photos (3.1.2):
     - Permission/Core
   - PromisesObjC (1.2.8)
-  - SearchTextField (1.2.4)
   - SVProgressHUD (2.2.5)
   - SwifterSwift (5.1.0):
     - SwifterSwift/AppKit (= 5.1.0)
@@ -339,10 +341,10 @@ DEPENDENCIES:
   - Firebase/Storage
   - FirebaseFirestoreSwift
   - FTPopOverMenu_Swift
+  - GooglePlaces
   - IQKeyboardManagerSwift
   - Permission/Camera
   - Permission/Photos
-  - SearchTextField
   - SVProgressHUD
   - SwifterSwift
   - "UITextView+Placeholder"
@@ -372,6 +374,8 @@ SPEC REPOS:
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
+    - GoogleMaps
+    - GooglePlaces
     - GoogleUtilities
     - "gRPC-C++"
     - gRPC-Core
@@ -382,7 +386,6 @@ SPEC REPOS:
     - ObjectMapper
     - Permission
     - PromisesObjC
-    - SearchTextField
     - SVProgressHUD
     - SwifterSwift
     - "UITextView+Placeholder"
@@ -411,6 +414,8 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: d0560d915abf15e692e8538ba1d58442217b6aff
   GoogleDataTransport: 47fe3b8e1673e5187dfd615656a3c5034f150d69
   GoogleDataTransportCCTSupport: 36f69887fd212db6d7ef4dd45ba44523717a434e
+  GoogleMaps: 7c8d66d70e4e8c300f43a7219d8fdaad7b325a9a
+  GooglePlaces: d5f70c3e9e427964fdeca1301a665d276ccd8754
   GoogleUtilities: 06eb53bb579efe7099152735900dd04bf09e7275
   "gRPC-C++": 9dfe7b44821e7b3e44aacad2af29d2c21f7cde83
   gRPC-Core: c9aef9a261a1247e881b18059b84d597293c9947
@@ -421,11 +426,10 @@ SPEC CHECKSUMS:
   ObjectMapper: 70187b8941977c62ccfb423caf6b50be405cabf0
   Permission: 4821359fb4d4367fb59aa16df38fbba5722ac842
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
-  SearchTextField: 40dc3cc57def5a211f263cac263622c163bbc25a
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwifterSwift: a9e8e144832638c2850b43da5feaf9598c6ad65b
   "UITextView+Placeholder": d7b0c400921f66523f3a85d74f774512e14f6502
 
-PODFILE CHECKSUM: c5d7a3526e9f019bbac08231cce5cb3af8fba47a
+PODFILE CHECKSUM: a57433780de2128e4410a290a9b9eaf277494782
 
 COCOAPODS: 1.8.4

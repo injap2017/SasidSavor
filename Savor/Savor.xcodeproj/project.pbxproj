@@ -23,6 +23,7 @@
 		4B66DE3D23A1FB1100C0F147 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B66DE3C23A1FB1100C0F147 /* FeedCell.swift */; };
 		4B66DE3F23A235A400C0F147 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B66DE3E23A235A400C0F147 /* Feed.swift */; };
 		4B66DE4223A2424A00C0F147 /* FeedDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B66DE4123A2424A00C0F147 /* FeedDataProvider.swift */; };
+		4B68E57F2421CDDA00BA0932 /* UITextViewX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B68E57E2421CDDA00BA0932 /* UITextViewX.swift */; };
 		4B9E1029239CC7C80045DBE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9E1028239CC7C80045DBE2 /* AppDelegate.swift */; };
 		4B9E102E239CC7C80045DBE2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B9E102C239CC7C80045DBE2 /* Main.storyboard */; };
 		4B9E1030239CC7CA0045DBE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B9E102F239CC7CA0045DBE2 /* Assets.xcassets */; };
@@ -59,7 +60,8 @@
 		4B66DE3C23A1FB1100C0F147 /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		4B66DE3E23A235A400C0F147 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
 		4B66DE4123A2424A00C0F147 /* FeedDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDataProvider.swift; sourceTree = "<group>"; };
-		4B9E1025239CC7C80045DBE2 /* Savor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Savor.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B68E57E2421CDDA00BA0932 /* UITextViewX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextViewX.swift; sourceTree = "<group>"; };
+		4B9E1025239CC7C80045DBE2 /* SasiSavor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SasiSavor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B9E1028239CC7C80045DBE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4B9E102D239CC7C80045DBE2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4B9E102F239CC7CA0045DBE2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -185,6 +187,14 @@
 			path = DataProviders;
 			sourceTree = "<group>";
 		};
+		4B68E57B2421CB4700BA0932 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4B68E57E2421CDDA00BA0932 /* UITextViewX.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		4B9E101C239CC7C70045DBE2 = {
 			isa = PBXGroup;
 			children = (
@@ -198,7 +208,7 @@
 		4B9E1026239CC7C80045DBE2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4B9E1025239CC7C80045DBE2 /* Savor.app */,
+				4B9E1025239CC7C80045DBE2 /* SasiSavor.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -214,6 +224,7 @@
 				4B66DE3A23A1FAAD00C0F147 /* Model */,
 				4B66DE3823A1FA9A00C0F147 /* Controllers */,
 				4B66DE3723A1FA8E00C0F147 /* Views */,
+				4B68E57B2421CB4700BA0932 /* Extensions */,
 			);
 			path = Savor;
 			sourceTree = "<group>";
@@ -239,6 +250,7 @@
 				4B9E1022239CC7C70045DBE2 /* Frameworks */,
 				4B9E1023239CC7C70045DBE2 /* Resources */,
 				CA1A48EA9B612DDDBA82953A /* [CP] Embed Pods Frameworks */,
+				EFF00009572A04738B9F678D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -246,7 +258,7 @@
 			);
 			name = Savor;
 			productName = Savor;
-			productReference = 4B9E1025239CC7C80045DBE2 /* Savor.app */;
+			productReference = 4B9E1025239CC7C80045DBE2 /* SasiSavor.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -342,6 +354,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Savor/Pods-Savor-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		EFF00009572A04738B9F678D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Savor/Pods-Savor-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Savor/Pods-Savor-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Savor/Pods-Savor-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -357,6 +386,7 @@
 				4BB998BC23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift in Sources */,
 				4B66DE4223A2424A00C0F147 /* FeedDataProvider.swift in Sources */,
 				4B66DE3F23A235A400C0F147 /* Feed.swift in Sources */,
+				4B68E57F2421CDDA00BA0932 /* UITextViewX.swift in Sources */,
 				4B2E9CF8239FF3BB008508CD /* ExploreViewController.swift in Sources */,
 				4B29A6EE241738C7004D520E /* MoreViewController.swift in Sources */,
 				4B2E9CFC239FF3E0008508CD /* ActivityViewController.swift in Sources */,
@@ -522,8 +552,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.edgarsia.Savor;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.edgarsia.sasisavor;
+				PRODUCT_NAME = SasiSavor;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -541,8 +571,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.edgarsia.Savor;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.edgarsia.sasisavor;
+				PRODUCT_NAME = SasiSavor;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

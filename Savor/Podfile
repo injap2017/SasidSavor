@@ -7,7 +7,6 @@ target 'Savor' do
 
   # Pods for Savor
   pod 'FTPopOverMenu_Swift'
-  pod 'SearchTextField'
   pod 'UITextView+Placeholder'
   pod 'Cosmos'
   
@@ -26,5 +25,7 @@ target 'Savor' do
   pod 'Firebase/Storage'
   pod 'Firebase/Firestore'
   pod 'FirebaseFirestoreSwift'
+  
+  pod 'GooglePlaces'
   
 end
