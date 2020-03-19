@@ -21,5 +21,5 @@ class SavorData {
         }
     }
     
-    static let googlePlacesAPIKey = ""
+    static let googlePlacesAPIKey = "AIzaSyD0LCguIcWnEQYXrozUHD4mKa3U2CK9DKQ"
 }

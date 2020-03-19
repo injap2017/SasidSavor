@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         
         GMSPlacesClient.provideAPIKey(SavorData.googlePlacesAPIKey)
+        print(GMSPlacesClient.openSourceLicenseInfo())
         
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.enableAutoToolbar = false
