@@ -22,4 +22,5 @@ class SavorData {
     }
     
     static let googlePlacesAPIKey = "AIzaSyD0LCguIcWnEQYXrozUHD4mKa3U2CK9DKQ"
+    static let yelpAPIKey = "1mm0msj8c33c_6dMgNjlFX-GocP6_OW6yc-EwYFYEwI46YhCswKvsPHyTnEO6d8NfLYbK4nRW2BRxuk-9YEnoc2AxH6kYDlBuqVR0C6N6SNaD2TtvdxgvA34VYF2XnYx"
 }

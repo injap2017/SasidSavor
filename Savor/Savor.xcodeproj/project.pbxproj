@@ -19,6 +19,8 @@
 		4B2E9CF6239FF3A5008508CD /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E9CF5239FF3A5008508CD /* FeedViewController.swift */; };
 		4B2E9CF8239FF3BB008508CD /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E9CF7239FF3BB008508CD /* ExploreViewController.swift */; };
 		4B2E9CFC239FF3E0008508CD /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E9CFB239FF3E0008508CD /* ActivityViewController.swift */; };
+		4B3381592428B63000ED6EB6 /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3381582428B63000ED6EB6 /* Debouncer.swift */; };
+		4B33815B2428D3C300ED6EB6 /* YelpX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B33815A2428D3C300ED6EB6 /* YelpX.swift */; };
 		4B3F50DD23CF051900117E3F /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3F50DC23CF051900117E3F /* Post.swift */; };
 		4B66DE3D23A1FB1100C0F147 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B66DE3C23A1FB1100C0F147 /* FeedCell.swift */; };
 		4B66DE3F23A235A400C0F147 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B66DE3E23A235A400C0F147 /* Feed.swift */; };
@@ -56,6 +58,8 @@
 		4B2E9CF5239FF3A5008508CD /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		4B2E9CF7239FF3BB008508CD /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		4B2E9CFB239FF3E0008508CD /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
+		4B3381582428B63000ED6EB6 /* Debouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debouncer.swift; sourceTree = "<group>"; };
+		4B33815A2428D3C300ED6EB6 /* YelpX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YelpX.swift; sourceTree = "<group>"; };
 		4B3F50DC23CF051900117E3F /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		4B66DE3C23A1FB1100C0F147 /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		4B66DE3E23A235A400C0F147 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
@@ -187,12 +191,14 @@
 			path = DataProviders;
 			sourceTree = "<group>";
 		};
-		4B68E57B2421CB4700BA0932 /* Extensions */ = {
+		4B68E57B2421CB4700BA0932 /* Extensions & Functions */ = {
 			isa = PBXGroup;
 			children = (
 				4B68E57E2421CDDA00BA0932 /* UITextViewX.swift */,
+				4B3381582428B63000ED6EB6 /* Debouncer.swift */,
+				4B33815A2428D3C300ED6EB6 /* YelpX.swift */,
 			);
-			path = Extensions;
+			path = "Extensions & Functions";
 			sourceTree = "<group>";
 		};
 		4B9E101C239CC7C70045DBE2 = {
@@ -224,7 +230,7 @@
 				4B66DE3A23A1FAAD00C0F147 /* Model */,
 				4B66DE3823A1FA9A00C0F147 /* Controllers */,
 				4B66DE3723A1FA8E00C0F147 /* Views */,
-				4B68E57B2421CB4700BA0932 /* Extensions */,
+				4B68E57B2421CB4700BA0932 /* Extensions & Functions */,
 			);
 			path = Savor;
 			sourceTree = "<group>";
@@ -384,9 +390,11 @@
 				4B3F50DD23CF051900117E3F /* Post.swift in Sources */,
 				4BB52A3323FF92F9006647FF /* InputFieldCell.swift in Sources */,
 				4BB998BC23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift in Sources */,
+				4B33815B2428D3C300ED6EB6 /* YelpX.swift in Sources */,
 				4B66DE4223A2424A00C0F147 /* FeedDataProvider.swift in Sources */,
 				4B66DE3F23A235A400C0F147 /* Feed.swift in Sources */,
 				4B68E57F2421CDDA00BA0932 /* UITextViewX.swift in Sources */,
+				4B3381592428B63000ED6EB6 /* Debouncer.swift in Sources */,
 				4B2E9CF8239FF3BB008508CD /* ExploreViewController.swift in Sources */,
 				4B29A6EE241738C7004D520E /* MoreViewController.swift in Sources */,
 				4B2E9CFC239FF3E0008508CD /* ActivityViewController.swift in Sources */,

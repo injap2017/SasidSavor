@@ -27,20 +27,30 @@ class NewPostViewController: UIViewController {
     // MARK: - Properties
     let permissionCamera: Permission = .camera
     
-    var isFindingOnYourLocation = true
     var place: GMSAutocompletePrediction?
     var business: CDYelpBusiness?
     var rating: Double = 0
     var descriptionText: String = ""
     var photos: [UIImage] = []
     
-    var resultsController: UITableViewController!
-    
+    // gms places api
     var placesClient: GMSPlacesClient!
     var fetcher: GMSAutocompleteFetcher!
     var filter: GMSAutocompleteFilter!
     var token: GMSAutocompleteSessionToken!
-    var predictions: [GMSAutocompletePrediction] = []
+    var placePredictions: [GMSAutocompletePrediction] = []
+    
+    // yelp fusion api
+    var yelpClient: CDYelpAPIClient!
+    var businessPredictions: [CDYelpBusiness] = []
+    
+    // resultscontroller
+    var activeField: UITextField!
+    var resultsController: UITableView!
+    
+    // search debouncer
+    let searchDelay: TimeInterval = 1.0
+    var searchDebouncer: Debouncer!
     
     var completion: (() -> Void)?
     
@@ -89,11 +99,17 @@ extension NewPostViewController {
         self.restaurantAddressField.delegate = self
         self.restaurantAddressField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
+        self.refreshRestaurantAddressField()
+        
         self.restaurantNameField.delegate = self
         self.restaurantNameField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
+        self.refreshRestaurantNameField()
+        
         self.foodNameField.delegate = self
         self.foodNameField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        
+        self.refreshFoodNameField()
         
         // cosmos view for iOS 13
         self.cosmosView.settings.disablePanGestures = true
@@ -110,10 +126,8 @@ extension NewPostViewController {
         self.collectionView.register(AddPhotoItem.nib, forCellWithReuseIdentifier: AddPhotoItem.identifier)
         self.collectionView.register(PhotoItem.nib, forCellWithReuseIdentifier: PhotoItem.identifier)
         
-        // resultscontroller setup
-        self.resultsController = UITableViewController.init(style: .plain)
-        self.resultsController.tableView.delegate = self
-        self.resultsController.tableView.dataSource = self
+        // debouncer
+        self.searchDebouncer = Debouncer.init(delay: searchDelay, handler: {})
         
         // gmsautocompletefetcher
         self.placesClient = GMSPlacesClient.shared()
@@ -128,41 +142,45 @@ extension NewPostViewController {
         self.fetcher.provide(token)
         self.fetcher.delegate = self
         
-        self.refreshRestaurantAddressField()
+        // yelp fusion api
+        self.yelpClient = CDYelpAPIClient.init(apiKey: SavorData.yelpAPIKey)
     }
     
     func refreshRestaurantAddressField() {
-        if isFindingOnYourLocation {
+        if let place = self.place {
+            // write the place
+            let text = place.attributedFullText.string
+            self.restaurantAddressField.text = text
+            self.restaurantAddressField.attributedText = NSAttributedString.init(string: text,
+                                                                                 attributes: [.foregroundColor: UIColor.black])
+            self.restaurantAddressField.clearsOnBeginEditing = false
+            // remain the last search history
+        } else {
             // write current location
             self.restaurantAddressField.text = currentlocationAttributedText.string
             self.restaurantAddressField.attributedText = currentlocationAttributedText
             self.restaurantAddressField.clearsOnBeginEditing = true
-        }
-        else {
-            if let place = self.place {
-                // write the place
-                let text = place.attributedFullText.string
-                self.restaurantAddressField.text = text
-                self.restaurantAddressField.attributedText = NSAttributedString.init(string: text,
-                                                                                     attributes: [.foregroundColor: UIColor.black])
-                self.restaurantAddressField.clearsOnBeginEditing = false
-            } else {
-                // remain the text user typed
-                self.restaurantAddressField.clearsOnBeginEditing = false
-            }
+            // clean the search history
+            self.placePredictions.removeAll()
         }
     }
     
     func refreshRestaurantNameField() {
-        
+        if let business = self.business {
+            // write the business
+            let text = business.name
+            self.restaurantNameField.text = text
+            // remain the last search history
+        } else {
+            // clean the text
+            self.restaurantNameField.text = nil
+            // clean the search history
+            self.businessPredictions.removeAll()
+        }
     }
     
     func refreshFoodNameField() {
         
-    }
-    
-    func isLocationAvailable() -> Bool {
-        return self.isFindingOnYourLocation || self.place != nil
     }
 }
 
@@ -358,82 +376,93 @@ extension NewPostViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         switch textField {
         case restaurantAddressField:
-            self.isFindingOnYourLocation = false
+            // input text color to be black otherwise current location
             self.restaurantAddressField.textColor = .black
-            self.addResultsController()
-            break
-        default:
-            break
-        }
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
-        switch textField {
-        case restaurantAddressField:
-            if let text = restaurantAddressField.text, text.isWhitespace {
-                self.isFindingOnYourLocation = true
-                self.place = nil
-                
-                self.predictions.removeAll()
-            }
-            self.refreshRestaurantAddressField()
-            self.dismissResultsController()
+            
+            self.showResultsController(under: restaurantAddressField)
+            
+        case restaurantNameField:
+            self.showResultsController(under: restaurantNameField)
+            
         default:
             break
         }
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
+        
+        // debounce handler
+        var debounceHandler: () -> Void = {}
+
         switch textField {
         case restaurantAddressField:
-            self.fetcher.sourceTextHasChanged(textField.text)
-            break
+            debounceHandler = {
+                self.fetcher.sourceTextHasChanged(textField.text)
+            }
+
+        case restaurantNameField:
+            debounceHandler = {
+                self.yelpClient.searchBusinesses(byTerm: textField.text,
+                                                 location: nil,
+                                                 latitude: 51.509865, longitude: -0.118092, radius: nil,
+                                                 categories: nil,
+                                                 locale: nil,
+                                                 limit: nil, offset: nil,
+                                                 sortBy: nil, priceTiers: nil, openNow: nil, openAt: nil, attributes: nil,
+                                                 completion: self.didYelpSearchComplete(_:))
+            }
+
         default:
             break
         }
+        
+        // invalidate the current debouncer so that it doesn't execute the old handler
+        self.searchDebouncer.invalidate()
+        self.searchDebouncer.handler = debounceHandler
+        self.searchDebouncer.call()
     }
     
-    func addResultsController() {
-        self.addChild(resultsController)
+    func showResultsController(under textField: UITextField) {
+        // Dismiss the results controller
+        self.dismissResultsControllerIfNeeded()
         
         // Add the results controller.
-        resultsController.view.translatesAutoresizingMaskIntoConstraints = false
-        resultsController.view.alpha = 0.0
-        self.view.addSubview(resultsController.view)
-
+        self.activeField = textField
+        
+        self.resultsController = UITableView.init()
+        self.resultsController.delegate = self
+        self.resultsController.dataSource = self
+        
+        resultsController.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(resultsController)
+        
         // Layout it out below the text field using auto layout.
-        self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[_searchField]-[resultView]-(0)-|",
+        self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[searchField]-[resultView]-(0)-|",
                                                                  options: [],
                                                                  metrics: nil,
-                                                                 views: ["_searchField" : restaurantAddressField!,
-                                                                         "resultView" : resultsController.view!]))
+                                                                 views: ["searchField" : textField,
+                                                                         "resultView" : resultsController!]))
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(0)-[resultView]-(0)-|",
                                                                 options: [],
                                                                 metrics: nil,
-                                                                views: ["resultView" : resultsController.view!]))
-
+                                                                views: ["resultView" : resultsController!]))
+        
         // Force a layout pass otherwise the table will animate in weirdly.
         self.view.layoutIfNeeded()
-
+        
         // Reload the data.
-        resultsController.tableView.reloadData()
-
-        // Animate in the results.
-        UIView.animate(withDuration: 0.3, animations: {
-            self.resultsController.view.alpha = 1.0
-        }) { (finished) in
-            self.resultsController.didMove(toParent: self)
-        }
+        resultsController.reloadData()
     }
     
-    func dismissResultsController() {
+    func dismissResultsControllerIfNeeded() {
         // Dismiss the results.
-        self.resultsController.willMove(toParent: nil)
-        UIView.animate(withDuration: 0.3, animations: {
-            self.resultsController.view.alpha = 0.0
-        }) { (finished) in
-            self.resultsController.view.removeFromSuperview()
-            self.resultsController.removeFromParent()
+        if self.activeField != nil
+            && self.resultsController != nil {
+            
+            self.activeField = nil
+            
+            self.resultsController.removeFromSuperview()
+            self.resultsController = nil
         }
     }
 }
@@ -443,10 +472,15 @@ extension NewPostViewController: GMSAutocompleteFetcherDelegate {
     func didAutocomplete(with predictions: [GMSAutocompletePrediction]) {
         
         // store predictions
-        self.predictions = predictions
+        self.placePredictions = predictions
         
         // resultscontroller reload
-        self.resultsController.tableView.reloadData()
+        if self.activeField == restaurantAddressField
+            && self.resultsController != nil {
+            self.resultsController?.reloadData()
+        } else {
+            print("other field activated")
+        }
     }
     
     func didFailAutocompleteWithError(_ error: Error) {
@@ -454,38 +488,66 @@ extension NewPostViewController: GMSAutocompleteFetcherDelegate {
     }
 }
 
+// MARK: - CDYelpFusionAPI Autocomplete
+extension NewPostViewController {
+    func didYelpSearchComplete(_ response: CDYelpSearchResponse?) {
+        if let response = response,
+            let businesses = response.businesses,
+            businesses.count > 0 {
+            
+            // store predictions
+            self.businessPredictions = businesses
+
+            // resultscontroller reload
+            if self.activeField == restaurantNameField
+                && self.resultsController != nil {
+                self.resultsController?.reloadData()
+            } else {
+                print("other field activated")
+            }
+        }
+    }
+}
+
+
 // MARK: - UITableView
 extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.predictions.count + 1 /* current location */
+        switch activeField {
+        case restaurantAddressField:
+            return self.placePredictions.count + 1 /* current location */
+        default:
+            return self.businessPredictions.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.row {
-        case 0:
-            let cell = UITableViewCell.init()
-            
-            cell.textLabel?.text = self.currentlocationAttributedText.string
-            cell.textLabel?.attributedText = self.currentlocationAttributedText
-            
-            return cell
-            
-        default:
-            let cell = UITableViewCell.init()
-            
-            let prediction = self.predictions[indexPath.row - 1]
-            
-            let regularFont = cell.textLabel!.font!
-            let boldFont = UIFont.boldSystemFont(ofSize: regularFont.pointSize)
-            let bolded = NSMutableAttributedString.init(attributedString: prediction.attributedFullText)
-            bolded.enumerateAttribute(.gmsAutocompleteMatchAttribute, in: NSMakeRange(0, bolded.length), options: []) { (value, range, stop) in
-                let font = (value == nil) ? regularFont : boldFont
-                bolded.addAttribute(.font, value: font, range: range)
+        switch activeField {
+        case restaurantAddressField:
+            let cell = UITableViewCell.init(style: .default, reuseIdentifier: "googlePlacesResultsCell")
+            switch indexPath.row {
+            case 0:
+                cell.textLabel?.text = self.currentlocationAttributedText.string
+                cell.textLabel?.attributedText = self.currentlocationAttributedText
+                
+                return cell
+                
+            default:
+                let prediction = self.placePredictions[indexPath.row - 1]/* current location */
+                
+                cell.textLabel?.text = prediction.attributedFullText.string
+                cell.textLabel?.attributedText = prediction.attributedFullText
+                
+                return cell
             }
+        default:
+            let cell = UITableViewCell.init(style: .subtitle, reuseIdentifier: "yelpResultsCell")
             
-            cell.textLabel?.text = prediction.attributedFullText.string
-            cell.textLabel?.attributedText = bolded
+            let prediction = self.businessPredictions[indexPath.row]
+            
+            cell.textLabel?.text = prediction.name
+            cell.detailTextLabel?.text = prediction.detailAddress()
             
             return cell
         }
@@ -493,22 +555,30 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        switch indexPath.row {
-        case 0:
-            self.isFindingOnYourLocation = true
-            self.place = nil
+        switch activeField {
+        case restaurantAddressField:
+            switch indexPath.row {
+            case 0:
+                self.place = nil
+                
+            default:
+                let prediction = self.placePredictions[indexPath.row - 1]/* current location */
+                self.place = prediction
+            }
             
-            self.predictions.removeAll()
+            self.restaurantAddressField.resignFirstResponder()
+            self.dismissResultsControllerIfNeeded()
+            
+            self.refreshRestaurantAddressField()
             
         default:
-            let prediction = self.predictions[indexPath.row - 1]
+            let prediction = self.businessPredictions[indexPath.row]
+            self.business = prediction
             
-            self.isFindingOnYourLocation = false
-            self.place = prediction
+            self.restaurantNameField.resignFirstResponder()
+            self.dismissResultsControllerIfNeeded()
+            
+            self.refreshRestaurantNameField()
         }
-        
-        self.refreshRestaurantAddressField()
-        self.dismissResultsController()
-        self.restaurantAddressField.resignFirstResponder()
     }
 }
