@@ -525,7 +525,7 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch activeField {
         case restaurantAddressField:
-            let cell = UITableViewCell.init(style: .default, reuseIdentifier: "googlePlacesResultsCell")
+            let cell = UITableViewCell.init(style: .default, reuseIdentifier: "placePredictionsCell")
             switch indexPath.row {
             case 0:
                 cell.textLabel?.text = self.currentlocationAttributedText.string
@@ -542,7 +542,7 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
                 return cell
             }
         default:
-            let cell = UITableViewCell.init(style: .subtitle, reuseIdentifier: "yelpResultsCell")
+            let cell = UITableViewCell.init(style: .subtitle, reuseIdentifier: "businessPredictionsCell")
             
             let prediction = self.businessPredictions[indexPath.row]
             
