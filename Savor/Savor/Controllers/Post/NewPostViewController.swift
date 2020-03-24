@@ -13,6 +13,7 @@ import UITextView_Placeholder
 import GooglePlaces
 import CDYelpFusionKit
 import IQKeyboardManagerSwift
+import FirebaseFirestore
 
 class NewPostViewController: UIViewController {
     
@@ -29,6 +30,7 @@ class NewPostViewController: UIViewController {
     
     var place: GMSAutocompletePrediction?
     var business: CDYelpBusiness?
+    var foodName: FoodName?
     var rating: Double = 0
     var descriptionText: String = ""
     var photos: [UIImage] = []
@@ -43,6 +45,9 @@ class NewPostViewController: UIViewController {
     // yelp fusion api
     var yelpClient: CDYelpAPIClient!
     var businessPredictions: [CDYelpBusiness] = []
+    
+    // food names api
+    var foodNamePredictions: [FoodName] = []
     
     // resultscontroller
     var activeField: UITextField!
@@ -180,7 +185,17 @@ extension NewPostViewController {
     }
     
     func refreshFoodNameField() {
-        
+        if let foodName = self.foodName {
+            // write the food
+            let text = foodName.name
+            self.foodNameField.text = text
+            // remain the last search history
+        } else {
+            // clean the text
+            self.foodNameField.text = nil
+            // clean the search history
+            self.foodNamePredictions.removeAll()
+        }
     }
 }
 
@@ -384,6 +399,9 @@ extension NewPostViewController: UITextFieldDelegate {
         case restaurantNameField:
             self.showResultsController(under: restaurantNameField)
             
+        case foodNameField:
+            self.showResultsController(under: foodNameField)
+            
         default:
             break
         }
@@ -412,6 +430,11 @@ extension NewPostViewController: UITextFieldDelegate {
                                                  completion: self.didYelpSearchComplete(_:))
             }
 
+        case foodNameField:
+            debounceHandler = {
+                SavorData.foodNamesReference().getDocuments(completion: self.didFoodNamesSearchComplete)
+            }
+            
         default:
             break
         }
@@ -434,6 +457,7 @@ extension NewPostViewController: UITextFieldDelegate {
         self.resultsController.dataSource = self
         
         resultsController.translatesAutoresizingMaskIntoConstraints = false
+        resultsController.keyboardDismissMode = .onDrag
         self.view.addSubview(resultsController)
         
         // Layout it out below the text field using auto layout.
@@ -509,6 +533,31 @@ extension NewPostViewController {
     }
 }
 
+// MARK: - FoodName API Autocomplete
+extension NewPostViewController {
+    func didFoodNamesSearchComplete(snapshot: QuerySnapshot?, error: Error?) {
+        if let documents = snapshot?.documents {
+            
+            // retrieve food name predictions
+            var foodNamePredictions: [FoodName] = []
+            for document in documents {
+                let food = FoodName.init(from: document.data())
+                foodNamePredictions.append(food)
+            }
+            
+            // store predictions
+            self.foodNamePredictions = foodNamePredictions
+            
+            // resultscontroller reload
+            if self.activeField == foodNameField
+                && self.resultsController != nil {
+                self.resultsController?.reloadData()
+            } else {
+                print("other field activated")
+            }
+        }
+    }
+}
 
 // MARK: - UITableView
 extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
@@ -517,8 +566,10 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
         switch activeField {
         case restaurantAddressField:
             return self.placePredictions.count + 1 /* current location */
-        default:
+        case restaurantNameField:
             return self.businessPredictions.count
+        default:
+            return self.foodNamePredictions.count
         }
     }
     
@@ -541,13 +592,22 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
                 
                 return cell
             }
-        default:
+        case restaurantNameField:
             let cell = UITableViewCell.init(style: .subtitle, reuseIdentifier: "businessPredictionsCell")
             
             let prediction = self.businessPredictions[indexPath.row]
             
             cell.textLabel?.text = prediction.name
             cell.detailTextLabel?.text = prediction.detailAddress()
+            
+            return cell
+            
+        default:
+            let cell = UITableViewCell.init(style: .default, reuseIdentifier: "foodNamePredictionsCell")
+            
+            let prediction = self.foodNamePredictions[indexPath.row]
+            
+            cell.textLabel?.text = prediction.name
             
             return cell
         }
@@ -571,7 +631,7 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
             
             self.refreshRestaurantAddressField()
             
-        default:
+        case restaurantNameField:
             let prediction = self.businessPredictions[indexPath.row]
             self.business = prediction
             
@@ -579,6 +639,15 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
             self.dismissResultsControllerIfNeeded()
             
             self.refreshRestaurantNameField()
+            
+        default:
+            let prediction = self.foodNamePredictions[indexPath.row]
+            self.foodName = prediction
+            
+            self.foodNameField.resignFirstResponder()
+            self.dismissResultsControllerIfNeeded()
+            
+            self.refreshFoodNameField()
         }
     }
 }

@@ -22,6 +22,7 @@
 		4B3381592428B63000ED6EB6 /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3381582428B63000ED6EB6 /* Debouncer.swift */; };
 		4B33815B2428D3C300ED6EB6 /* YelpX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B33815A2428D3C300ED6EB6 /* YelpX.swift */; };
 		4B3F50DD23CF051900117E3F /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3F50DC23CF051900117E3F /* Post.swift */; };
+		4B45AA002429CA3700D24E0B /* FoodName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B45A9FF2429CA3700D24E0B /* FoodName.swift */; };
 		4B66DE3D23A1FB1100C0F147 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B66DE3C23A1FB1100C0F147 /* FeedCell.swift */; };
 		4B66DE3F23A235A400C0F147 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B66DE3E23A235A400C0F147 /* Feed.swift */; };
 		4B66DE4223A2424A00C0F147 /* FeedDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B66DE4123A2424A00C0F147 /* FeedDataProvider.swift */; };
@@ -61,6 +62,7 @@
 		4B3381582428B63000ED6EB6 /* Debouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debouncer.swift; sourceTree = "<group>"; };
 		4B33815A2428D3C300ED6EB6 /* YelpX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YelpX.swift; sourceTree = "<group>"; };
 		4B3F50DC23CF051900117E3F /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		4B45A9FF2429CA3700D24E0B /* FoodName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodName.swift; sourceTree = "<group>"; };
 		4B66DE3C23A1FB1100C0F147 /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		4B66DE3E23A235A400C0F147 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
 		4B66DE4123A2424A00C0F147 /* FeedDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDataProvider.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 			children = (
 				4B66DE3E23A235A400C0F147 /* Feed.swift */,
 				4B3F50DC23CF051900117E3F /* Post.swift */,
+				4B45A9FF2429CA3700D24E0B /* FoodName.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -389,6 +392,7 @@
 				4B66DE3D23A1FB1100C0F147 /* FeedCell.swift in Sources */,
 				4B3F50DD23CF051900117E3F /* Post.swift in Sources */,
 				4BB52A3323FF92F9006647FF /* InputFieldCell.swift in Sources */,
+				4B45AA002429CA3700D24E0B /* FoodName.swift in Sources */,
 				4BB998BC23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift in Sources */,
 				4B33815B2428D3C300ED6EB6 /* YelpX.swift in Sources */,
 				4B66DE4223A2424A00C0F147 /* FeedDataProvider.swift in Sources */,

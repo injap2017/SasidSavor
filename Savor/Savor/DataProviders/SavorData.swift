@@ -9,10 +9,15 @@
 import Foundation
 import FirebaseAuth
 import FirebaseStorage
+import FirebaseFirestore
 
 class SavorData {
     class func profilePicturesStorageReference(of uid: String) -> StorageReference {
         return Storage.storage().reference().child("profilePictures").child("\(uid).png")
+    }
+    
+    class func foodNamesReference()  -> CollectionReference {
+        return Firestore.firestore().collection("foodNames")
     }
     
     class var isAuthenticated: Bool {
