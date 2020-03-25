@@ -14,6 +14,7 @@ import CDYelpFusionKit
 import IQKeyboardManagerSwift
 import FirebaseFirestore
 import SwiftLocation
+import SnapKit
 
 class NewPostViewController: UIViewController {
     
@@ -472,15 +473,12 @@ extension NewPostViewController: UITextFieldDelegate {
         self.view.addSubview(resultsController)
         
         // Layout it out below the text field using auto layout.
-        self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[searchField]-[resultView]-(0)-|",
-                                                                 options: [],
-                                                                 metrics: nil,
-                                                                 views: ["searchField" : textField,
-                                                                         "resultView" : resultsController!]))
-        self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(0)-[resultView]-(0)-|",
-                                                                options: [],
-                                                                metrics: nil,
-                                                                views: ["resultView" : resultsController!]))
+        resultsController.snp.makeConstraints { (maker) in
+            maker.top.equalTo(textField.snp.bottom).offset(0.5) /* separator */
+            maker.leading.equalToSuperview()
+            maker.trailing.equalToSuperview()
+            maker.bottom.equalToSuperview()
+        }
         
         // Force a layout pass otherwise the table will animate in weirdly.
         self.view.layoutIfNeeded()

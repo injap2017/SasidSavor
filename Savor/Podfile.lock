@@ -314,6 +314,7 @@ PODS:
   - ObjectMapper (3.5.1)
   - PMAlertController (3.5.0)
   - PromisesObjC (1.2.8)
+  - SnapKit (5.0.1)
   - SVProgressHUD (2.2.5)
   - SwifterSwift (5.1.0):
     - SwifterSwift/AppKit (= 5.1.0)
@@ -354,6 +355,7 @@ DEPENDENCIES:
   - FTPopOverMenu_Swift
   - GooglePlaces
   - IQKeyboardManagerSwift
+  - SnapKit
   - SVProgressHUD
   - SwifterSwift
   - SwiftLocation
@@ -397,6 +399,7 @@ SPEC REPOS:
     - ObjectMapper
     - PMAlertController
     - PromisesObjC
+    - SnapKit
     - SVProgressHUD
     - SwifterSwift
     - SwiftLocation
@@ -439,11 +442,12 @@ SPEC CHECKSUMS:
   ObjectMapper: 70187b8941977c62ccfb423caf6b50be405cabf0
   PMAlertController: 06dab8160066fc4ce991c880e3722cd403e2926a
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwifterSwift: a9e8e144832638c2850b43da5feaf9598c6ad65b
   SwiftLocation: 609ac8859f2c5d48a6cadd2a58c63b1dae02dc25
   "UITextView+Placeholder": d7b0c400921f66523f3a85d74f774512e14f6502
 
-PODFILE CHECKSUM: b79e5228d25c9ffab541f8b7a2699bd0863adaad
+PODFILE CHECKSUM: 927cf81c008d33de76b044e4fafdfd529eb7e3e3
 
 COCOAPODS: 1.8.4
