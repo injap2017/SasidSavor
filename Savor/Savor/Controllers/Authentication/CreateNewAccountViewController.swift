@@ -12,7 +12,6 @@ import SVProgressHUD
 import FirebaseAuth
 import FirebaseStorage
 import SwifterSwift
-import Permission
 
 class CreateNewAccountViewController: UITableViewController {
 
@@ -20,9 +19,6 @@ class CreateNewAccountViewController: UITableViewController {
     @IBOutlet weak var photoView: UIImageView!
     
     // MARK: - Properties
-    let permissionCamera: Permission = .camera
-    let permissionPhotos: Permission = .photos
-    
     var firstNameInputCell: InputFieldCell?
     var lastNameInputCell: InputFieldCell?
     
@@ -425,22 +421,20 @@ extension CreateNewAccountViewController {
         let alertController = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             let takePhoto = UIAlertAction.init(title: "Take Photo", style: .default) { (action) in
-                switch self.permissionCamera.status {
-                case .notDetermined, .denied, .disabled:
-                    self.requestPermissionCamera()
-                case .authorized:
-                    self.cameraRoll()
+                SavorData.Permission.camera.manage { (status) in
+                    DispatchQueue.main.async {
+                        if status == .authorized { self.cameraRoll() }
+                    }
                 }
             }
             alertController.addAction(takePhoto)
         }
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             let choosePhoto = UIAlertAction.init(title: "Choose Photo", style: .default) { (action) in
-                switch self.permissionPhotos.status {
-                case .notDetermined, .denied, .disabled:
-                    self.requestPermissionPhotos()
-                case .authorized:
-                    self.photoLibrary()
+                SavorData.Permission.photos.manage { (status) in
+                    DispatchQueue.main.async {
+                        if status == .authorized { self.photoLibrary() }
+                    }
                 }
             }
             alertController.addAction(choosePhoto)
@@ -474,32 +468,6 @@ extension CreateNewAccountViewController {
         self.present(imagePicker, animated: true) {
             
         }
-    }
-    
-    func requestPermissionCamera() {
-        let callBack: Permission.Callback = { status in
-            switch status {
-            case .authorized:
-                self.cameraRoll()
-            default:
-                break
-            }
-        }
-        
-        self.permissionCamera.request(callBack)
-    }
-    
-    func requestPermissionPhotos() {
-        let callBack: Permission.Callback = { status in
-            switch status {
-            case .authorized:
-                self.photoLibrary()
-            default:
-                break
-            }
-        }
-        
-        self.permissionPhotos.request(callBack)
     }
 }
 

@@ -162,6 +162,17 @@ PODS:
   - AlamofireObjectMapper (5.2.0):
     - Alamofire (~> 4.7)
     - ObjectMapper (~> 3.4)
+  - arek/Camera (4.0.2):
+    - arek/Core
+    - PMAlertController (= 3.5.0)
+  - arek/Core (4.0.2):
+    - PMAlertController (= 3.5.0)
+  - arek/Location (4.0.2):
+    - arek/Core
+    - PMAlertController (= 3.5.0)
+  - arek/Photos (4.0.2):
+    - arek/Core
+    - PMAlertController (= 3.5.0)
   - BoringSSL-GRPC (0.0.3):
     - BoringSSL-GRPC/Implementation (= 0.0.3)
     - BoringSSL-GRPC/Interface (= 0.0.3)
@@ -301,11 +312,7 @@ PODS:
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
   - ObjectMapper (3.5.1)
-  - Permission/Camera (3.1.2):
-    - Permission/Core
-  - Permission/Core (3.1.2)
-  - Permission/Photos (3.1.2):
-    - Permission/Core
+  - PMAlertController (3.5.0)
   - PromisesObjC (1.2.8)
   - SVProgressHUD (2.2.5)
   - SwifterSwift (5.1.0):
@@ -332,6 +339,9 @@ PODS:
   - "UITextView+Placeholder (1.4.0)"
 
 DEPENDENCIES:
+  - arek/Camera
+  - arek/Location
+  - arek/Photos
   - CDYelpFusionKit
   - Cosmos
   - DCKit
@@ -343,8 +353,6 @@ DEPENDENCIES:
   - FTPopOverMenu_Swift
   - GooglePlaces
   - IQKeyboardManagerSwift
-  - Permission/Camera
-  - Permission/Photos
   - SVProgressHUD
   - SwifterSwift
   - "UITextView+Placeholder"
@@ -354,6 +362,7 @@ SPEC REPOS:
     - abseil
     - Alamofire
     - AlamofireObjectMapper
+    - arek
     - BoringSSL-GRPC
     - CDYelpFusionKit
     - Cosmos
@@ -384,7 +393,7 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - ObjectMapper
-    - Permission
+    - PMAlertController
     - PromisesObjC
     - SVProgressHUD
     - SwifterSwift
@@ -394,6 +403,7 @@ SPEC CHECKSUMS:
   abseil: 18063d773f5366ff8736a050fe035a28f635fd27
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlamofireObjectMapper: 92b6ce2423a9d159e686f6a1d514a009bf903ddc
+  arek: 59e81a83c8a6c4e70c3598f66d3f1092824d3170
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   CDYelpFusionKit: 94a7802fa23ef0eb78514c8a6f246f55b6bc91f0
   Cosmos: b47fddf2102bb48580cd3025d9ce0a5c658a65da
@@ -424,12 +434,12 @@ SPEC CHECKSUMS:
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   ObjectMapper: 70187b8941977c62ccfb423caf6b50be405cabf0
-  Permission: 4821359fb4d4367fb59aa16df38fbba5722ac842
+  PMAlertController: 06dab8160066fc4ce991c880e3722cd403e2926a
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwifterSwift: a9e8e144832638c2850b43da5feaf9598c6ad65b
   "UITextView+Placeholder": d7b0c400921f66523f3a85d74f774512e14f6502
 
-PODFILE CHECKSUM: a57433780de2128e4410a290a9b9eaf277494782
+PODFILE CHECKSUM: e2e67b94fceb8be5ed12ddc37f0baf8d1261f722
 
 COCOAPODS: 1.8.4

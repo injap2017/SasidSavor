@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Permission
 import Cosmos
 import UITextView_Placeholder
 import GooglePlaces
@@ -26,8 +25,6 @@ class NewPostViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     
     // MARK: - Properties
-    let permissionCamera: Permission = .camera
-    
     var place: GMSAutocompletePrediction?
     var business: CDYelpBusiness?
     var foodName: FoodName?
@@ -70,6 +67,23 @@ extension NewPostViewController {
         super.viewDidLoad()
         
         self.initView()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        SavorData.Permission.locationWhenInUse.manage { (status) in
+            switch status {
+            case .authorized:
+                print("! ✅ !")
+            case .denied:
+                print("! ⛔️ !" )
+            case .notDetermined:
+                print("! 🤔 !" )
+            case .notAvailable:
+                print("! 🚫 !" )
+            }
+        }
     }
 }
 
@@ -327,28 +341,13 @@ extension NewPostViewController: UICollectionViewDataSource, UICollectionViewDel
 extension NewPostViewController {
     
     func takePhoto() {
-        
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            switch self.permissionCamera.status {
-            case .notDetermined, .denied, .disabled:
-                self.requestPermissionCamera()
-            case .authorized:
-                self.cameraRoll()
+            SavorData.Permission.camera.manage { (status) in
+                DispatchQueue.main.async {
+                    if status == .authorized { self.cameraRoll() }
+                }
             }
         }
-    }
-    
-    func requestPermissionCamera() {
-        let callBack: Permission.Callback = { status in
-            switch status {
-            case .authorized:
-                self.cameraRoll()
-            default:
-                break
-            }
-        }
-        
-        self.permissionCamera.request(callBack)
     }
     
     func cameraRoll() {

@@ -15,8 +15,9 @@ target 'Savor' do
   pod 'IQKeyboardManagerSwift'
   pod 'SwifterSwift'
   
-  pod 'Permission/Camera'
-  pod 'Permission/Photos'
+  pod 'arek/Photos'
+  pod 'arek/Camera'
+  pod 'arek/Location'
   
   pod 'CDYelpFusionKit'
   
