@@ -336,6 +336,7 @@ PODS:
   - SwifterSwift/SpriteKit (5.1.0)
   - SwifterSwift/SwiftStdlib (5.1.0)
   - SwifterSwift/UIKit (5.1.0)
+  - SwiftLocation (4.2.0)
   - "UITextView+Placeholder (1.4.0)"
 
 DEPENDENCIES:
@@ -355,6 +356,7 @@ DEPENDENCIES:
   - IQKeyboardManagerSwift
   - SVProgressHUD
   - SwifterSwift
+  - SwiftLocation
   - "UITextView+Placeholder"
 
 SPEC REPOS:
@@ -397,6 +399,7 @@ SPEC REPOS:
     - PromisesObjC
     - SVProgressHUD
     - SwifterSwift
+    - SwiftLocation
     - "UITextView+Placeholder"
 
 SPEC CHECKSUMS:
@@ -438,8 +441,9 @@ SPEC CHECKSUMS:
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwifterSwift: a9e8e144832638c2850b43da5feaf9598c6ad65b
+  SwiftLocation: 609ac8859f2c5d48a6cadd2a58c63b1dae02dc25
   "UITextView+Placeholder": d7b0c400921f66523f3a85d74f774512e14f6502
 
-PODFILE CHECKSUM: e2e67b94fceb8be5ed12ddc37f0baf8d1261f722
+PODFILE CHECKSUM: b79e5228d25c9ffab541f8b7a2699bd0863adaad
 
 COCOAPODS: 1.8.4

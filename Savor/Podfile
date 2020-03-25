@@ -19,6 +19,8 @@ target 'Savor' do
   pod 'arek/Camera'
   pod 'arek/Location'
   
+  pod 'SwiftLocation'
+  
   pod 'CDYelpFusionKit'
   
   pod 'Firebase/Analytics'

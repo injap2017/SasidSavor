@@ -13,6 +13,7 @@ import GooglePlaces
 import CDYelpFusionKit
 import IQKeyboardManagerSwift
 import FirebaseFirestore
+import SwiftLocation
 
 class NewPostViewController: UIViewController {
     
@@ -25,6 +26,7 @@ class NewPostViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     
     // MARK: - Properties
+    var currentLocation: CLLocation?
     var place: GMSAutocompletePrediction?
     var business: CDYelpBusiness?
     var foodName: FoodName?
@@ -67,23 +69,6 @@ extension NewPostViewController {
         super.viewDidLoad()
         
         self.initView()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        SavorData.Permission.locationWhenInUse.manage { (status) in
-            switch status {
-            case .authorized:
-                print("! ✅ !")
-            case .denied:
-                print("! ⛔️ !" )
-            case .notDetermined:
-                print("! 🤔 !" )
-            case .notAvailable:
-                print("! 🚫 !" )
-            }
-        }
     }
 }
 
@@ -174,11 +159,17 @@ extension NewPostViewController {
                                                                                  attributes: [.foregroundColor: UIColor.black])
             self.restaurantAddressField.clearsOnBeginEditing = false
             // remain the last search history
-        } else {
+        } else if self.currentLocation != nil {
             // write current location
             self.restaurantAddressField.text = currentlocationAttributedText.string
             self.restaurantAddressField.attributedText = currentlocationAttributedText
             self.restaurantAddressField.clearsOnBeginEditing = true
+            // clean the search history
+            self.placePredictions.removeAll()
+        } else {
+            // clean the text
+            self.restaurantAddressField.text = nil
+            self.restaurantAddressField.attributedText = nil
             // clean the search history
             self.placePredictions.removeAll()
         }
@@ -238,7 +229,9 @@ extension NewPostViewController {
     }
     
     @objc func addPhotoAction() {
-        self.takePhoto()
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            self.askPermissionIfOKThenCameraRoll()
+        }
     }
     
     @objc func deletePhotoAction(_ sender: UIButton) {
@@ -340,12 +333,10 @@ extension NewPostViewController: UICollectionViewDataSource, UICollectionViewDel
 // MARK: - Camera Roll
 extension NewPostViewController {
     
-    func takePhoto() {
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            SavorData.Permission.camera.manage { (status) in
-                DispatchQueue.main.async {
-                    if status == .authorized { self.cameraRoll() }
-                }
+    func askPermissionIfOKThenCameraRoll() {
+        SavorData.Permission.camera.manage { (status) in
+            DispatchQueue.main.async {
+                if status == .authorized { self.cameraRoll() }
             }
         }
     }
@@ -380,6 +371,27 @@ extension NewPostViewController: UIImagePickerControllerDelegate, UINavigationCo
         
         picker.dismiss(animated: true) {
             
+        }
+    }
+}
+
+// MARK: - GPS
+extension NewPostViewController {
+    
+    func askPermissionIfOKThenGetCurrentLocation(completion: @escaping (_ location: CLLocation?) -> Void) {
+        SavorData.Permission.locationWhenInUse.manage { (status) in
+            if status == .authorized {
+                LocationManager.shared.locateFromGPS(.oneShot, accuracy: .room) { result in
+                    switch result {
+                    case .success(let location):
+                        completion(location)
+                    case .failure:
+                        completion(nil)
+                    }
+                }
+            } else {
+                completion(nil)
+            }
         }
     }
 }
@@ -613,6 +625,7 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
         
         switch activeField {
         case restaurantAddressField:
@@ -620,15 +633,38 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
             case 0:
                 self.place = nil
                 
+                // if current location nil, then try to get
+                if self.currentLocation == nil {
+                    self.askPermissionIfOKThenGetCurrentLocation { (location) in
+                        if let location = location {
+                            DispatchQueue.main.async {
+                                
+                                // store location
+                                self.currentLocation = location
+                                
+                                self.restaurantAddressField.resignFirstResponder()
+                                self.dismissResultsControllerIfNeeded()
+                                
+                                self.refreshRestaurantAddressField()
+                            }
+                        }
+                    }
+                } else {
+                    self.restaurantAddressField.resignFirstResponder()
+                    self.dismissResultsControllerIfNeeded()
+                    
+                    self.refreshRestaurantAddressField()
+                }
+                
             default:
                 let prediction = self.placePredictions[indexPath.row - 1]/* current location */
                 self.place = prediction
+                
+                self.restaurantAddressField.resignFirstResponder()
+                self.dismissResultsControllerIfNeeded()
+                
+                self.refreshRestaurantAddressField()
             }
-            
-            self.restaurantAddressField.resignFirstResponder()
-            self.dismissResultsControllerIfNeeded()
-            
-            self.refreshRestaurantAddressField()
             
         case restaurantNameField:
             let prediction = self.businessPredictions[indexPath.row]

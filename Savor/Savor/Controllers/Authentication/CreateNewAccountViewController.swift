@@ -421,21 +421,13 @@ extension CreateNewAccountViewController {
         let alertController = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             let takePhoto = UIAlertAction.init(title: "Take Photo", style: .default) { (action) in
-                SavorData.Permission.camera.manage { (status) in
-                    DispatchQueue.main.async {
-                        if status == .authorized { self.cameraRoll() }
-                    }
-                }
+                self.askPermissionIfOKThenCameraRoll()
             }
             alertController.addAction(takePhoto)
         }
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             let choosePhoto = UIAlertAction.init(title: "Choose Photo", style: .default) { (action) in
-                SavorData.Permission.photos.manage { (status) in
-                    DispatchQueue.main.async {
-                        if status == .authorized { self.photoLibrary() }
-                    }
-                }
+                self.askPermissionIfOKThenPhotoLibrary()
             }
             alertController.addAction(choosePhoto)
         }
@@ -444,6 +436,22 @@ extension CreateNewAccountViewController {
         }
         alertController.addAction(cancel)
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func askPermissionIfOKThenCameraRoll() {
+        SavorData.Permission.camera.manage { (status) in
+            DispatchQueue.main.async {
+                if status == .authorized { self.cameraRoll() }
+            }
+        }
+    }
+    
+    func askPermissionIfOKThenPhotoLibrary() {
+        SavorData.Permission.photos.manage { (status) in
+            DispatchQueue.main.async {
+                if status == .authorized { self.photoLibrary() }
+            }
+        }
     }
     
     func cameraRoll() {
