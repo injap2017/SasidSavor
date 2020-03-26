@@ -54,7 +54,7 @@ class NewPostViewController: UIViewController {
     var resultsController: UITableView!
     
     // search debouncer
-    let searchDelay: TimeInterval = 1.0
+    let searchDelay: TimeInterval = 0.8
     var searchDebouncer: Debouncer!
     
     var completion: (() -> Void)?
@@ -123,6 +123,8 @@ extension NewPostViewController {
         self.cosmosView.rating = rating
         self.cosmosView.didFinishTouchingCosmos = { rating in
             self.rating = rating
+            // post available or not
+            self.valueChanged()
         }
         
         // uitextview placeholder
@@ -225,6 +227,23 @@ extension NewPostViewController {
         self.restaurantNameField.isEnabled = isLocationAvailable()
         self.foodNameField.isEnabled = isLocationAvailable() && business != nil
     }
+    
+    private func valueChanged() {
+        self.navigationItem.rightBarButtonItem?.isEnabled = isNewPostActionAvailable()
+    }
+    
+    private func isNewPostActionAvailable() -> Bool {
+        guard self.isLocationAvailable()
+            && self.business != nil
+            && self.foodName != nil
+            && self.rating > 0.0
+            && !self.descriptionText.isWhitespace
+            && self.photos.count > 0 else {
+                return false
+        }
+        
+        return true
+    }
 }
 
 // MARK: - Actions
@@ -268,6 +287,9 @@ extension NewPostViewController {
         
         // uicollectionview delete photo
         self.collectionView.deleteItems(at: [indexPath])
+        
+        // post available or not
+        self.valueChanged()
     }
 }
 
@@ -296,21 +318,6 @@ extension NewPostViewController: UITextViewDelegate {
         // validate field
         print(text)
         valueChanged()
-    }
-    
-    private func valueChanged() {
-        self.navigationItem.rightBarButtonItem?.isEnabled = isNewPostActionAvailable()
-    }
-    
-    private func isNewPostActionAvailable() -> Bool {
-        guard self.business != nil
-            && self.rating > 0.0
-            && self.descriptionText.isWhitespace
-            && self.photos.count > 0 else {
-                return false
-        }
-        
-        return true
     }
 }
 
@@ -390,6 +397,9 @@ extension NewPostViewController: UIImagePickerControllerDelegate, UINavigationCo
             // uicollectionview add photo to the last - 1
             let indexPath = IndexPath.init(row: self.photos.count - 1, section: 0)
             self.collectionView.insertItems(at: [indexPath])
+            
+            // post available or not
+            self.valueChanged()
         }
         
         picker.dismiss(animated: true) {
@@ -483,6 +493,10 @@ extension NewPostViewController: UITextFieldDelegate {
         self.searchDebouncer.handler = debounceHandler
         self.searchDebouncer.call()
     }
+}
+
+// MARK: - ResultsController
+extension NewPostViewController {
     
     func showResultsController(under textField: UITextField) {
         // Dismiss the results controller
@@ -679,6 +693,9 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
                                 self.refreshFoodNameField()
                                 
                                 self.figureOutFieldsAvailability()
+                                
+                                // post available or not
+                                self.valueChanged()
                             }
                         }
                     }
@@ -696,6 +713,9 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
                     self.refreshFoodNameField()
                     
                     self.figureOutFieldsAvailability()
+                    
+                    // post available or not
+                    self.valueChanged()
                 }
                 
             default:
@@ -724,12 +744,17 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
                         self.refreshFoodNameField()
                         
                         self.figureOutFieldsAvailability()
+                        
+                        // post available or not
+                        self.valueChanged()
                     }
                 }
             }
             
         case restaurantNameField:
             let prediction = self.businessPredictions[indexPath.row]
+            
+            // store business
             self.business = prediction
             
             // clean under values
@@ -743,14 +768,22 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
             
             self.figureOutFieldsAvailability()
             
+            // post available or not
+            self.valueChanged()
+            
         default:
             let prediction = self.foodNamePredictions[indexPath.row]
+            
+            // store food name
             self.foodName = prediction
             
             self.foodNameField.resignFirstResponder()
             self.dismissResultsControllerIfNeeded()
             
             self.refreshFoodNameField()
+            
+            // post available or not
+            self.valueChanged()
         }
     }
 }
