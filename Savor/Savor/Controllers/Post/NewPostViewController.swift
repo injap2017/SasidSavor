@@ -116,6 +116,8 @@ extension NewPostViewController {
         
         self.refreshFoodNameField()
         
+        self.figureOutFieldsAvailability()
+        
         // cosmos view for iOS 13
         self.cosmosView.settings.disablePanGestures = true
         self.cosmosView.rating = rating
@@ -166,9 +168,9 @@ extension NewPostViewController {
     }
     
     func refreshRestaurantAddressField() {
-        if let place = self.place,
-            let text = place.formattedAddress {
+        if let place = self.place {
             // write the place
+            let text = place.formattedAddress ?? ""
             self.restaurantAddressField.text = text
             self.restaurantAddressField.attributedText = NSAttributedString.init(string: text,
                                                                                  attributes: [.foregroundColor: UIColor.black])
@@ -219,7 +221,9 @@ extension NewPostViewController {
     }
     
     func figureOutFieldsAvailability() {
-        
+        // + address field is true
+        self.restaurantNameField.isEnabled = isLocationAvailable()
+        self.foodNameField.isEnabled = isLocationAvailable() && business != nil
     }
 }
 
@@ -450,10 +454,14 @@ extension NewPostViewController: UITextFieldDelegate {
             }
 
         case restaurantNameField:
+            guard let locationCoordinate = self.availableLocation() else {
+                return
+            }
+            
             debounceHandler = {
                 self.yelpClient.searchBusinesses(byTerm: textField.text,
                                                  location: nil,
-                                                 latitude: 51.509865, longitude: -0.118092, radius: nil,
+                                                 latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude, radius: nil,
                                                  categories: nil,
                                                  locale: nil,
                                                  limit: nil, offset: nil,
@@ -659,18 +667,35 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
                                 // store location
                                 self.currentLocation = location.coordinate
                                 
+                                // clean under values
+                                self.business = nil
+                                self.foodName = nil
+                                
                                 self.restaurantAddressField.resignFirstResponder()
                                 self.dismissResultsControllerIfNeeded()
                                 
                                 self.refreshRestaurantAddressField()
+                                self.refreshRestaurantNameField()
+                                self.refreshFoodNameField()
+                                
+                                self.figureOutFieldsAvailability()
                             }
                         }
                     }
                 } else {
+                    
+                    // clean under values
+                    self.business = nil
+                    self.foodName = nil
+                    
                     self.restaurantAddressField.resignFirstResponder()
                     self.dismissResultsControllerIfNeeded()
                     
                     self.refreshRestaurantAddressField()
+                    self.refreshRestaurantNameField()
+                    self.refreshFoodNameField()
+                    
+                    self.figureOutFieldsAvailability()
                 }
                 
             default:
@@ -680,17 +705,25 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
                 let fields: GMSPlaceField = GMSPlaceField.init(rawValue:
                         GMSPlaceField.placeID.rawValue |
                         GMSPlaceField.coordinate.rawValue |
-                        GMSPlaceField.addressComponents.rawValue)!
+                        GMSPlaceField.formattedAddress.rawValue)!
                 self.placesClient.fetchPlace(fromPlaceID: prediction.placeID, placeFields: fields, sessionToken: token) { (place, error) in
                     if let place = place {
                         
                         // store place
                         self.place = place
                         
+                        // clean under values
+                        self.business = nil
+                        self.foodName = nil
+                        
                         self.restaurantAddressField.resignFirstResponder()
                         self.dismissResultsControllerIfNeeded()
                         
                         self.refreshRestaurantAddressField()
+                        self.refreshRestaurantNameField()
+                        self.refreshFoodNameField()
+                        
+                        self.figureOutFieldsAvailability()
                     }
                 }
             }
@@ -699,10 +732,16 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
             let prediction = self.businessPredictions[indexPath.row]
             self.business = prediction
             
+            // clean under values
+            self.foodName = nil
+            
             self.restaurantNameField.resignFirstResponder()
             self.dismissResultsControllerIfNeeded()
             
             self.refreshRestaurantNameField()
+            self.refreshFoodNameField()
+            
+            self.figureOutFieldsAvailability()
             
         default:
             let prediction = self.foodNamePredictions[indexPath.row]
