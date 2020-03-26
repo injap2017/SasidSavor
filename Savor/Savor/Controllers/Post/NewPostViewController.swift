@@ -27,8 +27,8 @@ class NewPostViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     
     // MARK: - Properties
-    var currentLocation: CLLocation?
-    var place: GMSAutocompletePrediction?
+    var currentLocation: CLLocationCoordinate2D?
+    var place: GMSPlace?
     var business: CDYelpBusiness?
     var foodName: FoodName?
     var rating: Double = 0
@@ -151,10 +151,24 @@ extension NewPostViewController {
         self.yelpClient = CDYelpAPIClient.init(apiKey: SavorData.yelpAPIKey)
     }
     
-    func refreshRestaurantAddressField() {
+    func isLocationAvailable() -> Bool {
+        return self.place != nil || self.currentLocation != nil
+    }
+    
+    func availableLocation() -> CLLocationCoordinate2D? {
         if let place = self.place {
+            return place.coordinate
+        } else if let location = self.currentLocation {
+            return location
+        } else {
+            return nil
+        }
+    }
+    
+    func refreshRestaurantAddressField() {
+        if let place = self.place,
+            let text = place.formattedAddress {
             // write the place
-            let text = place.attributedFullText.string
             self.restaurantAddressField.text = text
             self.restaurantAddressField.attributedText = NSAttributedString.init(string: text,
                                                                                  attributes: [.foregroundColor: UIColor.black])
@@ -202,6 +216,10 @@ extension NewPostViewController {
             // clean the search history
             self.foodNamePredictions.removeAll()
         }
+    }
+    
+    func figureOutFieldsAvailability() {
+        
     }
 }
 
@@ -386,7 +404,8 @@ extension NewPostViewController {
                     switch result {
                     case .success(let location):
                         completion(location)
-                    case .failure:
+                    case .failure(let reason):
+                        print(reason)
                         completion(nil)
                     }
                 }
@@ -638,7 +657,7 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
                             DispatchQueue.main.async {
                                 
                                 // store location
-                                self.currentLocation = location
+                                self.currentLocation = location.coordinate
                                 
                                 self.restaurantAddressField.resignFirstResponder()
                                 self.dismissResultsControllerIfNeeded()
@@ -656,12 +675,24 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
                 
             default:
                 let prediction = self.placePredictions[indexPath.row - 1]/* current location */
-                self.place = prediction
                 
-                self.restaurantAddressField.resignFirstResponder()
-                self.dismissResultsControllerIfNeeded()
-                
-                self.refreshRestaurantAddressField()
+                // fetch place details
+                let fields: GMSPlaceField = GMSPlaceField.init(rawValue:
+                        GMSPlaceField.placeID.rawValue |
+                        GMSPlaceField.coordinate.rawValue |
+                        GMSPlaceField.addressComponents.rawValue)!
+                self.placesClient.fetchPlace(fromPlaceID: prediction.placeID, placeFields: fields, sessionToken: token) { (place, error) in
+                    if let place = place {
+                        
+                        // store place
+                        self.place = place
+                        
+                        self.restaurantAddressField.resignFirstResponder()
+                        self.dismissResultsControllerIfNeeded()
+                        
+                        self.refreshRestaurantAddressField()
+                    }
+                }
             }
             
         case restaurantNameField:
