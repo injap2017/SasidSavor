@@ -12,7 +12,7 @@ import UITextView_Placeholder
 import GooglePlaces
 import CDYelpFusionKit
 import IQKeyboardManagerSwift
-import FirebaseFirestore
+import Firebase
 import SwiftLocation
 import SnapKit
 
@@ -30,7 +30,7 @@ class NewPostViewController: UIViewController {
     var currentLocation: CLLocationCoordinate2D?
     var place: GMSPlace?
     var business: CDYelpBusiness?
-    var foodName: FoodName?
+    var food: SSFood?
     var rating: Double = 0
     var descriptionText: String = ""
     var photos: [UIImage] = []
@@ -46,8 +46,8 @@ class NewPostViewController: UIViewController {
     var yelpClient: CDYelpAPIClient!
     var businessPredictions: [CDYelpBusiness] = []
     
-    // food names api
-    var foodNamePredictions: [FoodName] = []
+    // food api
+    var foodPredictions: [SSFood] = []
     
     // resultscontroller
     var activeField: UITextField!
@@ -152,7 +152,7 @@ extension NewPostViewController {
         self.fetcher.delegate = self
         
         // yelp fusion api
-        self.yelpClient = CDYelpAPIClient.init(apiKey: SavorData.yelpAPIKey)
+        self.yelpClient = CDYelpAPIClient.init(apiKey: SavorData.APIKey.yelp)
     }
     
     func isLocationAvailable() -> Bool {
@@ -209,16 +209,16 @@ extension NewPostViewController {
     }
     
     func refreshFoodNameField() {
-        if let foodName = self.foodName {
+        if let food = self.food {
             // write the food
-            let text = foodName.name
+            let text = food.name
             self.foodNameField.text = text
             // remain the last search history
         } else {
             // clean the text
             self.foodNameField.text = nil
             // clean the search history
-            self.foodNamePredictions.removeAll()
+            self.foodPredictions.removeAll()
         }
     }
     
@@ -235,7 +235,7 @@ extension NewPostViewController {
     private func isNewPostActionAvailable() -> Bool {
         guard self.isLocationAvailable()
             && self.business != nil
-            && self.foodName != nil
+            && self.food != nil
             && self.rating > 0.0
             && !self.descriptionText.isWhitespace
             && self.photos.count > 0 else {
@@ -268,6 +268,84 @@ extension NewPostViewController {
     
     @objc func postAction() {
         
+        let uid = SSUser.currentUser().uid
+        let foodID = self.food!.foodID
+        
+        // create restaurant if not exist
+        let restaurantID = self.business!.id! /* yelp business id equal to restaurant id in firestore */
+        SavorData.FireBase.restaurantsReference().document(restaurantID).setData(self.business!.firestoreDocument())
+        
+        // create post
+        let postRef = SavorData.FireBase.postsReference().document()
+        let postID = postRef.documentID
+        
+        // create resized photos
+        var fullDatas: [Data] = []
+        for photo in self.photos {
+            if let fullData = photo.scaled(toHeight: 640)?.compressedData() {
+                fullDatas.append(fullData)
+            }
+        }
+        
+        // upload photos
+        var indexedFullURLs: [(Int, String, String)] = []
+        
+        let dispatchGroup = DispatchGroup()
+        for (i, fullData) in fullDatas.enumerated() {
+            dispatchGroup.enter()
+            
+            let fullRef = SavorData.FireBase.postPictureFullStorageReference(of: uid, postID: postID, nth: i)
+            
+            let metadata = StorageMetadata()
+            metadata.contentType = "image/jpg"
+            
+            fullRef.putData(fullData, metadata: metadata) { (metaData, error) in
+                if let error = error {
+                    print(error)
+                    return
+                }
+                fullRef.downloadURL { (url, error) in
+                    if let error = error {
+                        print(error)
+                        return
+                    }
+                    if let url = url?.absoluteString {
+                        indexedFullURLs.append((i, url, fullRef.fullPath))
+                    }
+                    dispatchGroup.leave()
+                }
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            
+            // sort photo URLs
+            let sortedIndexedFullURLs = indexedFullURLs.sorted { (first, second) -> Bool in
+                return first.0 < second.0
+            }
+            
+            // create photo URLs
+            var fullURLs: [[String: String]] = []
+            for url in sortedIndexedFullURLs {
+                fullURLs.append(["full_url": url.1, "full_storage_uri": url.2])
+            }
+            
+            // set post data
+            let data = ["text": self.descriptionText,
+                        "rating": self.rating,
+                        "photos":fullURLs,
+                        "author": SSUser.currentUser().author(),
+                        "restaurant": self.business!.partialDocument(),
+                        "food": self.food!.partialDocument(),
+                        "timestamp": Timestamp.init()] as [String: Any]
+            
+            postRef.setData(data)
+            
+            // add people, feed, savored
+            SavorData.FireBase.peopleReference().document("\(uid)/posts/\(postID)")
+            SavorData.FireBase.feedReference().document("\(uid)/\(postID)")
+            SavorData.FireBase.savoredReference().document("\(restaurantID)/\(foodID)")
+        }
     }
     
     @objc func addPhotoAction() {
@@ -481,7 +559,7 @@ extension NewPostViewController: UITextFieldDelegate {
 
         case foodNameField:
             debounceHandler = {
-                SavorData.foodNamesReference().getDocuments(completion: self.didFoodNamesSearchComplete)
+                SavorData.FireBase.foodsReference().getDocuments(completion: self.didFoodSearchComplete)
             }
             
         default:
@@ -583,20 +661,20 @@ extension NewPostViewController {
     }
 }
 
-// MARK: - FoodName API Autocomplete
+// MARK: - Food API Autocomplete
 extension NewPostViewController {
-    func didFoodNamesSearchComplete(snapshot: QuerySnapshot?, error: Error?) {
+    func didFoodSearchComplete(snapshot: QuerySnapshot?, error: Error?) {
         if let documents = snapshot?.documents {
             
-            // retrieve food name predictions
-            var foodNamePredictions: [FoodName] = []
+            // retrieve food predictions
+            var foodPredictions: [SSFood] = []
             for document in documents {
-                let food = FoodName.init(from: document.data())
-                foodNamePredictions.append(food)
+                let food = SSFood.init(id: document.documentID, value: document.data())
+                foodPredictions.append(food)
             }
             
             // store predictions
-            self.foodNamePredictions = foodNamePredictions
+            self.foodPredictions = foodPredictions
             
             // resultscontroller reload
             if self.activeField == foodNameField
@@ -619,7 +697,7 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
         case restaurantNameField:
             return self.businessPredictions.count
         default:
-            return self.foodNamePredictions.count
+            return self.foodPredictions.count
         }
     }
     
@@ -653,9 +731,9 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
             
         default:
-            let cell = UITableViewCell.init(style: .default, reuseIdentifier: "foodNamePredictionsCell")
+            let cell = UITableViewCell.init(style: .default, reuseIdentifier: "foodPredictionsCell")
             
-            let prediction = self.foodNamePredictions[indexPath.row]
+            let prediction = self.foodPredictions[indexPath.row]
             
             cell.textLabel?.text = prediction.name
             
@@ -683,7 +761,7 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
                                 
                                 // clean under values
                                 self.business = nil
-                                self.foodName = nil
+                                self.food = nil
                                 
                                 self.restaurantAddressField.resignFirstResponder()
                                 self.dismissResultsControllerIfNeeded()
@@ -703,7 +781,7 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
                     
                     // clean under values
                     self.business = nil
-                    self.foodName = nil
+                    self.food = nil
                     
                     self.restaurantAddressField.resignFirstResponder()
                     self.dismissResultsControllerIfNeeded()
@@ -734,7 +812,7 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
                         
                         // clean under values
                         self.business = nil
-                        self.foodName = nil
+                        self.food = nil
                         
                         self.restaurantAddressField.resignFirstResponder()
                         self.dismissResultsControllerIfNeeded()
@@ -758,7 +836,7 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
             self.business = prediction
             
             // clean under values
-            self.foodName = nil
+            self.food = nil
             
             self.restaurantNameField.resignFirstResponder()
             self.dismissResultsControllerIfNeeded()
@@ -772,10 +850,10 @@ extension NewPostViewController: UITableViewDataSource, UITableViewDelegate {
             self.valueChanged()
             
         default:
-            let prediction = self.foodNamePredictions[indexPath.row]
+            let prediction = self.foodPredictions[indexPath.row]
             
-            // store food name
-            self.foodName = prediction
+            // store food
+            self.food = prediction
             
             self.foodNameField.resignFirstResponder()
             self.dismissResultsControllerIfNeeded()

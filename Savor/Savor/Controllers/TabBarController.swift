@@ -27,7 +27,7 @@ extension TabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         
         if viewController is NewPostPlaceHolderViewController {
-            if SavorData.isAuthenticated {
+            if SavorData.FireBase.isAuthenticated {
                 self.newPost()
             } else {
                 self.promptAuthentication()

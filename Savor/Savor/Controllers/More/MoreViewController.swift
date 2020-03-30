@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import FirebaseAuth
+import Firebase
 
 class MoreViewController: UITableViewController {
     
@@ -47,7 +47,7 @@ extension MoreViewController {
     
     func refreshView() {
         // bar button item
-        self.navigationItem.rightBarButtonItem = SavorData.isAuthenticated ? self.signOutBarButtonItem() : nil
+        self.navigationItem.rightBarButtonItem = SavorData.FireBase.isAuthenticated ? self.signOutBarButtonItem() : nil
         
         // table view
         self.tableView.reloadData()
@@ -84,11 +84,11 @@ extension MoreViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return SavorData.isAuthenticated ? 0 : 1
+            return SavorData.FireBase.isAuthenticated ? 0 : 1
         case 1:
-            return SavorData.isAuthenticated ? 0 : 1
+            return SavorData.FireBase.isAuthenticated ? 0 : 1
         default:
-            return SavorData.isAuthenticated ? 1 : 0
+            return SavorData.FireBase.isAuthenticated ? 1 : 0
         }
     }
     

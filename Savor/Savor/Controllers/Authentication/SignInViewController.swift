@@ -10,7 +10,7 @@
 import UIKit
 import IQKeyboardManagerSwift
 import SVProgressHUD
-import FirebaseAuth
+import Firebase
 import SwifterSwift
 
 enum ViewPresentationStyle {

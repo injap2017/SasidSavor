@@ -9,8 +9,7 @@
 import UIKit
 import IQKeyboardManagerSwift
 import SVProgressHUD
-import FirebaseAuth
-import FirebaseStorage
+import Firebase
 import SwifterSwift
 
 class CreateNewAccountViewController: UITableViewController {
