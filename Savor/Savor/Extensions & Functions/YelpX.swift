@@ -30,13 +30,13 @@ extension CDYelpBusiness {
         return detailAddress
     }
     
-    func firestoreDocument() -> [String: Any] {
+    func document() -> [String: Any] {
         return [
             "name": self.name ?? NSNull(),
             "display_phone": self.displayPhone ?? NSNull(),
             "url": self.url?.absoluteString ?? NSNull(),
-            "location": self.location?.firestoreDocument() ?? NSNull(),
-            "coordinates": self.coordinates?.firestoreDocument() ?? NSNull()
+            "location": self.location?.document() ?? NSNull(),
+            "coordinates": self.coordinates?.document() ?? NSNull()
         ]
     }
     
@@ -51,7 +51,7 @@ extension CDYelpBusiness {
 
 extension CDYelpLocation {
     
-    func firestoreDocument() -> [String: Any] {
+    func document() -> [String: Any] {
         
         return [
             "address_one": self.addressOne ?? NSNull(),
@@ -77,7 +77,7 @@ extension CDYelpLocation {
 
 extension CDYelpCoordinates {
     
-    func firestoreDocument() -> [String: Any] {
+    func document() -> [String: Any] {
         return [
             "latitude": self.latitude ?? NSNull(),
             "longitude": self.longitude ?? NSNull()

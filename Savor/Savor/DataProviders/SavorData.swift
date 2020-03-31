@@ -21,7 +21,7 @@ class SavorData {
     // MARK: - FireBase
     class FireBase {
         private static let storage = Storage.storage()
-        private static let firestore = Firestore.firestore()
+        private static let database = Database.database()
         
         // storage references
         class func profilePictureStorageReference(of uid: String) -> StorageReference {
@@ -33,29 +33,13 @@ class SavorData {
         }
         
         // firestore references
-        class func postsReference() -> CollectionReference {
-            return firestore.collection("posts")
-        }
-        
-        class func restaurantsReference() -> CollectionReference {
-            return firestore.collection("restaurants")
-        }
-        
-        class func foodsReference()  -> CollectionReference {
-            return firestore.collection("foods")
-        }
-        
-        class func peopleReference() -> CollectionReference {
-            return firestore.collection("people")
-        }
-        
-        class func feedReference() -> CollectionReference {
-            return firestore.collection("feed")
-        }
-        
-        class func savoredReference() -> CollectionReference {
-            return firestore.collection("savored")
-        }
+        static let rootReference = database.reference()
+        static let postsReference = database.reference(withPath: "posts")
+        static let restaurantsReference = database.reference(withPath: "restaurants")
+        static let foodsReference = database.reference(withPath: "foods")
+        static let feedReference = database.reference(withPath: "feed")
+        static let peopleReference = database.reference(withPath: "people")
+        static let savoredReference = database.reference(withPath: "savored")
         
         // Authentication
         class var isAuthenticated: Bool {

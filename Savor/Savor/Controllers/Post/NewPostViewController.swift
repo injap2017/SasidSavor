@@ -15,6 +15,7 @@ import IQKeyboardManagerSwift
 import Firebase
 import SwiftLocation
 import SnapKit
+import SVProgressHUD
 
 class NewPostViewController: UIViewController {
     
@@ -268,16 +269,18 @@ extension NewPostViewController {
     
     @objc func postAction() {
         
+        SVProgressHUD.show(withStatus: "Posting...")
+        
         let uid = SSUser.currentUser().uid
         let foodID = self.food!.foodID
         
         // create restaurant if not exist
         let restaurantID = self.business!.id! /* yelp business id equal to restaurant id in firestore */
-        SavorData.FireBase.restaurantsReference().document(restaurantID).setData(self.business!.firestoreDocument())
+        SavorData.FireBase.restaurantsReference.child(restaurantID).setValue(self.business!.document())
         
         // create post
-        let postRef = SavorData.FireBase.postsReference().document()
-        let postID = postRef.documentID
+        let postRef = SavorData.FireBase.postsReference.childByAutoId()
+        let postID = postRef.key!
         
         // create resized photos
         var fullDatas: [Data] = []
@@ -301,11 +304,13 @@ extension NewPostViewController {
             
             fullRef.putData(fullData, metadata: metadata) { (metaData, error) in
                 if let error = error {
+                    dispatchGroup.leave()
                     print(error)
                     return
                 }
                 fullRef.downloadURL { (url, error) in
                     if let error = error {
+                        dispatchGroup.leave()
                         print(error)
                         return
                     }
@@ -333,18 +338,20 @@ extension NewPostViewController {
             // set post data
             let data = ["text": self.descriptionText,
                         "rating": self.rating,
-                        "photos":fullURLs,
+                        "photos": fullURLs,
                         "author": SSUser.currentUser().author(),
                         "restaurant": self.business!.partialDocument(),
                         "food": self.food!.partialDocument(),
-                        "timestamp": Timestamp.init()] as [String: Any]
+                        "timestamp": ServerValue.timestamp()] as [String: Any]
             
-            postRef.setData(data)
+            postRef.setValue(data)
             
             // add people, feed, savored
-            SavorData.FireBase.peopleReference().document("\(uid)/posts/\(postID)")
-            SavorData.FireBase.feedReference().document("\(uid)/\(postID)")
-            SavorData.FireBase.savoredReference().document("\(restaurantID)/\(foodID)")
+            SavorData.FireBase.rootReference.updateChildValues(["people/\(uid)/posts/\(postID)": true,
+                                                                "feed/\(uid)/\(postID)": true,
+                                                                "savored/\(restaurantID)/\(foodID)": true])
+            
+            SVProgressHUD.dismiss()
         }
     }
     
@@ -559,7 +566,7 @@ extension NewPostViewController: UITextFieldDelegate {
 
         case foodNameField:
             debounceHandler = {
-                SavorData.FireBase.foodsReference().getDocuments(completion: self.didFoodSearchComplete)
+                SavorData.FireBase.foodsReference.observeSingleEvent(of: .value, with: self.didFoodSearchComplete)
             }
             
         default:
@@ -663,26 +670,24 @@ extension NewPostViewController {
 
 // MARK: - Food API Autocomplete
 extension NewPostViewController {
-    func didFoodSearchComplete(snapshot: QuerySnapshot?, error: Error?) {
-        if let documents = snapshot?.documents {
-            
-            // retrieve food predictions
-            var foodPredictions: [SSFood] = []
-            for document in documents {
-                let food = SSFood.init(id: document.documentID, value: document.data())
-                foodPredictions.append(food)
-            }
-            
-            // store predictions
-            self.foodPredictions = foodPredictions
-            
-            // resultscontroller reload
-            if self.activeField == foodNameField
-                && self.resultsController != nil {
-                self.resultsController?.reloadData()
-            } else {
-                print("other field activated")
-            }
+    func didFoodSearchComplete(snapshot: DataSnapshot) {
+        
+        // retrieve food predictions
+        var foodPredictions: [SSFood] = []
+        for snap in snapshot.children {
+            let food = SSFood.init(snapshot: snap as! DataSnapshot)
+            foodPredictions.append(food)
+        }
+        
+        // store predictions
+        self.foodPredictions = foodPredictions
+        
+        // resultscontroller reload
+        if self.activeField == foodNameField
+            && self.resultsController != nil {
+            self.resultsController?.reloadData()
+        } else {
+            print("other field activated")
         }
     }
 }
