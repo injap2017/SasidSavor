@@ -12,15 +12,20 @@ class SSFood {
     var foodID: String
     var name: String
     
-    init(snapshot: DataSnapshot) {
-        self.foodID = snapshot.key
-        let value = snapshot.value as! [String: Any]
-        self.name = value["name"] as? String ?? ""
-    }
-    
     init(id: String, value: [String: Any]) {
         self.foodID = id
         self.name = value["name"] as? String ?? ""
+    }
+    
+    convenience init(dictionary: [String: Any]) {
+        let foodID = dictionary["foodID"] as? String ?? ""
+        self.init(id: foodID, value: dictionary)
+    }
+    
+    convenience init(snapshot: DataSnapshot) {
+        let foodID = snapshot.key
+        let value = snapshot.value as! [String: Any]
+        self.init(id: foodID, value: value)
     }
     
     func partialDocument() -> [String: Any] {

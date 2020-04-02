@@ -19,6 +19,19 @@ class SSUser {
         self.profilePictureURL = user.photoURL
     }
     
+    init(id: String, value: [String: Any]) {
+        self.uid = id
+        self.fullname = value["full_name"] as? String ?? ""
+        if let profilePictureURLString = value["profile_picture"] as? String {
+            self.profilePictureURL = URL.init(string: profilePictureURLString)
+        }
+    }
+    
+    convenience init(dictionary: [String: Any]) {
+        let uid = dictionary["uid"] as? String ?? ""
+        self.init(id: uid, value: dictionary)
+    }
+    
     static func currentUser() -> SSUser {
         return SSUser(user: Auth.auth().currentUser!)
     }

@@ -21,7 +21,7 @@ class FeedViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     
     // MARK: - Properties
-    var feeds: [Feed] = FeedDataProvider().generateFakeFeeds()
+    var posts: [SSPost] = []
     var viewMode: FeedsViewMode = .list {
         didSet {
             var frontView: UIView
@@ -35,6 +35,8 @@ class FeedViewController: UIViewController {
             self.view.bringSubviewToFront(frontView)
         }
     }
+    
+    static let postsPerLoad: Int = 3
 }
 
 // MARK: - Lifecycle
@@ -44,6 +46,7 @@ extension FeedViewController {
         super.viewDidLoad()
         
         self.initView()
+        self.loadPosts()
     }
 }
 
@@ -58,6 +61,17 @@ extension FeedViewController {
     
     func configureFTPopOverMenu() {
         
+    }
+    
+    func refreshView() {
+        
+    }
+    
+    func loadPosts() {
+        APIs.Posts.getRecentPosts(start: posts.first?.timestamp, limit: 10) { (posts) in
+            self.posts = posts
+            self.tableView.reloadData()
+        }
     }
 }
 
@@ -84,15 +98,11 @@ extension FeedViewController {
 extension FeedViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.feeds.count
+        return self.posts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FeedCell.identifier, for: indexPath) as! FeedCell
-        
-        let feed = self.feeds[indexPath.row]
-        cell.feed = feed
-        
         return cell
     }
     
@@ -105,15 +115,11 @@ extension FeedViewController: UITableViewDataSource, UITableViewDelegate {
 extension FeedViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.feeds.count
+        return self.posts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item = collectionView.dequeueReusableCell(withReuseIdentifier: FeedItem.identifier, for: indexPath) as! FeedItem
-        
-        let feed = self.feeds[indexPath.row]
-        item.feed = feed
-        
         return item
     }
     

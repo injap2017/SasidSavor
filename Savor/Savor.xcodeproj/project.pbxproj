@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		4B0FBD04240CBC4400B74E7C /* SavorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0FBD03240CBC4400B74E7C /* SavorData.swift */; };
 		4B13E6F323A39632009EA167 /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B13E6F223A39632009EA167 /* FeedItem.swift */; };
+		4B227444243445A100EEA3CF /* PostsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B227443243445A100EEA3CF /* PostsAPI.swift */; };
+		4B227446243445BC00EEA3CF /* RestaurantsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B227445243445BC00EEA3CF /* RestaurantsAPI.swift */; };
+		4B2274482434A52A00EEA3CF /* SSPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2274472434A52A00EEA3CF /* SSPost.swift */; };
+		4B22744A2434AAD600EEA3CF /* SSRestaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2274492434AAD600EEA3CF /* SSRestaurant.swift */; };
+		4B22744C2434AB5700EEA3CF /* SSLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B22744B2434AB5700EEA3CF /* SSLocation.swift */; };
+		4B22744E2434AB6800EEA3CF /* SSCoordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B22744D2434AB6800EEA3CF /* SSCoordinates.swift */; };
 		4B28064123FE970C001E9736 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B28064023FE970C001E9736 /* GoogleService-Info.plist */; };
 		4B28064323FEB104001E9736 /* Authentication.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B28064223FEB104001E9736 /* Authentication.storyboard */; };
 		4B28064623FEB14D001E9736 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B28064523FEB14D001E9736 /* SignInViewController.swift */; };
@@ -21,6 +27,7 @@
 		4B2E9CFC239FF3E0008508CD /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E9CFB239FF3E0008508CD /* ActivityViewController.swift */; };
 		4B3381592428B63000ED6EB6 /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3381582428B63000ED6EB6 /* Debouncer.swift */; };
 		4B33815B2428D3C300ED6EB6 /* YelpX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B33815A2428D3C300ED6EB6 /* YelpX.swift */; };
+		4B3CE4522435952000BD5B14 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3CE4512435952000BD5B14 /* API.swift */; };
 		4B3F50DD23CF051900117E3F /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3F50DC23CF051900117E3F /* Post.swift */; };
 		4B497AB42431B3C800BCEF7C /* SSUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B497AB32431B3C800BCEF7C /* SSUser.swift */; };
 		4B497AB62432065000BCEF7C /* SSFood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B497AB52432065000BCEF7C /* SSFood.swift */; };
@@ -50,6 +57,12 @@
 		2FD3E36564360BFE55F494CB /* Pods_Savor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Savor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B0FBD03240CBC4400B74E7C /* SavorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavorData.swift; sourceTree = "<group>"; };
 		4B13E6F223A39632009EA167 /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
+		4B227443243445A100EEA3CF /* PostsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsAPI.swift; sourceTree = "<group>"; };
+		4B227445243445BC00EEA3CF /* RestaurantsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantsAPI.swift; sourceTree = "<group>"; };
+		4B2274472434A52A00EEA3CF /* SSPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSPost.swift; sourceTree = "<group>"; };
+		4B2274492434AAD600EEA3CF /* SSRestaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSRestaurant.swift; sourceTree = "<group>"; };
+		4B22744B2434AB5700EEA3CF /* SSLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLocation.swift; sourceTree = "<group>"; };
+		4B22744D2434AB6800EEA3CF /* SSCoordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSCoordinates.swift; sourceTree = "<group>"; };
 		4B28064023FE970C001E9736 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4B28064223FEB104001E9736 /* Authentication.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Authentication.storyboard; sourceTree = "<group>"; };
 		4B28064523FEB14D001E9736 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
@@ -62,6 +75,7 @@
 		4B2E9CFB239FF3E0008508CD /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
 		4B3381582428B63000ED6EB6 /* Debouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debouncer.swift; sourceTree = "<group>"; };
 		4B33815A2428D3C300ED6EB6 /* YelpX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YelpX.swift; sourceTree = "<group>"; };
+		4B3CE4512435952000BD5B14 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		4B3F50DC23CF051900117E3F /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		4B497AB32431B3C800BCEF7C /* SSUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSUser.swift; sourceTree = "<group>"; };
 		4B497AB52432065000BCEF7C /* SSFood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSFood.swift; sourceTree = "<group>"; };
@@ -106,6 +120,16 @@
 				2FD3E36564360BFE55F494CB /* Pods_Savor.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4B22744224342E3900EEA3CF /* API */ = {
+			isa = PBXGroup;
+			children = (
+				4B227443243445A100EEA3CF /* PostsAPI.swift */,
+				4B227445243445BC00EEA3CF /* RestaurantsAPI.swift */,
+				4B3CE4512435952000BD5B14 /* API.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 		4B28064423FEB114001E9736 /* Authentication */ = {
@@ -172,6 +196,10 @@
 			children = (
 				4B66DE3E23A235A400C0F147 /* Feed.swift */,
 				4B3F50DC23CF051900117E3F /* Post.swift */,
+				4B2274472434A52A00EEA3CF /* SSPost.swift */,
+				4B22744B2434AB5700EEA3CF /* SSLocation.swift */,
+				4B22744D2434AB6800EEA3CF /* SSCoordinates.swift */,
+				4B2274492434AAD600EEA3CF /* SSRestaurant.swift */,
 				4B497AB52432065000BCEF7C /* SSFood.swift */,
 				4B497AB32431B3C800BCEF7C /* SSUser.swift */,
 			);
@@ -231,6 +259,7 @@
 				4B9E1028239CC7C80045DBE2 /* AppDelegate.swift */,
 				4B9E1034239CC7CA0045DBE2 /* Info.plist */,
 				4B28064023FE970C001E9736 /* GoogleService-Info.plist */,
+				4B22744224342E3900EEA3CF /* API */,
 				4B66DE4023A241FB00C0F147 /* DataProviders */,
 				4B66DE3B23A1FACD00C0F147 /* Asset */,
 				4B66DE3A23A1FAAD00C0F147 /* Model */,
@@ -390,9 +419,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B227444243445A100EEA3CF /* PostsAPI.swift in Sources */,
 				4B28064623FEB14D001E9736 /* SignInViewController.swift in Sources */,
 				4B0FBD04240CBC4400B74E7C /* SavorData.swift in Sources */,
 				4B66DE3D23A1FB1100C0F147 /* FeedCell.swift in Sources */,
+				4B22744A2434AAD600EEA3CF /* SSRestaurant.swift in Sources */,
 				4B3F50DD23CF051900117E3F /* Post.swift in Sources */,
 				4BB52A3323FF92F9006647FF /* InputFieldCell.swift in Sources */,
 				4BB998BC23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift in Sources */,
@@ -403,17 +434,22 @@
 				4B3381592428B63000ED6EB6 /* Debouncer.swift in Sources */,
 				4B2E9CF8239FF3BB008508CD /* ExploreViewController.swift in Sources */,
 				4B29A6EE241738C7004D520E /* MoreViewController.swift in Sources */,
+				4B227446243445BC00EEA3CF /* RestaurantsAPI.swift in Sources */,
 				4B2E9CFC239FF3E0008508CD /* ActivityViewController.swift in Sources */,
 				4B2E9CF6239FF3A5008508CD /* FeedViewController.swift in Sources */,
 				4B28064823FEB171001E9736 /* CreateNewAccountViewController.swift in Sources */,
 				4B9E1029239CC7C80045DBE2 /* AppDelegate.swift in Sources */,
+				4B22744C2434AB5700EEA3CF /* SSLocation.swift in Sources */,
+				4B2274482434A52A00EEA3CF /* SSPost.swift in Sources */,
 				4BB8CE1523CF108300F40733 /* TabBarController.swift in Sources */,
 				4BB853E1241A46E3005CE009 /* AddPhotoItem.swift in Sources */,
+				4B22744E2434AB6800EEA3CF /* SSCoordinates.swift in Sources */,
 				4BB52A3723FF9B3C006647FF /* ActionCell.swift in Sources */,
 				4B497AB62432065000BCEF7C /* SSFood.swift in Sources */,
 				4B497AB42431B3C800BCEF7C /* SSUser.swift in Sources */,
 				4B13E6F323A39632009EA167 /* FeedItem.swift in Sources */,
 				4B29A6EB241738B8004D520E /* NewPostViewController.swift in Sources */,
+				4B3CE4522435952000BD5B14 /* API.swift in Sources */,
 				4BB853DD241A467F005CE009 /* PhotoItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
