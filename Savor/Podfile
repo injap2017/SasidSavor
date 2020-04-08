@@ -11,6 +11,7 @@ target 'Savor' do
   pod 'Cosmos'
   pod 'MagazineLayout'
   pod 'SDWebImage'
+  pod "ESPullToRefresh"
   
   pod 'DCKit'
   pod 'SVProgressHUD'
