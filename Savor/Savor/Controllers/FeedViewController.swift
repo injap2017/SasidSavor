@@ -8,8 +8,8 @@
 
 import UIKit
 import MagazineLayout
-import UIScrollView_InfiniteScroll
 import FTPopOverMenu_Swift
+import SVProgressHUD
 
 enum FeedsViewMode: Int {
     case list
@@ -23,21 +23,27 @@ class FeedViewController: UIViewController {
     @IBOutlet weak var squareCollectionView: UICollectionView!
     
     // MARK: - Properties
-    var posts: [Feed] = FeedDataProvider.init().generateFakeFeeds()
+    let listRefreshControl = UIRefreshControl()
+    let squareRefreshControl = UIRefreshControl()
+    
+    var posts: [SSPost] = []
     var viewMode: FeedsViewMode = .list {
         didSet {
-            var frontView: UIView
+            var frontView: UICollectionView
             switch viewMode {
             case .list:
                 frontView = listCollectionView
             default:
                 frontView = squareCollectionView
             }
+            
             self.view.bringSubviewToFront(frontView)
+            
+            frontView.reloadData()
         }
     }
     
-    static let postsPerLoad: Int = 3
+    static let postsPerLoad: UInt = 10
 }
 
 // MARK: - Lifecycle
@@ -47,7 +53,12 @@ extension FeedViewController {
         super.viewDidLoad()
         
         self.initView()
-//        self.loadPosts()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.initialLoadingAction()
     }
 }
 
@@ -59,50 +70,24 @@ extension FeedViewController {
         // uicollectionview
         self.listCollectionView.collectionViewLayout = MagazineLayout.init()
         self.listCollectionView.register(FeedListItem.nib, forCellWithReuseIdentifier: FeedListItem.identifier)
-        self.listCollectionView.addInfiniteScroll { (collectionView) in
-            
-        }
-        
-        let listRefreshControl = UIRefreshControl()
-        listRefreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.listCollectionView.refreshControl = listRefreshControl
+        listRefreshControl.addTarget(self, action: #selector(refreshControlAction), for: .valueChanged)
         
         self.squareCollectionView.collectionViewLayout = MagazineLayout.init()
         self.squareCollectionView.register(FeedSquareItem.nib, forCellWithReuseIdentifier: FeedSquareItem.identifier)
-        self.squareCollectionView.addInfiniteScroll { (collectionView) in
-            
-        }
-        
-        let squareRefreshControl = UIRefreshControl()
-        squareRefreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.squareCollectionView.refreshControl = squareRefreshControl
+        squareRefreshControl.addTarget(self, action: #selector(refreshControlAction), for: .valueChanged)
         
         // view mode popover
         self.configureFTPopOverMenu()
         
         // set view mode init list
-        self.viewMode = .list
+        self.viewMode = .square
     }
     
     func configureFTPopOverMenu() {
         
     }
-    
-    func refreshView() {
-        
-    }
-    
-    @objc func refresh() {
-//        posts.removeAll()
-//        loadPosts()
-    }
-/*
-    func loadPosts() {
-        APIs.Posts.getRecentPosts(start: posts.first?.timestamp, limit: 10) { (posts) in
-            self.posts = posts
-        }
-    }
-*/
 }
 
 // MARK: - Actions
@@ -122,6 +107,62 @@ extension FeedViewController {
             
         }
     }
+    
+    func initialLoadingAction() {
+        SVProgressHUD.show(withStatus: "Loading...")
+        APIs.Posts.getRecentPosts(start: nil, limit: FeedViewController.postsPerLoad) { (posts) in
+            SVProgressHUD.dismiss()
+            
+            self.posts = posts
+            
+            DispatchQueue.main.async {
+                
+                switch self.viewMode {
+                case .list:
+                    self.listCollectionView.reloadData()
+                case .square:
+                    self.squareCollectionView.reloadData()
+                }
+            }
+        }
+    }
+    
+    @objc func refreshControlAction(_ refreshControl: UIRefreshControl) {
+        SVProgressHUD.show(withStatus: "Loading...")
+        APIs.Posts.getRecentPosts(start: nil, limit: FeedViewController.postsPerLoad) { (posts) in
+            SVProgressHUD.dismiss()
+
+            self.posts = posts
+
+            DispatchQueue.main.async {
+
+                refreshControl.endRefreshing()
+
+                switch self.viewMode {
+                case .list:
+                    self.listCollectionView.reloadData()
+                case .square:
+                    self.squareCollectionView.reloadData()
+                }
+            }
+        }
+    }
+    
+    @objc func infiniteScrollAction(_ collectionView: UICollectionView) {
+        guard let lastPostTimestamp = self.posts.last?.timestamp else {
+            return
+        }
+        
+        APIs.Posts.getOldPosts(start: lastPostTimestamp, limit: FeedViewController.postsPerLoad) { (posts) in
+            
+            self.posts.append(contentsOf: posts)
+            
+            DispatchQueue.main.async {
+                
+                collectionView.reloadData()
+            }
+        }
+    }
 }
 
 // MARK: - UICollectionView
@@ -135,18 +176,26 @@ extension FeedViewController: UICollectionViewDataSource {
         switch collectionView {
         case listCollectionView:
             let item = collectionView.dequeueReusableCell(withReuseIdentifier: FeedListItem.identifier, for: indexPath) as! FeedListItem
-            let feed = self.posts[indexPath.row]
-            item.feed = feed
+            let post = self.posts[indexPath.row]
+            item.feed = post
             return item
         default:
             let item = collectionView.dequeueReusableCell(withReuseIdentifier: FeedSquareItem.identifier, for: indexPath) as! FeedSquareItem
-            let feed = self.posts[indexPath.row]
-            item.feed = feed
+            let post = self.posts[indexPath.row]
+            item.feed = post
             return item
+        }
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == self.posts.count - 1 {
+//            self.infiniteScrollAction(collectionView)
         }
     }
 }
 
+// MARK: - MagazineLayout
 extension FeedViewController: UICollectionViewDelegateMagazineLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeModeForItemAt indexPath: IndexPath) -> MagazineLayoutItemSizeMode {
         switch collectionView {

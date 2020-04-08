@@ -118,6 +118,9 @@ PODS:
   - ObjectMapper (3.5.1)
   - PMAlertController (3.5.0)
   - PromisesObjC (1.2.8)
+  - SDWebImage (5.7.0):
+    - SDWebImage/Core (= 5.7.0)
+  - SDWebImage/Core (5.7.0)
   - SnapKit (5.0.1)
   - SVProgressHUD (2.2.5)
   - SwifterSwift (5.1.0):
@@ -142,7 +145,6 @@ PODS:
   - SwifterSwift/SwiftStdlib (5.1.0)
   - SwifterSwift/UIKit (5.1.0)
   - SwiftLocation (4.2.0)
-  - UIScrollView-InfiniteScroll (1.1.0)
   - "UITextView+Placeholder (1.4.0)"
 
 DEPENDENCIES:
@@ -160,11 +162,11 @@ DEPENDENCIES:
   - GooglePlaces
   - IQKeyboardManagerSwift
   - MagazineLayout
+  - SDWebImage
   - SnapKit
   - SVProgressHUD
   - SwifterSwift
   - SwiftLocation
-  - UIScrollView-InfiniteScroll
   - "UITextView+Placeholder"
 
 SPEC REPOS:
@@ -200,11 +202,11 @@ SPEC REPOS:
     - ObjectMapper
     - PMAlertController
     - PromisesObjC
+    - SDWebImage
     - SnapKit
     - SVProgressHUD
     - SwifterSwift
     - SwiftLocation
-    - UIScrollView-InfiniteScroll
     - "UITextView+Placeholder"
 
 SPEC CHECKSUMS:
@@ -239,13 +241,13 @@ SPEC CHECKSUMS:
   ObjectMapper: 70187b8941977c62ccfb423caf6b50be405cabf0
   PMAlertController: 06dab8160066fc4ce991c880e3722cd403e2926a
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
+  SDWebImage: a99471f452bdfa0ca52ddf5b1adf2b61cab1d1eb
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwifterSwift: a9e8e144832638c2850b43da5feaf9598c6ad65b
   SwiftLocation: 609ac8859f2c5d48a6cadd2a58c63b1dae02dc25
-  UIScrollView-InfiniteScroll: 3ef456bcbe759c19f510a383cff96e6647c98c98
   "UITextView+Placeholder": d7b0c400921f66523f3a85d74f774512e14f6502
 
-PODFILE CHECKSUM: ce323649c992e3f87ca27b3b286967abda4c0bf3
+PODFILE CHECKSUM: ba9a0348200b0d748a22c81b008b7c9a9558f061
 
 COCOAPODS: 1.9.1

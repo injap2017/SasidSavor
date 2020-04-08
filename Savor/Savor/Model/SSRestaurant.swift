@@ -34,3 +34,14 @@ class SSRestaurant {
         self.init(id: restaurantID, value: dictionary)
     }
 }
+
+extension SSRestaurant {
+    
+    func address() -> String {
+        var address = name + "\n"
+        if let location = self.location {
+            address += location.city + ", " + location.state
+        }
+        return address
+    }
+}

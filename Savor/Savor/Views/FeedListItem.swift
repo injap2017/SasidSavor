@@ -9,6 +9,7 @@
 import UIKit
 import MagazineLayout
 import Cosmos
+import SDWebImage
 
 class FeedListItem: MagazineLayoutCollectionViewCell {
     
@@ -35,7 +36,7 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
     static let identifier = "FeedListItem"
     static let nib = UINib.init(nibName: "FeedListItem", bundle: nil)
     
-    var feed: Feed? {
+    var feed: SSPost? {
         didSet {
             postPhotoImageView.image = UIImage.init(named: "image-off-outline")
             
@@ -62,17 +63,24 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
             likeButton.setImage(UIImage.init(named: "heart-outline-gray"), for: .normal)
             
             if let feed = self.feed {
-                postPhotoImageView.image = UIImage.init(named: feed.post_photo)
                 
-                postTitleLabel.text = feed.post_title
-                postDescriptionLabel.text = feed.post_description
-                restaurantNameAddressLabel.text = feed.restaurant_name + "\n" + feed.restaurant_address
+                if let photos = feed.photos,
+                    let first = photos.first,
+                    let fullPath = first["full_url"],
+                    let fullURL = URL.init(string: fullPath) {
+                    postPhotoImageView.sd_setImage(with: fullURL)
+                }
                 
-                postScore.rating = feed.post_score // colour by score
-                userNameButton.setTitle(feed.user_name, for: .normal)
+                postTitleLabel.text = feed.food?.name
+                postDescriptionLabel.text = feed.text
+                restaurantNameAddressLabel.text = feed.restaurant?.address()
                 
-                postDateLabel.text = "Mon" // date format
+                postScore.rating = feed.rating // colour by score
+                userNameButton.setTitle(feed.author?.fullname, for: .normal)
                 
+                let timestampDate = Date(timeIntervalSince1970: feed.timestamp)
+                postDateLabel.text = SavorData.Accessories.timestampText(timestampDate)
+/*
                 if feed.comments_count > 0 {
                     commentsImageView.isHidden = false
                     
@@ -95,6 +103,7 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
                     likeButton.setImage(UIImage.init(named: "heart-red"), for: .normal)
                     likesImageView.image = UIImage.init(named: "heart-red")
                 }
+ */
             }
         }
     }

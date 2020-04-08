@@ -8,6 +8,7 @@
 
 import UIKit
 import MagazineLayout
+import SDWebImage
 
 class FeedSquareItem: MagazineLayoutCollectionViewCell {
     
@@ -18,12 +19,18 @@ class FeedSquareItem: MagazineLayoutCollectionViewCell {
     static let identifier = "FeedSquareItem"
     static let nib = UINib.init(nibName: "FeedSquareItem", bundle: nil)
     
-    var feed: Feed? {
+    var feed: SSPost? {
         didSet {
             postPhotoImageView.image = UIImage.init(named: "image-off-outline")
             
             if let feed = self.feed {
-                postPhotoImageView.image = UIImage.init(named: feed.post_photo)
+                
+                if let photos = feed.photos,
+                    let first = photos.first,
+                    let fullPath = first["full_url"],
+                    let fullURL = URL.init(string: fullPath) {
+                    postPhotoImageView.sd_setImage(with: fullURL)
+                }
             }
         }
     }

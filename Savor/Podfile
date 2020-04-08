@@ -10,7 +10,7 @@ target 'Savor' do
   pod 'UITextView+Placeholder'
   pod 'Cosmos'
   pod 'MagazineLayout'
-  pod 'UIScrollView-InfiniteScroll'
+  pod 'SDWebImage'
   
   pod 'DCKit'
   pod 'SVProgressHUD'
