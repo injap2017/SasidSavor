@@ -7,31 +7,32 @@
 //
 
 import UIKit
+import MagazineLayout
+import UIScrollView_InfiniteScroll
 import FTPopOverMenu_Swift
 
 enum FeedsViewMode: Int {
     case list
-    case gallery
+    case square
 }
 
 class FeedViewController: UIViewController {
 
     // MARK: - IBOutlets
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var listCollectionView: UICollectionView!
+    @IBOutlet weak var squareCollectionView: UICollectionView!
     
     // MARK: - Properties
-    var posts: [SSPost] = []
+    var posts: [Feed] = FeedDataProvider.init().generateFakeFeeds()
     var viewMode: FeedsViewMode = .list {
         didSet {
             var frontView: UIView
-            switch self.viewMode {
+            switch viewMode {
             case .list:
-                frontView = self.tableView
+                frontView = listCollectionView
             default:
-                frontView = self.collectionView
+                frontView = squareCollectionView
             }
-            
             self.view.bringSubviewToFront(frontView)
         }
     }
@@ -46,7 +47,7 @@ extension FeedViewController {
         super.viewDidLoad()
         
         self.initView()
-        self.loadPosts()
+//        self.loadPosts()
     }
 }
 
@@ -55,7 +56,31 @@ extension FeedViewController {
     
     func initView() {
         
+        // uicollectionview
+        self.listCollectionView.collectionViewLayout = MagazineLayout.init()
+        self.listCollectionView.register(FeedListItem.nib, forCellWithReuseIdentifier: FeedListItem.identifier)
+        self.listCollectionView.addInfiniteScroll { (collectionView) in
+            
+        }
+        
+        let listRefreshControl = UIRefreshControl()
+        listRefreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.listCollectionView.refreshControl = listRefreshControl
+        
+        self.squareCollectionView.collectionViewLayout = MagazineLayout.init()
+        self.squareCollectionView.register(FeedSquareItem.nib, forCellWithReuseIdentifier: FeedSquareItem.identifier)
+        self.squareCollectionView.addInfiniteScroll { (collectionView) in
+            
+        }
+        
+        let squareRefreshControl = UIRefreshControl()
+        squareRefreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.squareCollectionView.refreshControl = squareRefreshControl
+        
+        // view mode popover
         self.configureFTPopOverMenu()
+        
+        // set view mode init list
         self.viewMode = .list
     }
     
@@ -67,12 +92,17 @@ extension FeedViewController {
         
     }
     
+    @objc func refresh() {
+//        posts.removeAll()
+//        loadPosts()
+    }
+/*
     func loadPosts() {
         APIs.Posts.getRecentPosts(start: posts.first?.timestamp, limit: 10) { (posts) in
             self.posts = posts
-            self.tableView.reloadData()
         }
     }
+*/
 }
 
 // MARK: - Actions
@@ -85,7 +115,7 @@ extension FeedViewController {
             case FeedsViewMode.list.rawValue:
                 self.viewMode = .list
             default:
-                self.viewMode = .gallery
+                self.viewMode = .square
             }
             
         }) {
@@ -94,48 +124,78 @@ extension FeedViewController {
     }
 }
 
-// MARK: - UITableView
-extension FeedViewController: UITableViewDataSource, UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.posts.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: FeedCell.identifier, for: indexPath) as! FeedCell
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 143
-    }
-}
-
 // MARK: - UICollectionView
-extension FeedViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension FeedViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.posts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let item = collectionView.dequeueReusableCell(withReuseIdentifier: FeedItem.identifier, for: indexPath) as! FeedItem
-        return item
+        switch collectionView {
+        case listCollectionView:
+            let item = collectionView.dequeueReusableCell(withReuseIdentifier: FeedListItem.identifier, for: indexPath) as! FeedListItem
+            let feed = self.posts[indexPath.row]
+            item.feed = feed
+            return item
+        default:
+            let item = collectionView.dequeueReusableCell(withReuseIdentifier: FeedSquareItem.identifier, for: indexPath) as! FeedSquareItem
+            let feed = self.posts[indexPath.row]
+            item.feed = feed
+            return item
+        }
+    }
+}
+
+extension FeedViewController: UICollectionViewDelegateMagazineLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeModeForItemAt indexPath: IndexPath) -> MagazineLayoutItemSizeMode {
+        switch collectionView {
+        case listCollectionView:
+            let widthMode = MagazineLayoutItemWidthMode.fullWidth(respectsHorizontalInsets: true)
+            let heightMode = MagazineLayoutItemHeightMode.static(height: 135)
+            return MagazineLayoutItemSizeMode(widthMode: widthMode, heightMode: heightMode)
+        default:
+            let widthMode = MagazineLayoutItemWidthMode.thirdWidth
+            let heightMode = MagazineLayoutItemHeightMode.dynamic
+            return MagazineLayoutItemSizeMode(widthMode: widthMode, heightMode: heightMode)
+        }
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let layout = collectionViewLayout as! UICollectionViewFlowLayout
-        let leftInset = layout.sectionInset.left
-        let rightInset = layout.sectionInset.right
-        let cellSpace = layout.minimumInteritemSpacing
-        let collectionViewSize = collectionView.bounds.size
-        
-        let columnSize = CGFloat(3)
-        
-        let width = (collectionViewSize.width - leftInset - rightInset - (columnSize - 1) * cellSpace) / columnSize
-        let height = width
-        
-        return CGSize.init(width: width, height: height)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, visibilityModeForHeaderInSectionAtIndex index: Int) -> MagazineLayoutHeaderVisibilityMode {
+        return .hidden
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, visibilityModeForFooterInSectionAtIndex index: Int) -> MagazineLayoutFooterVisibilityMode {
+        return .hidden
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, visibilityModeForBackgroundInSectionAtIndex index: Int) -> MagazineLayoutBackgroundVisibilityMode {
+        return .hidden
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, horizontalSpacingForItemsInSectionAtIndex index: Int) -> CGFloat {
+        switch collectionView {
+        case listCollectionView:
+            return 0
+        default:
+            return 2
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, verticalSpacingForElementsInSectionAtIndex index: Int) -> CGFloat {
+        switch collectionView {
+        case listCollectionView:
+            return 0
+        default:
+            return 2
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetsForSectionAtIndex index: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetsForItemsInSectionAtIndex index: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 }

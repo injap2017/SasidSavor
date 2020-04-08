@@ -9,6 +9,8 @@ target 'Savor' do
   pod 'FTPopOverMenu_Swift'
   pod 'UITextView+Placeholder'
   pod 'Cosmos'
+  pod 'MagazineLayout'
+  pod 'UIScrollView-InfiniteScroll'
   
   pod 'DCKit'
   pod 'SVProgressHUD'

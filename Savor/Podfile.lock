@@ -109,6 +109,7 @@ PODS:
   - GTMSessionFetcher/Core (1.3.1)
   - IQKeyboardManagerSwift (6.5.5)
   - leveldb-library (1.22)
+  - MagazineLayout (1.5.5)
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
     - nanopb/encode (= 0.3.9011)
@@ -141,6 +142,7 @@ PODS:
   - SwifterSwift/SwiftStdlib (5.1.0)
   - SwifterSwift/UIKit (5.1.0)
   - SwiftLocation (4.2.0)
+  - UIScrollView-InfiniteScroll (1.1.0)
   - "UITextView+Placeholder (1.4.0)"
 
 DEPENDENCIES:
@@ -157,10 +159,12 @@ DEPENDENCIES:
   - FTPopOverMenu_Swift
   - GooglePlaces
   - IQKeyboardManagerSwift
+  - MagazineLayout
   - SnapKit
   - SVProgressHUD
   - SwifterSwift
   - SwiftLocation
+  - UIScrollView-InfiniteScroll
   - "UITextView+Placeholder"
 
 SPEC REPOS:
@@ -191,6 +195,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - IQKeyboardManagerSwift
     - leveldb-library
+    - MagazineLayout
     - nanopb
     - ObjectMapper
     - PMAlertController
@@ -199,6 +204,7 @@ SPEC REPOS:
     - SVProgressHUD
     - SwifterSwift
     - SwiftLocation
+    - UIScrollView-InfiniteScroll
     - "UITextView+Placeholder"
 
 SPEC CHECKSUMS:
@@ -228,6 +234,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
   IQKeyboardManagerSwift: 0fb93310284665245591f50f7a5e38de615960b7
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
+  MagazineLayout: 343e50e92513a892e92fb07ace34826552704e48
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   ObjectMapper: 70187b8941977c62ccfb423caf6b50be405cabf0
   PMAlertController: 06dab8160066fc4ce991c880e3722cd403e2926a
@@ -236,8 +243,9 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwifterSwift: a9e8e144832638c2850b43da5feaf9598c6ad65b
   SwiftLocation: 609ac8859f2c5d48a6cadd2a58c63b1dae02dc25
+  UIScrollView-InfiniteScroll: 3ef456bcbe759c19f510a383cff96e6647c98c98
   "UITextView+Placeholder": d7b0c400921f66523f3a85d74f774512e14f6502
 
-PODFILE CHECKSUM: fb241d3cebbcca53da7a33bee3f57fe39a09b8da
+PODFILE CHECKSUM: ce323649c992e3f87ca27b3b286967abda4c0bf3
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1

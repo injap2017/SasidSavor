@@ -39,6 +39,10 @@
 		4B9E102E239CC7C80045DBE2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B9E102C239CC7C80045DBE2 /* Main.storyboard */; };
 		4B9E1030239CC7CA0045DBE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B9E102F239CC7CA0045DBE2 /* Assets.xcassets */; };
 		4B9E1033239CC7CA0045DBE2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B9E1031239CC7CA0045DBE2 /* LaunchScreen.storyboard */; };
+		4BB525E7243AC263002FF221 /* FeedListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB525E5243AC263002FF221 /* FeedListItem.swift */; };
+		4BB525E8243AC263002FF221 /* FeedListItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BB525E6243AC263002FF221 /* FeedListItem.xib */; };
+		4BB525EB243AC2B2002FF221 /* FeedSquareItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB525E9243AC2B2002FF221 /* FeedSquareItem.swift */; };
+		4BB525EC243AC2B2002FF221 /* FeedSquareItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BB525EA243AC2B2002FF221 /* FeedSquareItem.xib */; };
 		4BB52A3323FF92F9006647FF /* InputFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB52A3123FF92F9006647FF /* InputFieldCell.swift */; };
 		4BB52A3423FF92F9006647FF /* InputFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BB52A3223FF92F9006647FF /* InputFieldCell.xib */; };
 		4BB52A3723FF9B3C006647FF /* ActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB52A3523FF9B3C006647FF /* ActionCell.swift */; };
@@ -89,6 +93,10 @@
 		4B9E102F239CC7CA0045DBE2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4B9E1032239CC7CA0045DBE2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4B9E1034239CC7CA0045DBE2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4BB525E5243AC263002FF221 /* FeedListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListItem.swift; sourceTree = "<group>"; };
+		4BB525E6243AC263002FF221 /* FeedListItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedListItem.xib; sourceTree = "<group>"; };
+		4BB525E9243AC2B2002FF221 /* FeedSquareItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSquareItem.swift; sourceTree = "<group>"; };
+		4BB525EA243AC2B2002FF221 /* FeedSquareItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedSquareItem.xib; sourceTree = "<group>"; };
 		4BB52A3123FF92F9006647FF /* InputFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldCell.swift; sourceTree = "<group>"; };
 		4BB52A3223FF92F9006647FF /* InputFieldCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InputFieldCell.xib; sourceTree = "<group>"; };
 		4BB52A3523FF9B3C006647FF /* ActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCell.swift; sourceTree = "<group>"; };
@@ -173,6 +181,10 @@
 				4BB853DC241A467F005CE009 /* PhotoItem.xib */,
 				4BB853DF241A46E3005CE009 /* AddPhotoItem.swift */,
 				4BB853E0241A46E3005CE009 /* AddPhotoItem.xib */,
+				4BB525E5243AC263002FF221 /* FeedListItem.swift */,
+				4BB525E6243AC263002FF221 /* FeedListItem.xib */,
+				4BB525E9243AC2B2002FF221 /* FeedSquareItem.swift */,
+				4BB525EA243AC2B2002FF221 /* FeedSquareItem.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -340,8 +352,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BB525E8243AC263002FF221 /* FeedListItem.xib in Resources */,
 				4B9E1033239CC7CA0045DBE2 /* LaunchScreen.storyboard in Resources */,
 				4B29A6F0241739E8004D520E /* NewPost.storyboard in Resources */,
+				4BB525EC243AC2B2002FF221 /* FeedSquareItem.xib in Resources */,
 				4B28064123FE970C001E9736 /* GoogleService-Info.plist in Resources */,
 				4BB52A3823FF9B3C006647FF /* ActionCell.xib in Resources */,
 				4B9E1030239CC7CA0045DBE2 /* Assets.xcassets in Resources */,
@@ -427,8 +441,10 @@
 				4B3F50DD23CF051900117E3F /* Post.swift in Sources */,
 				4BB52A3323FF92F9006647FF /* InputFieldCell.swift in Sources */,
 				4BB998BC23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift in Sources */,
+				4BB525E7243AC263002FF221 /* FeedListItem.swift in Sources */,
 				4B33815B2428D3C300ED6EB6 /* YelpX.swift in Sources */,
 				4B66DE4223A2424A00C0F147 /* FeedDataProvider.swift in Sources */,
+				4BB525EB243AC2B2002FF221 /* FeedSquareItem.swift in Sources */,
 				4B66DE3F23A235A400C0F147 /* Feed.swift in Sources */,
 				4B68E57F2421CDDA00BA0932 /* UITextViewX.swift in Sources */,
 				4B3381592428B63000ED6EB6 /* Debouncer.swift in Sources */,
