@@ -78,7 +78,7 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
                 postScore.rating = feed.rating // colour by score
                 userNameButton.setTitle(feed.author?.fullname, for: .normal)
                 
-                let timestampDate = Date(timeIntervalSince1970: feed.timestamp)
+                let timestampDate = Date(timeIntervalSince1970: feed.timestamp/1000)
                 postDateLabel.text = SavorData.Accessories.timestampText(timestampDate)
 /*
                 if feed.comments_count > 0 {
