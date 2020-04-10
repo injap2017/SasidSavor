@@ -68,9 +68,6 @@ class SavorData {
     
     // MARK: - Accessories
     class Accessories {
-        
-        static var needsToDisplayNewPost = false
-        
         class func timestampText(_ timestamp: Date) -> String {
             let now = Date()
             let components = Set<Calendar.Component>([.second, .minute, .hour, .day, .weekOfMonth])

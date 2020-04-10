@@ -62,6 +62,8 @@ class NewPostViewController: UIViewController {
     
     let currentlocationAttributedText = NSAttributedString.init(string: "Current Location",
                                                                               attributes: [.foregroundColor: UIColor.systemBlue])
+    
+    static let postNotification = "postNotification"
 }
 
 // MARK: - Lifecycle

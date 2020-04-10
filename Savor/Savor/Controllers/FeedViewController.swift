@@ -44,6 +44,10 @@ class FeedViewController: UIViewController {
     fileprivate var isLoadingPosts: Bool = false
     
     static let postsPerLoad: UInt = 20
+    
+    deinit {
+        self.removeNotificationListeners()
+    }
 }
 
 // MARK: - Lifecycle
@@ -54,19 +58,9 @@ extension FeedViewController {
         
         self.initView()
         
-        self.pullToRefreshAction()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        self.listenNotifications()
         
-        // if needs to display new post
-        if SavorData.Accessories.needsToDisplayNewPost {
-            // reload
-            self.pullToRefreshAction()
-            // set false
-            SavorData.Accessories.needsToDisplayNewPost = false
-        }
+        self.pullToRefreshAction()
     }
 }
 
@@ -96,6 +90,14 @@ extension FeedViewController {
     func configureFTPopOverMenu() {
         
     }
+    
+    func listenNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(postNotificationHandler), name: Notification.Name.init(NewPostViewController.postNotification), object: nil)
+    }
+    
+    func removeNotificationListeners() {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
 // MARK: - Actions
@@ -119,6 +121,11 @@ extension FeedViewController {
         }) {
             
         }
+    }
+    
+    @objc func postNotificationHandler() {
+        // reload
+        self.pullToRefreshAction()
     }
     
     @objc func pullToRefreshAction() {
@@ -147,33 +154,6 @@ extension FeedViewController {
                 print("pull loading false")
                 self.isLoadingPosts = false
                 SVProgressHUD.dismiss()
-            }
-        }
-    }
-    
-    func newPostAddedHandler(_ post: SSPost) {
-        
-        self.posts.insert(post, at: 0)
-        
-        DispatchQueue.main.async {
-            
-            switch self.viewMode {
-            case .list:
-                self.listCollectionView.performBatchUpdates({
-                    let indexPath = IndexPath.init(row: 0, section: 0)
-                    self.listCollectionView.insertItems(at: [indexPath])
-                    
-                }) { (finished) in
-                    
-                }
-            case .square:
-                self.squareCollectionView.performBatchUpdates({
-                    let indexPath = IndexPath.init(row: 0, section: 0)
-                    self.listCollectionView.insertItems(at: [indexPath])
-                    
-                }) { (finished) in
-                    
-                }
             }
         }
     }
