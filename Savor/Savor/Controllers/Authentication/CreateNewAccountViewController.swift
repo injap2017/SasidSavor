@@ -334,7 +334,7 @@ extension CreateNewAccountViewController: UITextFieldDelegate {
             && !self.password.isEmpty
             && !self.confirm.isEmpty
             && !self.email.isWhitespace
-            && self.photo != nil else {
+            /*&& self.photo != nil*/ else {
                 return false
         }
         
@@ -347,6 +347,43 @@ extension CreateNewAccountViewController: UITextFieldDelegate {
 
 // MARK: - Server API Calls
 extension CreateNewAccountViewController {
+    
+    func uploadData(_ data: Data, and metaData: StorageMetadata? = nil, to reference: StorageReference,
+                    completion: @escaping (_ url: URL?, _ error: Error?) -> Void) {
+        // put data to storage
+        reference.putData(data, metadata: metaData) { (metaData, error) in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+            
+            // get download URL
+            reference.downloadURL { (url, error) in
+                if let error = error {
+                    completion(nil, error)
+                    return
+                }
+                
+                completion(url, nil)
+            }
+        }
+    }
+    
+    func requestProfileChangeOf(user: User, displayName: String, photoURL: URL?,
+                              completion: @escaping (_ error: Error?) -> Void) {
+        // request profile change
+        let request = user.createProfileChangeRequest()
+        request.displayName = displayName
+        request.photoURL = photoURL
+        request.commitChanges { (error) in
+            if let error = error {
+                completion(error)
+                return
+            }
+            
+            completion(nil)
+        }
+    }
     
     func createNewAccount() {
         
@@ -371,40 +408,47 @@ extension CreateNewAccountViewController {
                 // upload profile picture
                 if let photo = strongSelf.photo, let data = photo.jpegData(compressionQuality: 0.5) {
                     let reference = Storage.storage().reference().child("profilePictures").child("\(user.uid).png")
-                    reference.putData(data, metadata: nil) { (metaData, error) in
-                        
+                    
+                    strongSelf.uploadData(data, to: reference) { (url, error) in
                         if let error = error {
                             print(error)
                             SVProgressHUD.showError(withStatus: error.localizedDescription)
                             return
                         }
                         
-                        // get download URL
-                        reference.downloadURL { (url, error) in
-                            guard let photoURL = url else {
+                        strongSelf.requestProfileChangeOf(user: user, displayName: strongSelf.userName, photoURL: url) { (error) in
+                            if let error = error {
+                                print(error)
+                                SVProgressHUD.showError(withStatus: error.localizedDescription)
                                 return
                             }
                             
-                            // request profile change
-                            let request = user.createProfileChangeRequest()
-                            request.displayName = strongSelf.userName
-                            request.photoURL = photoURL
-                            request.commitChanges { (error) in
-                                
-                                if let error = error {
-                                    print(error)
-                                    SVProgressHUD.showError(withStatus: error.localizedDescription)
-                                    return
-                                }
+                            DispatchQueue.main.async {
                                 
                                 SVProgressHUD.dismiss()
                                 
                                 strongSelf.cancelAction()
                                 
-                                DispatchQueue.main.async {
-                                    strongSelf.completion?()
-                                }
+                                strongSelf.completion?()
                             }
+                        }
+                    }
+                }
+                else {
+                    strongSelf.requestProfileChangeOf(user: user, displayName: strongSelf.userName, photoURL: nil) { (error) in
+                        if let error = error {
+                            print(error)
+                            SVProgressHUD.showError(withStatus: error.localizedDescription)
+                            return
+                        }
+                        
+                        DispatchQueue.main.async {
+                            
+                            SVProgressHUD.dismiss()
+                            
+                            strongSelf.cancelAction()
+                            
+                            strongSelf.completion?()
                         }
                     }
                 }

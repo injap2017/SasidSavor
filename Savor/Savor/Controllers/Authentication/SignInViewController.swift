@@ -250,11 +250,12 @@ extension SignInViewController {
                 return
             }
             
-            SVProgressHUD.dismiss()
-            
-            strongSelf.cancelAction()
-            
             DispatchQueue.main.async {
+                
+                SVProgressHUD.dismiss()
+                
+                strongSelf.cancelAction()
+                
                 strongSelf.completion?()
             }
         }
