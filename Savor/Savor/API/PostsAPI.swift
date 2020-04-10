@@ -72,4 +72,10 @@ class PostsAPI {
             }
         })
     }
+    
+    func listenNewPostAdded(with block: @escaping (SSPost) -> Void) {
+        postsReference.observe(.childAdded) { (snapshot) in
+            block(SSPost.init(snapshot: snapshot))
+        }
+    }
 }

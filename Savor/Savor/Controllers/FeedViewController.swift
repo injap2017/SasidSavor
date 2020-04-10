@@ -59,6 +59,7 @@ extension FeedViewController {
         super.viewDidAppear(animated)
         
         self.pullToRefreshAction()
+        APIs.Posts.listenNewPostAdded(with: newPostAddedHandler)
     }
 }
 
@@ -139,6 +140,33 @@ extension FeedViewController {
                 print("pull loading false")
                 self.isLoadingPosts = false
                 SVProgressHUD.dismiss()
+            }
+        }
+    }
+    
+    func newPostAddedHandler(_ post: SSPost) {
+        
+        self.posts.insert(post, at: 0)
+        
+        DispatchQueue.main.async {
+            
+            switch self.viewMode {
+            case .list:
+                self.listCollectionView.performBatchUpdates({
+                    let indexPath = IndexPath.init(row: 0, section: 0)
+                    self.listCollectionView.insertItems(at: [indexPath])
+                    
+                }) { (finished) in
+                    
+                }
+            case .square:
+                self.squareCollectionView.performBatchUpdates({
+                    let indexPath = IndexPath.init(row: 0, section: 0)
+                    self.listCollectionView.insertItems(at: [indexPath])
+                    
+                }) { (finished) in
+                    
+                }
             }
         }
     }

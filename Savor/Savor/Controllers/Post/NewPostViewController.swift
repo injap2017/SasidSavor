@@ -352,6 +352,12 @@ extension NewPostViewController {
                                                                 "savored/\(restaurantID)/\(foodID)": true])
             
             SVProgressHUD.dismiss()
+            
+            self.cancelAction()
+            
+            DispatchQueue.main.async {
+                self.completion?()
+            }
         }
     }
     
