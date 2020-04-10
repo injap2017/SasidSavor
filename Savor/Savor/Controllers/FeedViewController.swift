@@ -53,13 +53,20 @@ extension FeedViewController {
         super.viewDidLoad()
         
         self.initView()
+        
+        self.pullToRefreshAction()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.pullToRefreshAction()
-        APIs.Posts.listenNewPostAdded(with: newPostAddedHandler)
+        // if needs to display new post
+        if SavorData.Accessories.needsToDisplayNewPost {
+            // reload
+            self.pullToRefreshAction()
+            // set false
+            SavorData.Accessories.needsToDisplayNewPost = false
+        }
     }
 }
 
@@ -83,7 +90,7 @@ extension FeedViewController {
         self.configureFTPopOverMenu()
         
         // set view mode init list
-        self.viewMode = .square
+        self.viewMode = .list
     }
     
     func configureFTPopOverMenu() {

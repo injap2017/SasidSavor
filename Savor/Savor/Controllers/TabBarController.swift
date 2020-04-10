@@ -68,7 +68,8 @@ extension TabBarController {
     
     func newPost() {
         let viewController = NewPostViewController.instanceOnNavigationController {
-            
+            // indicates feedview needs to display new post
+            SavorData.Accessories.needsToDisplayNewPost = true
         }
         self.present(viewController, animated: true, completion: nil)
     }
