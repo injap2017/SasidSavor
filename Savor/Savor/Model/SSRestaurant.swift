@@ -6,7 +6,7 @@
 //  Copyright © 2020 Edgar Sia. All rights reserved.
 //
 
-import Foundation
+import Firebase
 
 class SSRestaurant {
     var restaurantID: String
@@ -32,6 +32,12 @@ class SSRestaurant {
     convenience init(dictionary: [String: Any]) {
         let restaurantID = dictionary["restaurantID"] as? String ?? ""
         self.init(id: restaurantID, value: dictionary)
+    }
+    
+    convenience init(snapshot: DataSnapshot) {
+        let restaurantID = snapshot.key
+        let value = snapshot.value as! [String: Any]
+        self.init(id: restaurantID, value: value)
     }
 }
 

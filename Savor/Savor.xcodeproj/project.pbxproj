@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		4B0FBD04240CBC4400B74E7C /* SavorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0FBD03240CBC4400B74E7C /* SavorData.swift */; };
+		4B1B674224486B7600145C73 /* FeedDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1B674124486B7600145C73 /* FeedDetailViewController.swift */; };
+		4B1B674424486B9400145C73 /* RestaurantDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1B674324486B9400145C73 /* RestaurantDetailViewController.swift */; };
+		4B1B674624486BAC00145C73 /* Detail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B1B674524486BAC00145C73 /* Detail.storyboard */; };
 		4B227444243445A100EEA3CF /* PostsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B227443243445A100EEA3CF /* PostsAPI.swift */; };
 		4B227446243445BC00EEA3CF /* RestaurantsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B227445243445BC00EEA3CF /* RestaurantsAPI.swift */; };
 		4B2274482434A52A00EEA3CF /* SSPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2274472434A52A00EEA3CF /* SSPost.swift */; };
@@ -55,6 +58,9 @@
 		1E0E2D47601FECCD72B3FE94 /* Pods-Savor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Savor.debug.xcconfig"; path = "Target Support Files/Pods-Savor/Pods-Savor.debug.xcconfig"; sourceTree = "<group>"; };
 		2FD3E36564360BFE55F494CB /* Pods_Savor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Savor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B0FBD03240CBC4400B74E7C /* SavorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavorData.swift; sourceTree = "<group>"; };
+		4B1B674124486B7600145C73 /* FeedDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailViewController.swift; sourceTree = "<group>"; };
+		4B1B674324486B9400145C73 /* RestaurantDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantDetailViewController.swift; sourceTree = "<group>"; };
+		4B1B674524486BAC00145C73 /* Detail.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Detail.storyboard; sourceTree = "<group>"; };
 		4B227443243445A100EEA3CF /* PostsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsAPI.swift; sourceTree = "<group>"; };
 		4B227445243445BC00EEA3CF /* RestaurantsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantsAPI.swift; sourceTree = "<group>"; };
 		4B2274472434A52A00EEA3CF /* SSPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSPost.swift; sourceTree = "<group>"; };
@@ -120,6 +126,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4B1B67402448637800145C73 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				4B1B674524486BAC00145C73 /* Detail.storyboard */,
+				4B1B674124486B7600145C73 /* FeedDetailViewController.swift */,
+				4B1B674324486B9400145C73 /* RestaurantDetailViewController.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
 		4B22744224342E3900EEA3CF /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -180,6 +196,7 @@
 		4B66DE3823A1FA9A00C0F147 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4B1B67402448637800145C73 /* Detail */,
 				4B41D389241734BD00C54897 /* Post */,
 				4B29A6EC241738C7004D520E /* More */,
 				4B28064423FEB114001E9736 /* Authentication */,
@@ -340,6 +357,7 @@
 				4BB525E8243AC263002FF221 /* FeedListItem.xib in Resources */,
 				4B9E1033239CC7CA0045DBE2 /* LaunchScreen.storyboard in Resources */,
 				4B29A6F0241739E8004D520E /* NewPost.storyboard in Resources */,
+				4B1B674624486BAC00145C73 /* Detail.storyboard in Resources */,
 				4BB525EC243AC2B2002FF221 /* FeedSquareItem.xib in Resources */,
 				4B28064123FE970C001E9736 /* GoogleService-Info.plist in Resources */,
 				4BB52A3823FF9B3C006647FF /* ActionCell.xib in Resources */,
@@ -426,6 +444,7 @@
 				4BB998BC23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift in Sources */,
 				4BB525E7243AC263002FF221 /* FeedListItem.swift in Sources */,
 				4B33815B2428D3C300ED6EB6 /* YelpX.swift in Sources */,
+				4B1B674424486B9400145C73 /* RestaurantDetailViewController.swift in Sources */,
 				4BB525EB243AC2B2002FF221 /* FeedSquareItem.swift in Sources */,
 				4B68E57F2421CDDA00BA0932 /* UITextViewX.swift in Sources */,
 				4B3381592428B63000ED6EB6 /* Debouncer.swift in Sources */,
@@ -437,6 +456,7 @@
 				4B28064823FEB171001E9736 /* CreateNewAccountViewController.swift in Sources */,
 				4B9E1029239CC7C80045DBE2 /* AppDelegate.swift in Sources */,
 				4B22744C2434AB5700EEA3CF /* SSLocation.swift in Sources */,
+				4B1B674224486B7600145C73 /* FeedDetailViewController.swift in Sources */,
 				4B2274482434A52A00EEA3CF /* SSPost.swift in Sources */,
 				4BB8CE1523CF108300F40733 /* TabBarController.swift in Sources */,
 				4BB853E1241A46E3005CE009 /* AddPhotoItem.swift in Sources */,

@@ -225,7 +225,7 @@ extension FeedViewController {
 }
 
 // MARK: - UICollectionView
-extension FeedViewController: UICollectionViewDataSource {
+extension FeedViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.posts.count
@@ -244,6 +244,11 @@ extension FeedViewController: UICollectionViewDataSource {
             item.feed = post
             return item
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let viewController = FeedDetailViewController.instance()
+        self.navigationController?.pushViewController(viewController)
     }
 }
 
