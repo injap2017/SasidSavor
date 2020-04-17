@@ -108,6 +108,12 @@ PODS:
   - GoogleUtilities/UserDefaults (6.5.1):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.3.1)
+  - ImageSlideshow (1.8.3):
+    - ImageSlideshow/Core (= 1.8.3)
+  - ImageSlideshow/Core (1.8.3)
+  - ImageSlideshow/SDWebImage (1.8.3):
+    - ImageSlideshow/Core
+    - SDWebImage (>= 3.7)
   - IQKeyboardManagerSwift (6.5.5)
   - leveldb-library (1.22)
   - MagazineLayout (1.5.5)
@@ -162,9 +168,10 @@ DEPENDENCIES:
   - Firebase/Storage
   - FTPopOverMenu_Swift
   - GooglePlaces
+  - ImageSlideshow
+  - ImageSlideshow/SDWebImage
   - IQKeyboardManagerSwift
   - MagazineLayout
-  - SDWebImage
   - SnapKit
   - SVProgressHUD
   - SwifterSwift
@@ -198,6 +205,7 @@ SPEC REPOS:
     - GooglePlaces
     - GoogleUtilities
     - GTMSessionFetcher
+    - ImageSlideshow
     - IQKeyboardManagerSwift
     - leveldb-library
     - MagazineLayout
@@ -238,6 +246,7 @@ SPEC CHECKSUMS:
   GooglePlaces: d5f70c3e9e427964fdeca1301a665d276ccd8754
   GoogleUtilities: 06eb53bb579efe7099152735900dd04bf09e7275
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
+  ImageSlideshow: 4694d7d699a1549582e7cc631fb392d8f91630f3
   IQKeyboardManagerSwift: 0fb93310284665245591f50f7a5e38de615960b7
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   MagazineLayout: 343e50e92513a892e92fb07ace34826552704e48
@@ -252,6 +261,6 @@ SPEC CHECKSUMS:
   SwiftLocation: 609ac8859f2c5d48a6cadd2a58c63b1dae02dc25
   "UITextView+Placeholder": d7b0c400921f66523f3a85d74f774512e14f6502
 
-PODFILE CHECKSUM: 7815387a1e5f650f364704e6353bb8b758bf0db5
+PODFILE CHECKSUM: 0ee43568df6bbff55ef99fc6c03103a9678e64e8
 
 COCOAPODS: 1.9.1

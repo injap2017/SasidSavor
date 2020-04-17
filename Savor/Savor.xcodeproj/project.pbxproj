@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B0451D82449B1B4001B29AA /* FeedDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0451D72449B1B4001B29AA /* FeedDetailHeader.swift */; };
+		4B0451DA2449B1CB001B29AA /* FeedDetailHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B0451D92449B1CB001B29AA /* FeedDetailHeader.xib */; };
 		4B0FBD04240CBC4400B74E7C /* SavorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0FBD03240CBC4400B74E7C /* SavorData.swift */; };
 		4B1B674224486B7600145C73 /* FeedDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1B674124486B7600145C73 /* FeedDetailViewController.swift */; };
 		4B1B674424486B9400145C73 /* RestaurantDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1B674324486B9400145C73 /* RestaurantDetailViewController.swift */; };
@@ -57,6 +59,8 @@
 /* Begin PBXFileReference section */
 		1E0E2D47601FECCD72B3FE94 /* Pods-Savor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Savor.debug.xcconfig"; path = "Target Support Files/Pods-Savor/Pods-Savor.debug.xcconfig"; sourceTree = "<group>"; };
 		2FD3E36564360BFE55F494CB /* Pods_Savor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Savor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B0451D72449B1B4001B29AA /* FeedDetailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailHeader.swift; sourceTree = "<group>"; };
+		4B0451D92449B1CB001B29AA /* FeedDetailHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedDetailHeader.xib; sourceTree = "<group>"; };
 		4B0FBD03240CBC4400B74E7C /* SavorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavorData.swift; sourceTree = "<group>"; };
 		4B1B674124486B7600145C73 /* FeedDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailViewController.swift; sourceTree = "<group>"; };
 		4B1B674324486B9400145C73 /* RestaurantDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantDetailViewController.swift; sourceTree = "<group>"; };
@@ -189,6 +193,8 @@
 				4BB525E6243AC263002FF221 /* FeedListItem.xib */,
 				4BB525E9243AC2B2002FF221 /* FeedSquareItem.swift */,
 				4BB525EA243AC2B2002FF221 /* FeedSquareItem.xib */,
+				4B0451D72449B1B4001B29AA /* FeedDetailHeader.swift */,
+				4B0451D92449B1CB001B29AA /* FeedDetailHeader.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -367,6 +373,7 @@
 				4B9E102E239CC7C80045DBE2 /* Main.storyboard in Resources */,
 				4B28064323FEB104001E9736 /* Authentication.storyboard in Resources */,
 				4BB853E2241A46E3005CE009 /* AddPhotoItem.xib in Resources */,
+				4B0451DA2449B1CB001B29AA /* FeedDetailHeader.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -437,6 +444,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B227444243445A100EEA3CF /* PostsAPI.swift in Sources */,
+				4B0451D82449B1B4001B29AA /* FeedDetailHeader.swift in Sources */,
 				4B28064623FEB14D001E9736 /* SignInViewController.swift in Sources */,
 				4B0FBD04240CBC4400B74E7C /* SavorData.swift in Sources */,
 				4B22744A2434AAD600EEA3CF /* SSRestaurant.swift in Sources */,

@@ -247,7 +247,9 @@ extension FeedViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let viewController = FeedDetailViewController.instance()
+        let post = self.posts[indexPath.row]
+        // go feed detail
+        let viewController = FeedDetailViewController.instance(feed: post)
         self.navigationController?.pushViewController(viewController)
     }
 }

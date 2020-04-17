@@ -10,8 +10,10 @@ target 'Savor' do
   pod 'UITextView+Placeholder'
   pod 'Cosmos'
   pod 'MagazineLayout'
-  pod 'SDWebImage'
-  pod "ESPullToRefresh"
+  pod 'ImageSlideshow'
+  pod "ImageSlideshow/SDWebImage"
+##  pod 'SDWebImage'
+  pod 'ESPullToRefresh'
   
   pod 'DCKit'
   pod 'SVProgressHUD'

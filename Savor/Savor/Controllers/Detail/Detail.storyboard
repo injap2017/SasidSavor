@@ -15,14 +15,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="Bl4-ob-oVR">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="461"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0nJ-os-BUM">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="422"/>
-                                </imageView>
+                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d1s-fw-1eM">
+                                    <rect key="frame" x="87" y="166" width="240" height="128"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <viewLayoutGuide key="contentLayoutGuide" id="FSc-7B-pQO"/>
+                                    <viewLayoutGuide key="frameLayoutGuide" id="AdG-l5-6NM"/>
+                                </scrollView>
                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="huK-Sl-ZHd">
-                                    <rect key="frame" x="4" y="426" width="406" height="32"/>
+                                    <rect key="frame" x="4" y="379" width="406" height="32"/>
                                     <segments>
                                         <segment title="First"/>
                                         <segment title="Second"/>
@@ -34,12 +37,8 @@
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="0nJ-os-BUM" secondAttribute="trailing" id="5jk-SH-a68"/>
-                                <constraint firstItem="0nJ-os-BUM" firstAttribute="top" secondItem="Bl4-ob-oVR" secondAttribute="top" id="8MW-6u-kFt"/>
                                 <constraint firstItem="huK-Sl-ZHd" firstAttribute="leading" secondItem="Bl4-ob-oVR" secondAttribute="leading" constant="4" id="M1g-nu-jRI"/>
                                 <constraint firstAttribute="bottom" secondItem="huK-Sl-ZHd" secondAttribute="bottom" constant="4" id="Q7a-Cy-EmY"/>
-                                <constraint firstItem="0nJ-os-BUM" firstAttribute="leading" secondItem="Bl4-ob-oVR" secondAttribute="leading" id="hzt-qK-QM0"/>
-                                <constraint firstItem="huK-Sl-ZHd" firstAttribute="top" secondItem="0nJ-os-BUM" secondAttribute="bottom" constant="4" id="u7Z-cJ-xc2"/>
                                 <constraint firstAttribute="trailing" secondItem="huK-Sl-ZHd" secondAttribute="trailing" constant="4" id="whD-cc-HiK"/>
                             </constraints>
                         </view>
