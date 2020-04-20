@@ -8,49 +8,22 @@
     </dependencies>
     <scenes>
         <!--Feed Detail View Controller-->
-        <scene sceneID="9Hs-ha-9kU">
+        <scene sceneID="GtK-AS-EP5">
             <objects>
-                <tableViewController storyboardIdentifier="feedDetail" id="wgC-e5-eag" customClass="FeedDetailViewController" customModule="SasiSavor" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="XMJ-cm-Wnu">
+                <tableViewController storyboardIdentifier="feedDetail" id="l0L-m8-WNN" customClass="FeedDetailViewController" customModule="SasiSavor" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="2Gt-QK-QMB">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="Bl4-ob-oVR">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d1s-fw-1eM">
-                                    <rect key="frame" x="87" y="166" width="240" height="128"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <viewLayoutGuide key="contentLayoutGuide" id="FSc-7B-pQO"/>
-                                    <viewLayoutGuide key="frameLayoutGuide" id="AdG-l5-6NM"/>
-                                </scrollView>
-                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="huK-Sl-ZHd">
-                                    <rect key="frame" x="4" y="379" width="406" height="32"/>
-                                    <segments>
-                                        <segment title="First"/>
-                                        <segment title="Second"/>
-                                    </segments>
-                                    <connections>
-                                        <action selector="viewSelectorValueChanged:" destination="wgC-e5-eag" eventType="valueChanged" id="cyg-Ly-xbX"/>
-                                    </connections>
-                                </segmentedControl>
-                            </subviews>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                            <constraints>
-                                <constraint firstItem="huK-Sl-ZHd" firstAttribute="leading" secondItem="Bl4-ob-oVR" secondAttribute="leading" constant="4" id="M1g-nu-jRI"/>
-                                <constraint firstAttribute="bottom" secondItem="huK-Sl-ZHd" secondAttribute="bottom" constant="4" id="Q7a-Cy-EmY"/>
-                                <constraint firstAttribute="trailing" secondItem="huK-Sl-ZHd" secondAttribute="trailing" constant="4" id="whD-cc-HiK"/>
-                            </constraints>
-                        </view>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <connections>
-                            <outlet property="dataSource" destination="wgC-e5-eag" id="YmP-Vk-Q23"/>
-                            <outlet property="delegate" destination="wgC-e5-eag" id="51j-eW-3Wz"/>
+                            <outlet property="dataSource" destination="l0L-m8-WNN" id="dot-4A-Tf3"/>
+                            <outlet property="delegate" destination="l0L-m8-WNN" id="opf-Fl-q8t"/>
                         </connections>
                     </tableView>
                 </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fvF-Ka-FKn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tvT-ZJ-b1o" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-60.869565217391312" y="156.69642857142856"/>
+            <point key="canvasLocation" x="669" y="154"/>
         </scene>
     </scenes>
 </document>

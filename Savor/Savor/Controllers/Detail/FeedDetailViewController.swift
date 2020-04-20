@@ -42,10 +42,11 @@ extension FeedDetailViewController {
 // MARK: - Functions
 extension FeedDetailViewController {
     
-    class func instance(feed: SSPost) -> FeedDetailViewController {
+    class func instance(feed: SSPost, restaurant: SSRestaurant) -> FeedDetailViewController {
         let storyboard = UIStoryboard.init(name: "Detail", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "feedDetail") as! FeedDetailViewController
         viewController.feed = feed
+        viewController.restaurant = restaurant
         return viewController
     }
     
@@ -80,7 +81,7 @@ extension FeedDetailViewController {
             // calculate the count of items non empty
             return 4
         default:
-            return 2
+            return 1
         }
     }
     

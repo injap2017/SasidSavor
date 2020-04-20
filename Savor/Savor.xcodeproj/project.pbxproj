@@ -53,6 +53,10 @@
 		4BB853E2241A46E3005CE009 /* AddPhotoItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BB853E0241A46E3005CE009 /* AddPhotoItem.xib */; };
 		4BB8CE1523CF108300F40733 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB8CE1423CF108300F40733 /* TabBarController.swift */; };
 		4BB998BC23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB998BB23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift */; };
+		4BECB945244DB68200662AE4 /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BECB943244DB68200662AE4 /* DetailCell.swift */; };
+		4BECB946244DB68200662AE4 /* DetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BECB944244DB68200662AE4 /* DetailCell.xib */; };
+		4BECB949244DD57A00662AE4 /* FeedDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BECB947244DD57A00662AE4 /* FeedDetailCell.swift */; };
+		4BECB94A244DD57A00662AE4 /* FeedDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BECB948244DD57A00662AE4 /* FeedDetailCell.xib */; };
 		89038FFAC3290ECA386D30C7 /* Pods_Savor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FD3E36564360BFE55F494CB /* Pods_Savor.framework */; };
 /* End PBXBuildFile section */
 
@@ -107,6 +111,10 @@
 		4BB853E0241A46E3005CE009 /* AddPhotoItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddPhotoItem.xib; sourceTree = "<group>"; };
 		4BB8CE1423CF108300F40733 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4BB998BB23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostPlaceHolderViewController.swift; sourceTree = "<group>"; };
+		4BECB943244DB68200662AE4 /* DetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCell.swift; sourceTree = "<group>"; };
+		4BECB944244DB68200662AE4 /* DetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailCell.xib; sourceTree = "<group>"; };
+		4BECB947244DD57A00662AE4 /* FeedDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailCell.swift; sourceTree = "<group>"; };
+		4BECB948244DD57A00662AE4 /* FeedDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedDetailCell.xib; sourceTree = "<group>"; };
 		4F69641B8A7A01F19C7920A5 /* Pods-Savor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Savor.release.xcconfig"; path = "Target Support Files/Pods-Savor/Pods-Savor.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -185,6 +193,8 @@
 				4BB52A3223FF92F9006647FF /* InputFieldCell.xib */,
 				4BB52A3523FF9B3C006647FF /* ActionCell.swift */,
 				4BB52A3623FF9B3C006647FF /* ActionCell.xib */,
+				4BECB943244DB68200662AE4 /* DetailCell.swift */,
+				4BECB944244DB68200662AE4 /* DetailCell.xib */,
 				4BB853DB241A467F005CE009 /* PhotoItem.swift */,
 				4BB853DC241A467F005CE009 /* PhotoItem.xib */,
 				4BB853DF241A46E3005CE009 /* AddPhotoItem.swift */,
@@ -195,6 +205,8 @@
 				4BB525EA243AC2B2002FF221 /* FeedSquareItem.xib */,
 				4B0451D72449B1B4001B29AA /* FeedDetailHeader.swift */,
 				4B0451D92449B1CB001B29AA /* FeedDetailHeader.xib */,
+				4BECB947244DD57A00662AE4 /* FeedDetailCell.swift */,
+				4BECB948244DD57A00662AE4 /* FeedDetailCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -370,10 +382,12 @@
 				4B9E1030239CC7CA0045DBE2 /* Assets.xcassets in Resources */,
 				4BB52A3423FF92F9006647FF /* InputFieldCell.xib in Resources */,
 				4BB853DE241A467F005CE009 /* PhotoItem.xib in Resources */,
+				4BECB94A244DD57A00662AE4 /* FeedDetailCell.xib in Resources */,
 				4B9E102E239CC7C80045DBE2 /* Main.storyboard in Resources */,
 				4B28064323FEB104001E9736 /* Authentication.storyboard in Resources */,
 				4BB853E2241A46E3005CE009 /* AddPhotoItem.xib in Resources */,
 				4B0451DA2449B1CB001B29AA /* FeedDetailHeader.xib in Resources */,
+				4BECB946244DB68200662AE4 /* DetailCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,6 +469,7 @@
 				4B1B674424486B9400145C73 /* RestaurantDetailViewController.swift in Sources */,
 				4BB525EB243AC2B2002FF221 /* FeedSquareItem.swift in Sources */,
 				4B68E57F2421CDDA00BA0932 /* UITextViewX.swift in Sources */,
+				4BECB949244DD57A00662AE4 /* FeedDetailCell.swift in Sources */,
 				4B3381592428B63000ED6EB6 /* Debouncer.swift in Sources */,
 				4B2E9CF8239FF3BB008508CD /* ExploreViewController.swift in Sources */,
 				4B29A6EE241738C7004D520E /* MoreViewController.swift in Sources */,
@@ -466,6 +481,7 @@
 				4B22744C2434AB5700EEA3CF /* SSLocation.swift in Sources */,
 				4B1B674224486B7600145C73 /* FeedDetailViewController.swift in Sources */,
 				4B2274482434A52A00EEA3CF /* SSPost.swift in Sources */,
+				4BECB945244DB68200662AE4 /* DetailCell.swift in Sources */,
 				4BB8CE1523CF108300F40733 /* TabBarController.swift in Sources */,
 				4BB853E1241A46E3005CE009 /* AddPhotoItem.swift in Sources */,
 				4B22744E2434AB6800EEA3CF /* SSCoordinates.swift in Sources */,

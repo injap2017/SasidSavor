@@ -222,6 +222,22 @@ extension FeedViewController {
             }
         }
     }
+    
+    func didSelectFeedAction(_ feed: SSPost) {
+        guard let partialRestaurant = feed.restaurant else {
+            return
+        }
+        
+        // load full restaurant data
+        SVProgressHUD.show(withStatus: "Loading...")
+        APIs.Restaurants.getRestaurant(of: partialRestaurant.restaurantID) { (restaurant) in
+            // go to details
+            let viewController = FeedDetailViewController.instance(feed: feed, restaurant: restaurant)
+            self.navigationController?.pushViewController(viewController)
+            
+            SVProgressHUD.dismiss()
+        }
+    }
 }
 
 // MARK: - UICollectionView
@@ -248,9 +264,7 @@ extension FeedViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let post = self.posts[indexPath.row]
-        // go feed detail
-        let viewController = FeedDetailViewController.instance(feed: post)
-        self.navigationController?.pushViewController(viewController)
+        self.didSelectFeedAction(post)
     }
 }
 
