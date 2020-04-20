@@ -56,7 +56,8 @@ extension FeedDetailViewController {
         
         // cell
         self.tableView.register(ActionCell.nib, forCellReuseIdentifier: ActionCell.identifier)
-        // detail cell
+        self.tableView.register(DetailCell.nib, forCellReuseIdentifier: DetailCell.identifier)
+        self.tableView.register(FeedDetailCell.nib, forCellReuseIdentifier: FeedDetailCell.identifier)
         
         // header
         let width = UIScreen.main.bounds.size.width /* full screen width */
@@ -78,7 +79,12 @@ extension FeedDetailViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch viewSelector {
         case .info:
-            // calculate the count of items non empty
+            // phone
+            // address
+            // home page
+            // savored items
+            // directions to here
+            // find this menu item near me
             return 4
         default:
             return 1
@@ -93,9 +99,8 @@ extension FeedDetailViewController {
             cell.isEnabled = true
             return cell
         default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: ActionCell.identifier) as! ActionCell
-            cell.title = "Posts" + "\(indexPath.row)"
-            cell.isEnabled = true
+            let cell = tableView.dequeueReusableCell(withIdentifier: FeedDetailCell.identifier) as! FeedDetailCell
+            cell.feed = feed
             return cell
         }
     }
@@ -103,7 +108,7 @@ extension FeedDetailViewController {
 
 // MARK: - Actions
 extension FeedDetailViewController {
-    @IBAction func viewSelectorValueChanged(_ segmentedControl: UISegmentedControl) {
+    @objc func viewSelectorValueChanged(_ segmentedControl: UISegmentedControl) {
         if segmentedControl.selectedSegmentIndex == 0 {
             self.viewSelector = .info
         } else {

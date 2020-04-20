@@ -27,8 +27,8 @@ class FeedDetailCell: UITableViewCell {
     @IBOutlet weak var likesCountLabel: UILabel!
     
     // MARK: - Properties
-    static let identifier = "FeedListItem"
-    static let nib = UINib.init(nibName: "FeedListItem", bundle: nil)
+    static let identifier = "FeedDetailCell"
+    static let nib = UINib.init(nibName: "FeedDetailCell", bundle: nil)
     
     var feed: SSPost? {
         didSet {
