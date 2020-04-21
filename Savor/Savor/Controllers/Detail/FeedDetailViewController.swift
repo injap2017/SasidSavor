@@ -67,6 +67,7 @@ extension FeedDetailViewController {
         let feedDetailHeader = FeedDetailHeader.init(frame: frame)
         feedDetailHeader.feed = feed
         feedDetailHeader.segmentedControl.addTarget(self, action: #selector(viewSelectorValueChanged(_:)), for: .valueChanged)
+        feedDetailHeader.imageSlideShow.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(didTapImageSlideshow)))
         self.tableView.tableHeaderView = feedDetailHeader
         self.feedDetailHeader = feedDetailHeader
         
@@ -200,5 +201,10 @@ extension FeedDetailViewController {
         } else {
             self.viewSelector = .posts
         }
+    }
+    
+    @objc func didTapImageSlideshow() {
+        // full screen slide show
+        self.feedDetailHeader?.imageSlideShow.presentFullScreenController(from: self)
     }
 }
