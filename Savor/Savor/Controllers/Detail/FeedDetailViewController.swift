@@ -20,6 +20,7 @@ class FeedDetailViewController: UITableViewController {
     var restaurant: SSRestaurant?
     
     var feedDetailHeader: FeedDetailHeader?
+    var cells: [((UITableView) -> UITableViewCell, (UITableView) -> Void)] = [] /*(return cell, didSelectAction)*/
     
     var viewSelector: FeedDetailViewSelector = .info {
         didSet {
@@ -71,6 +72,23 @@ extension FeedDetailViewController {
         
         // footer
         self.tableView.tableFooterView = UIView.init()
+        
+        // cells
+        if let displayPhone = self.restaurant?.displayPhone,
+            !displayPhone.isWhitespace {
+            self.cells.append((phoneCell, didSelectPhone))
+        }
+        if let location = self.restaurant?.location,
+            location.displayAddress != nil {
+            self.cells.append((addressCell, didSelectAddress))
+        }
+        if let url = self.restaurant?.url,
+            !url.isWhitespace {
+            self.cells.append((homePageCell, didSelectHomePage))
+        }
+        self.cells.append((savoredItemsCell, didSelectSavoredItems))
+        self.cells.append((directionsToHereCell, didSelectDirectionsToHere))
+        self.cells.append((findThisMenuItemNearMeCell, didSelectFindThisMenuItemNearMe))
     }
 }
 
@@ -79,13 +97,7 @@ extension FeedDetailViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch viewSelector {
         case .info:
-            // phone
-            // address
-            // home page
-            // savored items
-            // directions to here
-            // find this menu item near me
-            return 4
+            return self.cells.count
         default:
             return 1
         }
@@ -94,15 +106,89 @@ extension FeedDetailViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch viewSelector {
         case .info:
-            let cell = tableView.dequeueReusableCell(withIdentifier: ActionCell.identifier) as! ActionCell
-            cell.title = "Info" + "\(indexPath.row)"
-            cell.isEnabled = true
+            let cell = self.cells[indexPath.row].0(tableView)
             return cell
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: FeedDetailCell.identifier) as! FeedDetailCell
             cell.feed = feed
+            cell.selectionStyle = .none
             return cell
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch viewSelector {
+        case .info:
+            self.cells[indexPath.row].1(tableView)
+        default:
+            break
+        }
+    }
+    
+    func phoneCell(_ tableView: UITableView) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: DetailCell.identifier) as! DetailCell
+        cell.title = "Phone"
+        cell.detail = self.restaurant!.displayPhone
+        return cell
+    }
+    
+    func didSelectPhone(_ tableView: UITableView) {
+        
+    }
+    
+    func addressCell(_ tableView: UITableView) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: DetailCell.identifier) as! DetailCell
+        cell.title = "Address"
+        cell.detail = self.restaurant!.displayAddress()
+        return cell
+    }
+    
+    func didSelectAddress(_ tableView: UITableView) {
+        
+    }
+    
+    func homePageCell(_ tableView: UITableView) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: DetailCell.identifier) as! DetailCell
+        cell.title = "Home Page"
+        cell.detail = self.restaurant!.url
+        return cell
+    }
+    
+    func didSelectHomePage(_ tableView: UITableView) {
+        
+    }
+    
+    func savoredItemsCell(_ tableView: UITableView) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ActionCell.identifier) as! ActionCell
+        cell.title = "Savored Items"
+        cell.isEnabled = true
+        return cell
+    }
+    
+    func didSelectSavoredItems(_ tableView: UITableView) {
+        
+    }
+    
+    func directionsToHereCell(_ tableView: UITableView) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ActionCell.identifier) as! ActionCell
+        cell.title = "Directions to Here"
+        cell.isEnabled = true
+        return cell
+    }
+    
+    func didSelectDirectionsToHere(_ tableView: UITableView) {
+        
+    }
+    
+    func findThisMenuItemNearMeCell(_ tableView: UITableView) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ActionCell.identifier) as! ActionCell
+        cell.title = "Find This Menu Item Near Me"
+        cell.isEnabled = true
+        return cell
+    }
+    
+    func didSelectFindThisMenuItemNearMe(_ tableView: UITableView) {
+        
     }
 }
 

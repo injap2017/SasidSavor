@@ -31,6 +31,7 @@
                     </label>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="pcp-5i-ypN" secondAttribute="trailing" constant="8" id="1TN-U7-Udb"/>
                     <constraint firstItem="pcp-5i-ypN" firstAttribute="top" secondItem="ymE-K3-h7z" secondAttribute="bottom" constant="4" id="L8Q-0q-9jk"/>
                     <constraint firstItem="ymE-K3-h7z" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Max-cs-icM"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="pcp-5i-ypN" secondAttribute="bottom" constant="8" id="Zv9-Mo-deR"/>

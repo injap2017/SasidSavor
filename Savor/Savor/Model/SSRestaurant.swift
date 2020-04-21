@@ -44,9 +44,20 @@ class SSRestaurant {
 extension SSRestaurant {
     
     func address() -> String {
-        var address = name + "\n"
+        var address = name
         if let location = self.location {
-            address += location.city + ", " + location.state
+            address += "\n" + location.city + ", " + location.state
+        }
+        return address
+    }
+    
+    func displayAddress() -> String {
+        var address = name
+        if let location = self.location,
+            let displayAddress = location.displayAddress {
+            for item in displayAddress {
+                address += "\n" + item
+            }
         }
         return address
     }
