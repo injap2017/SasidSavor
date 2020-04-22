@@ -35,6 +35,8 @@
 		4B497AB42431B3C800BCEF7C /* SSUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B497AB32431B3C800BCEF7C /* SSUser.swift */; };
 		4B497AB62432065000BCEF7C /* SSFood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B497AB52432065000BCEF7C /* SSFood.swift */; };
 		4B68E57F2421CDDA00BA0932 /* UITextViewX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B68E57E2421CDDA00BA0932 /* UITextViewX.swift */; };
+		4B9BD45A2450397E00953BC9 /* RestaurantItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9BD4582450397E00953BC9 /* RestaurantItemCell.swift */; };
+		4B9BD45B2450397E00953BC9 /* RestaurantItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B9BD4592450397E00953BC9 /* RestaurantItemCell.xib */; };
 		4B9E1029239CC7C80045DBE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9E1028239CC7C80045DBE2 /* AppDelegate.swift */; };
 		4B9E102E239CC7C80045DBE2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B9E102C239CC7C80045DBE2 /* Main.storyboard */; };
 		4B9E1030239CC7CA0045DBE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B9E102F239CC7CA0045DBE2 /* Assets.xcassets */; };
@@ -91,6 +93,8 @@
 		4B497AB32431B3C800BCEF7C /* SSUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSUser.swift; sourceTree = "<group>"; };
 		4B497AB52432065000BCEF7C /* SSFood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSFood.swift; sourceTree = "<group>"; };
 		4B68E57E2421CDDA00BA0932 /* UITextViewX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextViewX.swift; sourceTree = "<group>"; };
+		4B9BD4582450397E00953BC9 /* RestaurantItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantItemCell.swift; sourceTree = "<group>"; };
+		4B9BD4592450397E00953BC9 /* RestaurantItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RestaurantItemCell.xib; sourceTree = "<group>"; };
 		4B9E1025239CC7C80045DBE2 /* SasiSavor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SasiSavor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B9E1028239CC7C80045DBE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4B9E102D239CC7C80045DBE2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -207,6 +211,8 @@
 				4B0451D92449B1CB001B29AA /* FeedDetailHeader.xib */,
 				4BECB947244DD57A00662AE4 /* FeedDetailCell.swift */,
 				4BECB948244DD57A00662AE4 /* FeedDetailCell.xib */,
+				4B9BD4582450397E00953BC9 /* RestaurantItemCell.swift */,
+				4B9BD4592450397E00953BC9 /* RestaurantItemCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -387,6 +393,7 @@
 				4B28064323FEB104001E9736 /* Authentication.storyboard in Resources */,
 				4BB853E2241A46E3005CE009 /* AddPhotoItem.xib in Resources */,
 				4B0451DA2449B1CB001B29AA /* FeedDetailHeader.xib in Resources */,
+				4B9BD45B2450397E00953BC9 /* RestaurantItemCell.xib in Resources */,
 				4BECB946244DB68200662AE4 /* DetailCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -472,6 +479,7 @@
 				4BECB949244DD57A00662AE4 /* FeedDetailCell.swift in Sources */,
 				4B3381592428B63000ED6EB6 /* Debouncer.swift in Sources */,
 				4B2E9CF8239FF3BB008508CD /* ExploreViewController.swift in Sources */,
+				4B9BD45A2450397E00953BC9 /* RestaurantItemCell.swift in Sources */,
 				4B29A6EE241738C7004D520E /* MoreViewController.swift in Sources */,
 				4B227446243445BC00EEA3CF /* RestaurantsAPI.swift in Sources */,
 				4B2E9CFC239FF3E0008508CD /* ActivityViewController.swift in Sources */,
@@ -640,6 +648,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Y6PFG29VWM;
 				INFOPLIST_FILE = Savor/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -659,6 +668,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Y6PFG29VWM;
 				INFOPLIST_FILE = Savor/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

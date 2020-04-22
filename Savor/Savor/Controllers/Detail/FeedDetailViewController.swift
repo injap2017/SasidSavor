@@ -53,7 +53,7 @@ extension FeedDetailViewController {
     
     func initView() {
         // title
-        self.title = ""
+        self.title = feed?.food?.name
         
         // cell
         self.tableView.register(ActionCell.nib, forCellReuseIdentifier: ActionCell.identifier)
@@ -120,6 +120,7 @@ extension FeedDetailViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch viewSelector {
         case .info:
+            tableView.deselectRow(at: indexPath, animated: false)
             self.cells[indexPath.row].1(tableView)
         default:
             break
@@ -133,19 +134,11 @@ extension FeedDetailViewController {
         return cell
     }
     
-    func didSelectPhone(_ tableView: UITableView) {
-        
-    }
-    
     func addressCell(_ tableView: UITableView) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: DetailCell.identifier) as! DetailCell
         cell.title = "Address"
         cell.detail = self.restaurant!.displayAddress()
         return cell
-    }
-    
-    func didSelectAddress(_ tableView: UITableView) {
-        
     }
     
     func homePageCell(_ tableView: UITableView) -> UITableViewCell {
@@ -155,19 +148,11 @@ extension FeedDetailViewController {
         return cell
     }
     
-    func didSelectHomePage(_ tableView: UITableView) {
-        
-    }
-    
     func savoredItemsCell(_ tableView: UITableView) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ActionCell.identifier) as! ActionCell
         cell.title = "Savored Items"
         cell.isEnabled = true
         return cell
-    }
-    
-    func didSelectSavoredItems(_ tableView: UITableView) {
-        
     }
     
     func directionsToHereCell(_ tableView: UITableView) -> UITableViewCell {
@@ -177,19 +162,11 @@ extension FeedDetailViewController {
         return cell
     }
     
-    func didSelectDirectionsToHere(_ tableView: UITableView) {
-        
-    }
-    
     func findThisMenuItemNearMeCell(_ tableView: UITableView) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ActionCell.identifier) as! ActionCell
         cell.title = "Find This Menu Item Near Me"
         cell.isEnabled = true
         return cell
-    }
-    
-    func didSelectFindThisMenuItemNearMe(_ tableView: UITableView) {
-        
     }
 }
 
@@ -206,5 +183,35 @@ extension FeedDetailViewController {
     @objc func didTapImageSlideshow() {
         // full screen slide show
         self.feedDetailHeader?.imageSlideShow.presentFullScreenController(from: self)
+    }
+    
+    func didSelectPhone(_ tableView: UITableView) {
+        
+    }
+    
+    func didSelectAddress(_ tableView: UITableView) {
+        
+    }
+    
+    func didSelectHomePage(_ tableView: UITableView) {
+        
+    }
+    
+    func didSelectSavoredItems(_ tableView: UITableView) {
+        guard let restaurant = self.restaurant else {
+            return
+        }
+        
+        // go to details
+        let viewController = RestaurantDetailViewController.instance(restaurant: restaurant)
+        self.navigationController?.pushViewController(viewController)
+    }
+    
+    func didSelectDirectionsToHere(_ tableView: UITableView) {
+        
+    }
+    
+    func didSelectFindThisMenuItemNearMe(_ tableView: UITableView) {
+        
     }
 }
