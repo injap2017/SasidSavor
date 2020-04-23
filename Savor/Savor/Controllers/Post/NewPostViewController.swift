@@ -348,17 +348,24 @@ extension NewPostViewController {
             
             postRef.setValue(data)
             
-            // add people, feed, savored
+            // remark the post in user/posts (to show this post in user profile) and feed/user (to show this post in this user feed)
             SavorData.FireBase.rootReference.updateChildValues(["people/\(uid)/posts/\(postID)": true,
-                                                                "feed/\(uid)/\(postID)": true,
-                                                                "savored/\(restaurantID)/\(foodID)": true])
-            
-            SVProgressHUD.dismiss()
-            
-            self.cancelAction()
-            
-            DispatchQueue.main.async {
-                self.completion?()
+                                                                "feed/\(uid)/\(postID)": true])
+            // remark the food savored as rating (calculate total rating, add postID)
+            APIs.Savored.savored(foodID: foodID, restaurantID: restaurantID, postID: postID, rating: self.rating) { (error) in
+                if let error = error {
+                    print(error)
+                    SVProgressHUD.showError(withStatus: error.localizedDescription)
+                    return
+                }
+                
+                SVProgressHUD.dismiss()
+                
+                self.cancelAction()
+                
+                DispatchQueue.main.async {
+                    self.completion?()
+                }
             }
         }
     }

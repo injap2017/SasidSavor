@@ -11,4 +11,5 @@ import Foundation
 struct APIs {
     static var Posts = PostsAPI()
     static var Restaurants = RestaurantsAPI()
+    static var Savored = SavoredAPI()
 }
