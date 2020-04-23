@@ -15,39 +15,47 @@ class FeedDetailHeader: UIView {
     // MARK: - IBOutlets
     @IBOutlet private weak var contentView: UIView!
     
-    @IBOutlet weak var postTitleLabel: UILabel!
+    @IBOutlet weak var itemTitleLabel: UILabel!
     @IBOutlet weak var restaurantNameAddressLabel: UILabel!
-    @IBOutlet weak var postScore: CosmosView!
+    @IBOutlet weak var averageScore: CosmosView!
+    @IBOutlet weak var postCountLabel: UILabel!
     
     @IBOutlet weak var imageSlideShow: ImageSlideshow!
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     // MARK: - Properties
-    var feed: SSPost? {
+    var data: (SSFood, Double, [SSPost], SSRestaurant)? {
         didSet {
-            postTitleLabel.text = nil
+            itemTitleLabel.text = nil
             restaurantNameAddressLabel.text = nil
             
-            postScore.rating = 0.0
+            averageScore.rating = 0.0
+            postCountLabel.text = nil
             
-            if let feed = self.feed {
-                postTitleLabel.text = feed.food?.name
-                restaurantNameAddressLabel.text = feed.restaurant?.address()
+            if let data = self.data {
+                itemTitleLabel.text = data.0.name
+                restaurantNameAddressLabel.text = data.3.address()
                 
-                postScore.rating = feed.rating // colour by score
+                let postCount = data.2.count
+                let averageRating = postCount == 0 ? 0.0 : data.1 / Double(postCount)
+                averageScore.rating = averageRating // colour by score
                 
-                if let photos = feed.photos {
-                    var imageInputs: [SDWebImageSource] = []
-                    for photo in photos {
-                        if let fullPath = photo["full_url"],
-                            let fullURL = URL.init(string: fullPath) {
-                            imageInputs.append(SDWebImageSource.init(url: fullURL))
+                var imageInputs: [SDWebImageSource] = []
+                for post in data.2 {
+                    if let photos = post.photos {
+                        for photo in photos {
+                            if let fullPath = photo["full_url"],
+                                let fullURL = URL.init(string: fullPath) {
+                                imageInputs.append(SDWebImageSource.init(url: fullURL))
+                            }
                         }
                     }
-                    
-                    imageSlideShow.setImageInputs(imageInputs)
                 }
+                imageSlideShow.setImageInputs(imageInputs)
+                
+                let photoCount = imageInputs.count
+                postCountLabel.text = "\(postCount) posts, \(photoCount) photos"
             }
         }
     }

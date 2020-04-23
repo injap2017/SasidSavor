@@ -224,18 +224,68 @@ extension FeedViewController {
     }
     
     func didSelectFeedAction(_ feed: SSPost) {
-        guard let partialRestaurant = feed.restaurant else {
+        guard let partialRestaurant = feed.restaurant,
+            let partialFood = feed.food else {
             return
         }
         
         // load full restaurant data
+        // load full food data
+        // load all posts
+        // load totalRating
+        var restaurant: SSRestaurant?
+        var food: SSFood?
+        var postIDs: [String]?
+        var totalRating: Double?
+        
         SVProgressHUD.show(withStatus: "Loading...")
-        APIs.Restaurants.getRestaurant(of: partialRestaurant.restaurantID) { (restaurant) in
-            // go to details
-            let viewController = FeedDetailViewController.instance(feed: feed, restaurant: restaurant)
-            self.navigationController?.pushViewController(viewController)
+        
+        let dispatchGroup = DispatchGroup()
+        
+        dispatchGroup.enter()
+        APIs.Restaurants.getRestaurant(of: partialRestaurant.restaurantID) { (_restaurant) in
+            restaurant = _restaurant
+            dispatchGroup.leave()
+        }
+        
+        APIs.Foods.getFood(of: partialFood.foodID) { (_food) in
+            food = _food
+            dispatchGroup.leave()
+        }
+        
+        APIs.Savored.getPostsSavoredFood(partialFood.foodID, in: partialRestaurant.restaurantID) { (_postIDs, _totalRating) in
+            postIDs = _postIDs
+            totalRating = _totalRating
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
             
-            SVProgressHUD.dismiss()
+            // load all posts
+            var posts: [SSPost] = []
+            
+            let dispatchGroup = DispatchGroup()
+            
+            for postID in postIDs! {
+                dispatchGroup.enter()
+                APIs.Posts.getPost(of: postID) { (post) in
+                    posts.append(post)
+                    dispatchGroup.leave()
+                }
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                // sort posts by timestamp
+                let sortedPosts = posts.sorted { (first, second) -> Bool in
+                    return first.timestamp > second.timestamp
+                }
+                
+                // go to details
+                let viewController = FeedDetailViewController.instance(food: food!, totalRating: totalRating!, allFeeds: sortedPosts, restaurant: restaurant!)
+                self.navigationController?.pushViewController(viewController)
+                
+                SVProgressHUD.dismiss()
+            }
         }
     }
 }

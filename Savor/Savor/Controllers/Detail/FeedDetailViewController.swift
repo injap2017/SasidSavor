@@ -16,7 +16,9 @@ enum FeedDetailViewSelector: Int {
 class FeedDetailViewController: UITableViewController {
     
     // MARK: - Properties
-    var feed: SSPost?
+    var food: SSFood?
+    var totalRating: Double?
+    var allFeeds: [SSPost]?
     var restaurant: SSRestaurant?
     
     var feedDetailHeader: FeedDetailHeader?
@@ -43,17 +45,19 @@ extension FeedDetailViewController {
 // MARK: - Functions
 extension FeedDetailViewController {
     
-    class func instance(feed: SSPost, restaurant: SSRestaurant) -> FeedDetailViewController {
+    class func instance(food: SSFood, totalRating: Double, allFeeds: [SSPost], restaurant: SSRestaurant) -> FeedDetailViewController {
         let storyboard = UIStoryboard.init(name: "Detail", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "feedDetail") as! FeedDetailViewController
-        viewController.feed = feed
+        viewController.food = food
+        viewController.totalRating = totalRating
+        viewController.allFeeds = allFeeds
         viewController.restaurant = restaurant
         return viewController
     }
     
     func initView() {
         // title
-        self.title = feed?.food?.name
+        self.title = food?.name
         
         // cell
         self.tableView.register(ActionCell.nib, forCellReuseIdentifier: ActionCell.identifier)
@@ -65,7 +69,7 @@ extension FeedDetailViewController {
         let height = width + 32/* segmented control height */ + 16/* padding */
         let frame = CGRect.init(x: 0, y: 0, width: width, height: height)
         let feedDetailHeader = FeedDetailHeader.init(frame: frame)
-        feedDetailHeader.feed = feed
+        feedDetailHeader.data = (food!, totalRating!, allFeeds!, restaurant!)
         feedDetailHeader.segmentedControl.addTarget(self, action: #selector(viewSelectorValueChanged(_:)), for: .valueChanged)
         feedDetailHeader.imageSlideShow.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(didTapImageSlideshow)))
         self.tableView.tableHeaderView = feedDetailHeader
@@ -100,7 +104,7 @@ extension FeedDetailViewController {
         case .info:
             return self.cells.count
         default:
-            return 1
+            return self.allFeeds?.count ?? 0
         }
     }
     
@@ -111,7 +115,7 @@ extension FeedDetailViewController {
             return cell
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: FeedDetailCell.identifier) as! FeedDetailCell
-            cell.feed = feed
+            cell.feed = allFeeds![indexPath.row]
             cell.selectionStyle = .none
             return cell
         }

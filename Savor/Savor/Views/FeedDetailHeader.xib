@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -10,10 +9,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FeedDetailHeader" customModule="SasiSavor" customModuleProvider="target">
             <connections>
+                <outlet property="averageScore" destination="UOf-rd-ZJO" id="f3x-y6-QPW"/>
                 <outlet property="contentView" destination="iN0-l3-epB" id="UqM-Rg-6rX"/>
                 <outlet property="imageSlideShow" destination="ghh-UI-YOR" id="cqn-Jr-aTd"/>
-                <outlet property="postScore" destination="UOf-rd-ZJO" id="9C3-Fm-kQE"/>
-                <outlet property="postTitleLabel" destination="Zud-sd-0Nu" id="gfV-tC-3qk"/>
+                <outlet property="itemTitleLabel" destination="Zud-sd-0Nu" id="427-Jy-bEK"/>
+                <outlet property="postCountLabel" destination="k4u-sp-trO" id="C1B-QW-IwU"/>
                 <outlet property="restaurantNameAddressLabel" destination="3lO-oz-7U7" id="4oD-eh-VXN"/>
                 <outlet property="segmentedControl" destination="vAZ-sM-dHH" id="zbV-E2-jeU"/>
             </connections>

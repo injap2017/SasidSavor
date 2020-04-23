@@ -35,5 +35,22 @@ class SavoredAPI {
             completion(error)
         }
     }
+    
+    func getPostsSavoredFood(_ foodID: String, in restaurantID: String, completion: @escaping (_ posts: [String], _ totalRating: Double) -> Void) {
+        let savoredFoodReference = savoredReference.child(restaurantID).child(foodID)
+        savoredFoodReference.observeSingleEvent(of: .value) { (snapshot) in
+            if let value = snapshot.value as? [String: Any],
+                let posts = value["posts"] as? [String: Bool],
+                let totalRating = value["total_rating"] as? Double {
+                var postIDs: [String] = []
+                for post in posts {
+                    postIDs.append(post.key)
+                }
+                completion(postIDs, totalRating)
+                return
+            }
+            completion([], 0)
+        }
+    }
 }
 
