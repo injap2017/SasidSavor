@@ -18,6 +18,7 @@ class RestaurantDetailViewController: UIViewController {
 
     // MARK: - IBOutlets
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     // MARK: - Properties
     var restaurant: SSRestaurant?
@@ -28,7 +29,7 @@ class RestaurantDetailViewController: UIViewController {
     var viewSelector: RestaurantDetailViewSelector = .info {
         didSet {
             // refresh tableview to see the view parts
-            self.tableView.reloadData()
+            self.tableView?.reloadData()
         }
     }
 }
@@ -57,6 +58,10 @@ extension RestaurantDetailViewController {
     func initView() {
         // title
         self.title = restaurant?.name
+        
+        // uisegmentedcontrol
+        self.segmentedControl.selectedSegmentIndex = viewSelector.rawValue
+        self.segmentedControl.addTarget(self, action: #selector(viewSelectorValueChanged(_:)), for: .valueChanged)
         
         // cell
         self.tableView.register(ActionCell.nib, forCellReuseIdentifier: ActionCell.identifier)
@@ -148,7 +153,7 @@ extension RestaurantDetailViewController: UITableViewDataSource, UITableViewDele
 
 // MARK: - Actions
 extension RestaurantDetailViewController {
-    @IBAction func viewSelectorValueChanged(_ segmentedControl: UISegmentedControl) {
+    @objc func viewSelectorValueChanged(_ segmentedControl: UISegmentedControl) {
         if segmentedControl.selectedSegmentIndex == 0 {
             self.viewSelector = .info
         } else {

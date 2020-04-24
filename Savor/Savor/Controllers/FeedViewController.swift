@@ -284,6 +284,7 @@ extension FeedViewController {
                 
                 // go to details
                 let viewController = FeedDetailViewController.instance(food: food!, totalRating: totalRating!, allFeeds: sortedPosts, restaurant: restaurant!)
+                viewController.viewSelector = .posts
                 self.navigationController?.pushViewController(viewController)
                 
                 SVProgressHUD.dismiss()

@@ -39,9 +39,6 @@
                                     <segment title="Info"/>
                                     <segment title="Items"/>
                                 </segments>
-                                <connections>
-                                    <action selector="viewSelectorValueChanged:" destination="Hxi-gG-Esu" eventType="valueChanged" id="OVr-3b-WTe"/>
-                                </connections>
                             </segmentedControl>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LIe-bR-8FF">
                                 <rect key="frame" x="0.0" y="91" width="414" height="0.5"/>
@@ -75,6 +72,7 @@
                         <viewLayoutGuide key="safeArea" id="HIT-jg-gRC"/>
                     </view>
                     <connections>
+                        <outlet property="segmentedControl" destination="pfK-1m-GcZ" id="Hea-j7-987"/>
                         <outlet property="tableView" destination="jPa-rh-65e" id="OY3-DH-9iX"/>
                     </connections>
                 </viewController>

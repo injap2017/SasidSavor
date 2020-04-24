@@ -28,7 +28,7 @@ class FeedDetailViewController: UITableViewController {
     var viewSelector: FeedDetailViewSelector = .info {
         didSet {
             // refresh tableview to see the view parts
-            self.tableView.reloadData()
+            self.tableView?.reloadData()
         }
     }
 }
@@ -71,6 +71,7 @@ extension FeedDetailViewController {
         let frame = CGRect.init(x: 0, y: 0, width: width, height: height)
         let feedDetailHeader = FeedDetailHeader.init(frame: frame)
         feedDetailHeader.data = (food!, totalRating!, allFeeds!, restaurant!)
+        feedDetailHeader.segmentedControl.selectedSegmentIndex = viewSelector.rawValue
         feedDetailHeader.segmentedControl.addTarget(self, action: #selector(viewSelectorValueChanged(_:)), for: .valueChanged)
         feedDetailHeader.imageSlideShow.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(didTapImageSlideshow)))
         self.tableView.tableHeaderView = feedDetailHeader
@@ -249,6 +250,7 @@ extension FeedDetailViewController {
                 
                 // go to details
                 let viewController = RestaurantDetailViewController.instance(restaurant: restaurant, savoredFoods: savored)
+                viewController.viewSelector = .items
                 self.navigationController?.pushViewController(viewController)
                 
                 SVProgressHUD.dismiss()
