@@ -55,7 +55,7 @@ class FeedDetailHeader: UIView {
                 imageSlideShow.setImageInputs(imageInputs)
                 
                 let photoCount = imageInputs.count
-                postCountLabel.text = "\(postCount) posts, \(photoCount) photos"
+                postCountLabel.text = "\(postCount) post\(SavorData.Accessories.countSuffix(postCount)), \(photoCount) photo\(SavorData.Accessories.countSuffix(photoCount))"
             }
         }
     }

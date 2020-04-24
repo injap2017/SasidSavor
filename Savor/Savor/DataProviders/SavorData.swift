@@ -95,5 +95,9 @@ class SavorData {
             
             return timeText
         }
+        
+        class func countSuffix(_ count: Int) -> String {
+            return (count > 1) ? "s" : ""
+        }
     }
 }
