@@ -48,12 +48,14 @@ class RestaurantItemCell: UITableViewCell {
                 
                 itemTitleLabel.text = item.0.name
                 
+                let postCount = item.2
+                let averageRating = postCount == 0 ? 0.0 : item.1 / Double(postCount)
+                averageScore.rating = averageRating // colour by score
+                
                 postCountLabel.text = "\(item.2) posts"
-                averageScore.rating = item.1
                 
                 let timestampDate = Date(timeIntervalSince1970: item.3.timestamp)
                 lastPostDateLabel.text = SavorData.Accessories.timestampText(timestampDate)
-                
             }
         }
     }

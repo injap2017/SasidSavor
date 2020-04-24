@@ -17,4 +17,24 @@ class FoodsAPI {
             completion(food)
         }
     }
+    
+    // upload initial foods
+    func initializeDatabase() {
+        let foods = [["name":"Alu Mattor Gobi"],
+                     ["name":"Tandoori Mixed Grill"],
+                     ["name":"Vegetable Samosa"],
+                     ["name":"Chana Saag"],
+                     ["name":"Butter Chicken"],
+                     ["name":"Saag Paneer"],
+                     ["name":"Basmati Rice"],
+                     ["name":"Gulab Jaman"],
+                     ["name":"Chicken Curry"],
+                     ["name":"Chana Masala"],
+                     ["name":"Chicken Tikka Masala"]]
+        
+        for food in foods {
+            let foodReference = foodsReference.childByAutoId()
+            foodReference.setValue(food)
+        }
+    }
 }

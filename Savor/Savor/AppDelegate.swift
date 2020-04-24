@@ -31,6 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         SVProgressHUD.setDefaultMaskType(.clear)
         
+        /*Initialize Food Database, remind foods rule writable*/
+//        APIs.Foods.initializeDatabase()
+        
         return true
     }
 
