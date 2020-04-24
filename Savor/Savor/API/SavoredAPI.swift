@@ -62,8 +62,26 @@ class SavoredAPI {
         }
     }
     
-    func getSavoredFoods(in restaurantID: String, completion: @escaping (_ foods: [(String/*foodID*/, Double/*total rating*/, String/*last post id*/)]) -> Void) {
-        
+    func getSavoredFoods(in restaurantID: String, completion: @escaping (_ foods: [(String/*foodID*/, Double/*total rating*/, [String]/*postIDs*/)]) -> Void) {
+        let restaurantReference = savoredReference.child(restaurantID)
+        restaurantReference.observeSingleEvent(of: .value) { (snapshot) in
+            var response: [(String, Double, [String])] = []
+            if let value = snapshot.value as? [String: Any] {
+                for savoredFood in value {
+                    let foodID = savoredFood.key
+                    if let value = savoredFood.value as? [String: Any] {
+                        let posts = value["posts"] as? [String: Double] ?? [:]
+                        let totalRating = value["total_rating"] as? Double ?? 0
+                        var postIDs: [String] = []
+                        for post in posts {
+                            postIDs.append(post.key)
+                        }
+                        response.append((foodID, totalRating, postIDs))
+                    }
+                }
+            }
+            completion(response)
+        }
     }
 }
 

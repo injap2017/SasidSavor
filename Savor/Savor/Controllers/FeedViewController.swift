@@ -229,6 +229,8 @@ extension FeedViewController {
             return
         }
         
+        SVProgressHUD.show(withStatus: "Loading...")
+        
         // load full restaurant data
         // load full food data
         // load all posts
@@ -237,8 +239,6 @@ extension FeedViewController {
         var food: SSFood?
         var postIDs: [String]?
         var totalRating: Double?
-        
-        SVProgressHUD.show(withStatus: "Loading...")
         
         let dispatchGroup = DispatchGroup()
         

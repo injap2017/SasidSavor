@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 enum FeedDetailViewSelector: Int {
     case info
@@ -206,12 +207,53 @@ extension FeedDetailViewController {
             return
         }
         
-        // load all savored foods
-        // load last post, total rating of every food
+        SVProgressHUD.show(withStatus: "Loading...")
         
-        // go to details
-        let viewController = RestaurantDetailViewController.instance(restaurant: restaurant)
-        self.navigationController?.pushViewController(viewController)
+        // load all savored foods
+        APIs.Savored.getSavoredFoods(in: restaurant.restaurantID) { (savoredFoods) in
+            // load food, the total rating and the last post
+            var foods: [String: SSFood] = [:]
+            var lastPosts: [String: SSPost] = [:]
+            
+            let dispatchGroup = DispatchGroup()
+            
+            for savoredFood in savoredFoods {
+                let foodID = savoredFood.0
+                dispatchGroup.enter()
+                APIs.Foods.getFood(of: foodID) { (food) in
+                    foods[foodID] = food
+                    dispatchGroup.leave()
+                }
+                if let lastPostID = savoredFood.2.first {
+                    dispatchGroup.enter()
+                    APIs.Posts.getPost(of: lastPostID) { (post) in
+                        lastPosts[lastPostID] = post
+                        dispatchGroup.leave()
+                    }
+                }
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                var savored: [(SSFood, Double, Int, SSPost)] = []
+                for savoredFood in savoredFoods {
+                    let food = foods[savoredFood.0]
+                    var lastPost: SSPost?
+                    if let lastPostID = savoredFood.2.first {
+                        lastPost = lastPosts[lastPostID]
+                    }
+                    // needs one more time savored
+                    if let food = food, let lastPost = lastPost {
+                        savored.append((food, savoredFood.1, savoredFood.2.count, lastPost))
+                    }
+                }
+                
+                // go to details
+                let viewController = RestaurantDetailViewController.instance(restaurant: restaurant, savoredFoods: savored)
+                self.navigationController?.pushViewController(viewController)
+                
+                SVProgressHUD.dismiss()
+            }
+        }
     }
     
     func didSelectDirectionsToHere(_ tableView: UITableView) {

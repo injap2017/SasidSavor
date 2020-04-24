@@ -25,4 +25,36 @@ class RestaurantItemCell: UITableViewCell {
     // MARK: - Properties
     static let identifier = "RestaurantItemCell"
     static let nib = UINib.init(nibName: "RestaurantItemCell", bundle: nil)
+    
+    var item: (SSFood, Double, Int, SSPost)? {
+        didSet {
+            itemPhotoImageView.image = UIImage.init(named: "image-off-outline")
+            
+            itemTitleLabel.text = nil
+            
+            postCountLabel.text = nil
+            averageScore.rating = 0
+            
+            lastPostDateLabel.text = nil
+            
+            if let item = item {
+                
+                if let photos = item.3.photos,
+                    let first = photos.first,
+                    let fullPath = first["full_url"],
+                    let fullURL = URL.init(string: fullPath) {
+                    itemPhotoImageView.sd_setImage(with: fullURL)
+                }
+                
+                itemTitleLabel.text = item.0.name
+                
+                postCountLabel.text = "\(item.2) posts"
+                averageScore.rating = item.1
+                
+                let timestampDate = Date(timeIntervalSince1970: item.3.timestamp)
+                lastPostDateLabel.text = SavorData.Accessories.timestampText(timestampDate)
+                
+            }
+        }
+    }
 }

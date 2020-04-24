@@ -21,6 +21,7 @@ class RestaurantDetailViewController: UIViewController {
     
     // MARK: - Properties
     var restaurant: SSRestaurant?
+    var savoredFoods: [(SSFood, Double, Int, SSPost)]?
     
     var cells: [((UITableView) -> UITableViewCell, (UITableView) -> Void)] = [] /*(return cell, didSelectAction)*/
     
@@ -45,10 +46,11 @@ extension RestaurantDetailViewController {
 // MARK: - Functions
 extension RestaurantDetailViewController {
     
-    class func instance(restaurant: SSRestaurant) -> RestaurantDetailViewController {
+    class func instance(restaurant: SSRestaurant, savoredFoods: [(SSFood, Double, Int, SSPost)]) -> RestaurantDetailViewController {
         let storyboard = UIStoryboard.init(name: "Detail", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "restaurantDetail") as! RestaurantDetailViewController
         viewController.restaurant = restaurant
+        viewController.savoredFoods = savoredFoods
         return viewController
     }
     
@@ -89,7 +91,7 @@ extension RestaurantDetailViewController: UITableViewDataSource, UITableViewDele
         case .info:
             return self.cells.count
         default:
-            return 1
+            return self.savoredFoods?.count ?? 0
         }
     }
     
@@ -100,6 +102,7 @@ extension RestaurantDetailViewController: UITableViewDataSource, UITableViewDele
             return cell
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: RestaurantItemCell.identifier) as! RestaurantItemCell
+            cell.item = self.savoredFoods![indexPath.row]
             return cell
         }
     }
