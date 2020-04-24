@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import MagazineLayout
+import SVProgressHUD
 
 enum RestaurantDetailViewSelector: Int {
     case info
@@ -22,7 +22,7 @@ class RestaurantDetailViewController: UIViewController {
     
     // MARK: - Properties
     var restaurant: SSRestaurant?
-    var savoredFoods: [(SSFood, Double, Int, SSPost)]?
+    var savoredFoods: [(SSFood, Double, [String], SSPost)]?
     
     var cells: [((UITableView) -> UITableViewCell, (UITableView) -> Void)] = [] /*(return cell, didSelectAction)*/
     
@@ -47,7 +47,7 @@ extension RestaurantDetailViewController {
 // MARK: - Functions
 extension RestaurantDetailViewController {
     
-    class func instance(restaurant: SSRestaurant, savoredFoods: [(SSFood, Double, Int, SSPost)]) -> RestaurantDetailViewController {
+    class func instance(restaurant: SSRestaurant, savoredFoods: [(SSFood, Double, [String], SSPost)]) -> RestaurantDetailViewController {
         let storyboard = UIStoryboard.init(name: "Detail", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "restaurantDetail") as! RestaurantDetailViewController
         viewController.restaurant = restaurant
@@ -118,6 +118,8 @@ extension RestaurantDetailViewController: UITableViewDataSource, UITableViewDele
             tableView.deselectRow(at: indexPath, animated: false)
             self.cells[indexPath.row].1(tableView)
         default:
+            tableView.deselectRow(at: indexPath, animated: false)
+            self.didSelectItem(savoredFoods![indexPath.row])
             break
         }
     }
@@ -175,5 +177,41 @@ extension RestaurantDetailViewController {
     
     func didSelectDirectionsToHere(_ tableView: UITableView) {
         
+    }
+    
+    func didSelectItem(_ item: (SSFood, Double, [String], SSPost)) {
+        guard let restaurant = self.restaurant else {
+            return
+        }
+        
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        // load all posts
+        var posts: [SSPost] = []
+        
+        let dispatchGroup = DispatchGroup()
+        
+        let postIDs = item.2
+        for postID in postIDs {
+            dispatchGroup.enter()
+            APIs.Posts.getPost(of: postID) { (post) in
+                posts.append(post)
+                dispatchGroup.leave()
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            // sort posts by timestamp
+            let sortedPosts = posts.sorted { (first, second) -> Bool in
+                return first.timestamp > second.timestamp
+            }
+            
+            // go to details
+            let viewController = FeedDetailViewController.instance(food: item.0, totalRating: item.1, allFeeds: sortedPosts, restaurant: restaurant)
+            viewController.viewSelector = .posts
+            self.navigationController?.pushViewController(viewController)
+            
+            SVProgressHUD.dismiss()
+        }
     }
 }

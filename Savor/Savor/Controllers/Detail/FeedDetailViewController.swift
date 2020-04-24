@@ -235,7 +235,7 @@ extension FeedDetailViewController {
             }
             
             dispatchGroup.notify(queue: .main) {
-                var savored: [(SSFood, Double, Int, SSPost)] = []
+                var savored: [(SSFood, Double, [String], SSPost)] = []
                 for savoredFood in savoredFoods {
                     let food = foods[savoredFood.0]
                     var lastPost: SSPost?
@@ -244,7 +244,7 @@ extension FeedDetailViewController {
                     }
                     // needs one more time savored
                     if let food = food, let lastPost = lastPost {
-                        savored.append((food, savoredFood.1, savoredFood.2.count, lastPost))
+                        savored.append((food, savoredFood.1, savoredFood.2, lastPost))
                     }
                 }
                 
