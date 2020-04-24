@@ -206,6 +206,9 @@ extension FeedDetailViewController {
             return
         }
         
+        // load all savored foods
+        // load last post, total rating of every food
+        
         // go to details
         let viewController = RestaurantDetailViewController.instance(restaurant: restaurant)
         self.navigationController?.pushViewController(viewController)

@@ -11,26 +11,35 @@ import Firebase
 class SavoredAPI {
     var savoredReference = Database.database().reference().child("savored")
     
-    func savored(foodID: String, restaurantID: String, postID: String, rating: Double, completion: @escaping (_ error: Error?) -> Void) {
+    func savored(foodID: String, in restaurantID: String,
+                 postID: String, rating: Double, timestamp: Double,
+                 completion: @escaping (_ error: Error?) -> Void) {
+        
         let savoredFoodReference = savoredReference.child(restaurantID).child(foodID)
         savoredFoodReference.runTransactionBlock({ (currentData: MutableData) -> TransactionResult in
-            if var savoredfood = currentData.value as? [String: AnyObject] {
-                
-                var posts: Dictionary<String, Bool>
-                posts = savoredfood["posts"] as? [String: Bool] ?? [:]
-                var totalRating = savoredfood["total_rating"] as? Double ?? 0
-                
-                totalRating += rating
-                posts[postID] = true
-                
-                savoredfood["posts"] = posts as AnyObject?
-                savoredfood["total_rating"] = totalRating as AnyObject?
-                
-                currentData.value = savoredfood
-                
-                return TransactionResult.success(withValue: currentData)
+            var savoredFood: [String: AnyObject]
+            var posts: Dictionary<String, Double>
+            var totalRating: Double
+            if let value = currentData.value as? [String: AnyObject] {
+                savoredFood = value
+                posts = value["posts"] as? [String: Double] ?? [:]
+                totalRating = value["total_rating"] as? Double ?? 0
+            } else {
+                savoredFood = [:]
+                posts = [:]
+                totalRating = 0
             }
+            
+            totalRating += rating
+            posts[postID] = timestamp
+            
+            savoredFood["posts"] = posts as AnyObject?
+            savoredFood["total_rating"] = totalRating as AnyObject?
+            
+            currentData.value = savoredFood
+            
             return TransactionResult.success(withValue: currentData)
+            
         }) { (error, committed, snapshot) in
             completion(error)
         }
@@ -40,7 +49,7 @@ class SavoredAPI {
         let savoredFoodReference = savoredReference.child(restaurantID).child(foodID)
         savoredFoodReference.observeSingleEvent(of: .value) { (snapshot) in
             if let value = snapshot.value as? [String: Any],
-                let posts = value["posts"] as? [String: Bool],
+                let posts = value["posts"] as? [String: Double],
                 let totalRating = value["total_rating"] as? Double {
                 var postIDs: [String] = []
                 for post in posts {
@@ -51,6 +60,10 @@ class SavoredAPI {
             }
             completion([], 0)
         }
+    }
+    
+    func getSavoredFoods(in restaurantID: String, completion: @escaping (_ foods: [(String/*foodID*/, Double/*total rating*/, String/*last post id*/)]) -> Void) {
+        
     }
 }
 

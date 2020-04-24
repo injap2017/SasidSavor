@@ -248,11 +248,13 @@ extension FeedViewController {
             dispatchGroup.leave()
         }
         
+        dispatchGroup.enter()
         APIs.Foods.getFood(of: partialFood.foodID) { (_food) in
             food = _food
             dispatchGroup.leave()
         }
         
+        dispatchGroup.enter()
         APIs.Savored.getPostsSavoredFood(partialFood.foodID, in: partialRestaurant.restaurantID) { (_postIDs, _totalRating) in
             postIDs = _postIDs
             totalRating = _totalRating

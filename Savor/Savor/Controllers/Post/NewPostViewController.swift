@@ -338,13 +338,14 @@ extension NewPostViewController {
             }
             
             // set post data
+            let timestamp = Date().timeIntervalSince1970
             let data = ["text": self.descriptionText,
                         "rating": self.rating,
                         "photos": fullURLs,
                         "author": SSUser.currentUser().author(),
                         "restaurant": self.business!.partialDocument(),
                         "food": self.food!.partialDocument(),
-                        "timestamp": ServerValue.timestamp()] as [String: Any]
+                        "timestamp": timestamp] as [String: Any]
             
             postRef.setValue(data)
             
@@ -352,7 +353,7 @@ extension NewPostViewController {
             SavorData.FireBase.rootReference.updateChildValues(["people/\(uid)/posts/\(postID)": true,
                                                                 "feed/\(uid)/\(postID)": true])
             // remark the food savored as rating (calculate total rating, add postID)
-            APIs.Savored.savored(foodID: foodID, restaurantID: restaurantID, postID: postID, rating: self.rating) { (error) in
+            APIs.Savored.savored(foodID: foodID, in: restaurantID, postID: postID, rating: self.rating, timestamp: timestamp) { (error) in
                 if let error = error {
                     print(error)
                     SVProgressHUD.showError(withStatus: error.localizedDescription)
