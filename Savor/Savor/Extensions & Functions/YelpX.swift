@@ -33,6 +33,7 @@ extension CDYelpBusiness {
     func document() -> [String: Any] {
         return [
             "name": self.name ?? NSNull(),
+            "phone": self.phone ?? NSNull(),
             "display_phone": self.displayPhone ?? NSNull(),
             "url": self.url?.absoluteString ?? NSNull(),
             "location": self.location?.document() ?? NSNull(),

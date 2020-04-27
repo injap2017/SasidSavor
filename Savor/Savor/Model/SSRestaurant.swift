@@ -11,6 +11,7 @@ import Firebase
 class SSRestaurant {
     var restaurantID: String
     var name: String
+    var phone: String
     var displayPhone: String
     var url: String
     var location: SSLocation?
@@ -19,6 +20,7 @@ class SSRestaurant {
     init(id: String, value: [String: Any]) {
         self.restaurantID = id
         self.name = value["name"] as? String ?? ""
+        self.phone = value["phone"] as? String ?? ""
         self.displayPhone = value["display_phone"] as? String ?? ""
         self.url = value["url"] as? String ?? ""
         if let locationDictionary = value["location"] as? [String: Any] {

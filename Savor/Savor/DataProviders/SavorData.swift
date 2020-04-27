@@ -8,6 +8,7 @@
 
 import Firebase
 import arek
+import MapKit
 
 class SavorData {
     
@@ -98,6 +99,49 @@ class SavorData {
         
         class func countSuffix(_ count: Int) -> String {
             return (count > 1) ? "s" : ""
+        }
+        
+        class func call(phoneNumber: String, on viewController: UIViewController) {
+            if let phoneURL = NSURL(string: ("tel://" + phoneNumber)) {
+                UIApplication.shared.open(phoneURL as URL, options: [:], completionHandler: nil)
+            }
+        }
+        
+        class func navigate(latitude: Double, longitude: Double, on viewController: UIViewController) {
+            let appleURL = "http://maps.apple.com/?daddr=\(latitude),\(longitude)"
+            let googleURL = "comgooglemaps://?daddr=\(latitude),\(longitude)&directionsmode=driving"
+            let wazeURL = "waze://?ll=\(latitude),\(longitude)&navigate=false"
+            
+            let googleItem = ("Google Map", URL(string:googleURL)!)
+            let wazeItem = ("Waze", URL(string:wazeURL)!)
+            
+            var installedNavigationApps = [("Apple Maps", URL(string:appleURL)!)]
+            
+            if UIApplication.shared.canOpenURL(googleItem.1) {
+                installedNavigationApps.append(googleItem)
+            }
+            
+            if UIApplication.shared.canOpenURL(wazeItem.1) {
+                installedNavigationApps.append(wazeItem)
+            }
+            
+            let alert = UIAlertController(title: "Selection", message: "Select Navigation App", preferredStyle: .actionSheet)
+            for app in installedNavigationApps {
+                let button = UIAlertAction(title: app.0, style: .default, handler: { _ in
+                    UIApplication.shared.open(app.1, options: [:], completionHandler: nil)
+                })
+                alert.addAction(button)
+            }
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alert.addAction(cancel)
+            
+            viewController.present(alert, animated: true)
+        }
+        
+        class func visit(url: URL) {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
         }
     }
 }

@@ -73,11 +73,14 @@ extension RestaurantDetailViewController {
         
         // cells
         if let displayPhone = self.restaurant?.displayPhone,
-            !displayPhone.isWhitespace {
+            !displayPhone.isWhitespace,
+            let phone = self.restaurant?.phone,
+            !phone.isWhitespace{
             self.cells.append((phoneCell, didSelectPhone))
         }
         if let location = self.restaurant?.location,
-            location.displayAddress != nil {
+            location.displayAddress != nil,
+            self.restaurant?.coordinates != nil {
             self.cells.append((addressCell, didSelectAddress))
         }
         if let url = self.restaurant?.url,
@@ -164,7 +167,8 @@ extension RestaurantDetailViewController {
     }
     
     func didSelectPhone(_ tableView: UITableView) {
-        
+        let phoneNumber = self.restaurant!.phone
+        SavorData.Accessories.call(phoneNumber: phoneNumber, on: self)
     }
     
     func didSelectAddress(_ tableView: UITableView) {
@@ -172,11 +176,16 @@ extension RestaurantDetailViewController {
     }
     
     func didSelectHomePage(_ tableView: UITableView) {
-        
+        if let url = URL.init(string: self.restaurant!.url) {
+            SavorData.Accessories.visit(url: url)
+        }
     }
     
     func didSelectDirectionsToHere(_ tableView: UITableView) {
-        
+        let coordinate = self.restaurant!.coordinates
+        let latitude = coordinate!.latitude
+        let longitude = coordinate!.longitude
+        SavorData.Accessories.navigate(latitude: latitude, longitude: longitude, on: self)
     }
     
     func didSelectItem(_ item: (SSFood, Double, [String], SSPost)) {
