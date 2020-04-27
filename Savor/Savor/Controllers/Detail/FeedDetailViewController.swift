@@ -199,7 +199,11 @@ extension FeedDetailViewController {
     }
     
     func didSelectAddress(_ tableView: UITableView) {
-        
+        let coordinate = self.restaurant!.coordinates
+        let latitude = coordinate!.latitude
+        let longitude = coordinate!.longitude
+        let placeName = self.restaurant!.name
+        SavorData.Accessories.openMapForPlace(latitude: latitude, longitude: longitude, placeName: placeName)
     }
     
     func didSelectHomePage(_ tableView: UITableView) {

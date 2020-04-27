@@ -107,6 +107,20 @@ class SavorData {
             }
         }
         
+        class func openMapForPlace(latitude: Double, longitude: Double, placeName: String, addressDictionary: [String: Any]? = nil) {
+            let regionDistance: CLLocationDistance = 100
+            let coordinates = CLLocationCoordinate2DMake(latitude, longitude)
+            let regionSpan = MKCoordinateRegion(center: coordinates, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
+            let options = [
+                MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
+                MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
+            ]
+            let placemark = MKPlacemark(coordinate: coordinates, addressDictionary: addressDictionary)
+            let mapItem = MKMapItem(placemark: placemark)
+            mapItem.name = placeName
+            mapItem.openInMaps(launchOptions: options)
+        }
+        
         class func navigate(latitude: Double, longitude: Double, on viewController: UIViewController) {
             let appleURL = "http://maps.apple.com/?daddr=\(latitude),\(longitude)"
             let googleURL = "comgooglemaps://?daddr=\(latitude),\(longitude)&directionsmode=driving"
