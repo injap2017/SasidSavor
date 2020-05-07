@@ -19,6 +19,10 @@
 		4B22744A2434AAD600EEA3CF /* SSRestaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2274492434AAD600EEA3CF /* SSRestaurant.swift */; };
 		4B22744C2434AB5700EEA3CF /* SSLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B22744B2434AB5700EEA3CF /* SSLocation.swift */; };
 		4B22744E2434AB6800EEA3CF /* SSCoordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B22744D2434AB6800EEA3CF /* SSCoordinates.swift */; };
+		4B248FB22462581E00BFE708 /* LikesAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B248FB12462581E00BFE708 /* LikesAPI.swift */; };
+		4B248FB42462583000BFE708 /* CommentsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B248FB32462583000BFE708 /* CommentsAPI.swift */; };
+		4B248FB6246258E500BFE708 /* SSLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B248FB5246258E500BFE708 /* SSLike.swift */; };
+		4B248FB8246258F500BFE708 /* SSComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B248FB7246258F500BFE708 /* SSComment.swift */; };
 		4B28064123FE970C001E9736 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B28064023FE970C001E9736 /* GoogleService-Info.plist */; };
 		4B28064323FEB104001E9736 /* Authentication.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B28064223FEB104001E9736 /* Authentication.storyboard */; };
 		4B28064623FEB14D001E9736 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B28064523FEB14D001E9736 /* SignInViewController.swift */; };
@@ -57,6 +61,8 @@
 		4BB853E2241A46E3005CE009 /* AddPhotoItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BB853E0241A46E3005CE009 /* AddPhotoItem.xib */; };
 		4BB8CE1523CF108300F40733 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB8CE1423CF108300F40733 /* TabBarController.swift */; };
 		4BB998BC23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB998BB23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift */; };
+		4BBA3FC62461A58000D844D6 /* CommentsLikes.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BBA3FC52461A58000D844D6 /* CommentsLikes.storyboard */; };
+		4BBA3FC82461A64B00D844D6 /* CommentsLikesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA3FC72461A64B00D844D6 /* CommentsLikesViewController.swift */; };
 		4BECB945244DB68200662AE4 /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BECB943244DB68200662AE4 /* DetailCell.swift */; };
 		4BECB946244DB68200662AE4 /* DetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BECB944244DB68200662AE4 /* DetailCell.xib */; };
 		4BECB949244DD57A00662AE4 /* FeedDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BECB947244DD57A00662AE4 /* FeedDetailCell.swift */; };
@@ -79,6 +85,10 @@
 		4B2274492434AAD600EEA3CF /* SSRestaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSRestaurant.swift; sourceTree = "<group>"; };
 		4B22744B2434AB5700EEA3CF /* SSLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLocation.swift; sourceTree = "<group>"; };
 		4B22744D2434AB6800EEA3CF /* SSCoordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSCoordinates.swift; sourceTree = "<group>"; };
+		4B248FB12462581E00BFE708 /* LikesAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesAPI.swift; sourceTree = "<group>"; };
+		4B248FB32462583000BFE708 /* CommentsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsAPI.swift; sourceTree = "<group>"; };
+		4B248FB5246258E500BFE708 /* SSLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLike.swift; sourceTree = "<group>"; };
+		4B248FB7246258F500BFE708 /* SSComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSComment.swift; sourceTree = "<group>"; };
 		4B28064023FE970C001E9736 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4B28064223FEB104001E9736 /* Authentication.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Authentication.storyboard; sourceTree = "<group>"; };
 		4B28064523FEB14D001E9736 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
@@ -119,6 +129,8 @@
 		4BB853E0241A46E3005CE009 /* AddPhotoItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddPhotoItem.xib; sourceTree = "<group>"; };
 		4BB8CE1423CF108300F40733 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4BB998BB23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostPlaceHolderViewController.swift; sourceTree = "<group>"; };
+		4BBA3FC52461A58000D844D6 /* CommentsLikes.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CommentsLikes.storyboard; sourceTree = "<group>"; };
+		4BBA3FC72461A64B00D844D6 /* CommentsLikesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsLikesViewController.swift; sourceTree = "<group>"; };
 		4BECB943244DB68200662AE4 /* DetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCell.swift; sourceTree = "<group>"; };
 		4BECB944244DB68200662AE4 /* DetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailCell.xib; sourceTree = "<group>"; };
 		4BECB947244DD57A00662AE4 /* FeedDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailCell.swift; sourceTree = "<group>"; };
@@ -163,6 +175,8 @@
 				4B227445243445BC00EEA3CF /* RestaurantsAPI.swift */,
 				4B915CB32451A74B00895E4D /* SavoredAPI.swift */,
 				4B915CB52451E4B700895E4D /* FoodsAPI.swift */,
+				4B248FB12462581E00BFE708 /* LikesAPI.swift */,
+				4B248FB32462583000BFE708 /* CommentsAPI.swift */,
 				4B3CE4512435952000BD5B14 /* API.swift */,
 			);
 			path = API;
@@ -226,6 +240,7 @@
 		4B66DE3823A1FA9A00C0F147 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4BBA3FC42461A4E600D844D6 /* Comments and Likes */,
 				4B1B67402448637800145C73 /* Detail */,
 				4B41D389241734BD00C54897 /* Post */,
 				4B29A6EC241738C7004D520E /* More */,
@@ -247,6 +262,8 @@
 				4B2274492434AAD600EEA3CF /* SSRestaurant.swift */,
 				4B497AB52432065000BCEF7C /* SSFood.swift */,
 				4B497AB32431B3C800BCEF7C /* SSUser.swift */,
+				4B248FB5246258E500BFE708 /* SSLike.swift */,
+				4B248FB7246258F500BFE708 /* SSComment.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -312,6 +329,15 @@
 				4B68E57B2421CB4700BA0932 /* Extensions & Functions */,
 			);
 			path = Savor;
+			sourceTree = "<group>";
+		};
+		4BBA3FC42461A4E600D844D6 /* Comments and Likes */ = {
+			isa = PBXGroup;
+			children = (
+				4BBA3FC52461A58000D844D6 /* CommentsLikes.storyboard */,
+				4BBA3FC72461A64B00D844D6 /* CommentsLikesViewController.swift */,
+			);
+			path = "Comments and Likes";
 			sourceTree = "<group>";
 		};
 		B7AAF128EFACC60D5276C7A0 /* Pods */ = {
@@ -391,6 +417,7 @@
 				4BB525EC243AC2B2002FF221 /* FeedSquareItem.xib in Resources */,
 				4B28064123FE970C001E9736 /* GoogleService-Info.plist in Resources */,
 				4BB52A3823FF9B3C006647FF /* ActionCell.xib in Resources */,
+				4BBA3FC62461A58000D844D6 /* CommentsLikes.storyboard in Resources */,
 				4B9E1030239CC7CA0045DBE2 /* Assets.xcassets in Resources */,
 				4BB52A3423FF92F9006647FF /* InputFieldCell.xib in Resources */,
 				4BB853DE241A467F005CE009 /* PhotoItem.xib in Resources */,
@@ -474,10 +501,13 @@
 				4B0451D82449B1B4001B29AA /* FeedDetailHeader.swift in Sources */,
 				4B28064623FEB14D001E9736 /* SignInViewController.swift in Sources */,
 				4B0FBD04240CBC4400B74E7C /* SavorData.swift in Sources */,
+				4B248FB42462583000BFE708 /* CommentsAPI.swift in Sources */,
 				4B22744A2434AAD600EEA3CF /* SSRestaurant.swift in Sources */,
 				4BB52A3323FF92F9006647FF /* InputFieldCell.swift in Sources */,
 				4BB998BC23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift in Sources */,
+				4BBA3FC82461A64B00D844D6 /* CommentsLikesViewController.swift in Sources */,
 				4BB525E7243AC263002FF221 /* FeedListItem.swift in Sources */,
+				4B248FB6246258E500BFE708 /* SSLike.swift in Sources */,
 				4B33815B2428D3C300ED6EB6 /* YelpX.swift in Sources */,
 				4B1B674424486B9400145C73 /* RestaurantDetailViewController.swift in Sources */,
 				4BB525EB243AC2B2002FF221 /* FeedSquareItem.swift in Sources */,
@@ -490,6 +520,7 @@
 				4B9BD45A2450397E00953BC9 /* RestaurantItemCell.swift in Sources */,
 				4B29A6EE241738C7004D520E /* MoreViewController.swift in Sources */,
 				4B227446243445BC00EEA3CF /* RestaurantsAPI.swift in Sources */,
+				4B248FB22462581E00BFE708 /* LikesAPI.swift in Sources */,
 				4B2E9CFC239FF3E0008508CD /* ActivityViewController.swift in Sources */,
 				4B2E9CF6239FF3A5008508CD /* FeedViewController.swift in Sources */,
 				4B28064823FEB171001E9736 /* CreateNewAccountViewController.swift in Sources */,
@@ -499,6 +530,7 @@
 				4B2274482434A52A00EEA3CF /* SSPost.swift in Sources */,
 				4BECB945244DB68200662AE4 /* DetailCell.swift in Sources */,
 				4BB8CE1523CF108300F40733 /* TabBarController.swift in Sources */,
+				4B248FB8246258F500BFE708 /* SSComment.swift in Sources */,
 				4BB853E1241A46E3005CE009 /* AddPhotoItem.swift in Sources */,
 				4B22744E2434AB6800EEA3CF /* SSCoordinates.swift in Sources */,
 				4BB52A3723FF9B3C006647FF /* ActionCell.swift in Sources */,

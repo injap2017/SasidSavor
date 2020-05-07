@@ -11,6 +11,14 @@ import MagazineLayout
 import Cosmos
 import SDWebImage
 
+protocol FeedListItemDelegate {
+    func viewProfile(_ author: SSUser)
+    func viewComments(_ post: SSPost)
+    func viewLikes(_ post: SSPost)
+    func toggleLike(_ post: SSPost)
+    func addComment(_ post: SSPost)
+}
+
 class FeedListItem: MagazineLayoutCollectionViewCell {
     
     // MARK: - IBOutlets
