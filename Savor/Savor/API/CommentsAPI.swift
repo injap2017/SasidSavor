@@ -25,11 +25,19 @@ class CommentsAPI {
         return handler
     }
     
-    func commented(postID: String, text: String, timestamp: Double, completion: @escaping () -> Void) {
+    func commented(postID: String, text: String, timestamp: Double) {
+        let commentReference = commentsReference.child(postID).childByAutoId()
         
+        let data = ["text": text,
+                    "author": SSUser.currentUser().author(),
+                    "timestamp": timestamp] as [String: Any]
+        
+        commentReference.setValue(data)
     }
     
-    func uncommented(postID: String, commentID: String, completion: @escaping () -> Void) {
+    func uncommented(postID: String, commentID: String) {
+        let commentReference = commentsReference.child(postID).child(commentID)
         
+        commentReference.removeValue()
     }
 }

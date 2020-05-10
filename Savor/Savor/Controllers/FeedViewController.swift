@@ -293,6 +293,30 @@ extension FeedViewController {
     }
 }
 
+// MARK: - FeedListItem Delegate
+extension FeedViewController: FeedListItemDelegate {
+    
+    func viewProfile(_ author: SSUser) {
+        print("view profile")
+    }
+    
+    func viewComments(_ post: SSPost) {
+        print("view comments")
+    }
+    
+    func viewLikes(_ post: SSPost) {
+        print("view likes")
+    }
+    
+    func toggleLike(_ post: SSPost) {
+        print("toggle like")
+    }
+    
+    func addComment(_ post: SSPost) {
+        print("add comment")
+    }
+}
+
 // MARK: - UICollectionView
 extension FeedViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
@@ -306,6 +330,7 @@ extension FeedViewController: UICollectionViewDataSource, UICollectionViewDelega
             let item = collectionView.dequeueReusableCell(withReuseIdentifier: FeedListItem.identifier, for: indexPath) as! FeedListItem
             let post = self.posts[indexPath.row]
             item.feed = post
+            item.delegate = self
             return item
         default:
             let item = collectionView.dequeueReusableCell(withReuseIdentifier: FeedSquareItem.identifier, for: indexPath) as! FeedSquareItem

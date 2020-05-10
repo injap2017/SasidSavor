@@ -44,6 +44,8 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
     static let identifier = "FeedListItem"
     static let nib = UINib.init(nibName: "FeedListItem", bundle: nil)
     
+    var delegate: FeedListItemDelegate?
+    
     var feed: SSPost? {
         didSet {
             postPhotoImageView.image = UIImage.init(named: "image-off-outline")
@@ -121,18 +123,27 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
 extension FeedListItem {
     
     @IBAction func user(_ sender: UIButton) {
-        print("user")
+        if let delegate = self.delegate,
+            let user = self.feed?.author {
+            delegate.viewProfile(user)
+        }
     }
     
     @IBAction func commentsLikes(_ sender: UIButton) {
-        print("comments and likes")
+        
     }
     
     @IBAction func like(_ sender: UIButton) {
-        print("like")
+        if let delegate = self.delegate,
+            let feed = self.feed {
+            delegate.toggleLike(feed)
+        }
     }
     
     @IBAction func comment(_ sender: UIButton) {
-        print("comment")
+        if let delegate = self.delegate,
+            let feed = self.feed {
+            delegate.addComment(feed)
+        }
     }
 }

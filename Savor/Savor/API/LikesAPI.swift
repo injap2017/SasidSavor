@@ -25,11 +25,18 @@ class LikesAPI {
         return handler
     }
     
-    func liked(postID: String, timestamp: Double, completion: @escaping () -> Void) {
+    func liked(postID: String, timestamp: Double) {
+        let likeReference = likesReference.child(postID).childByAutoId()
         
+        let data = ["author": SSUser.currentUser().author(),
+                    "timestamp": timestamp] as [String: Any]
+        
+        likeReference.setValue(data)
     }
     
-    func unliked(postID: String, likeID: String, completion: @escaping () -> Void) {
+    func unliked(postID: String, likeID: String) {
+        let likeReference = likesReference.child(postID).child(likeID)
         
+        likeReference.removeValue()
     }
 }
