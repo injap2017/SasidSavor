@@ -175,6 +175,8 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
                     } else {
                         if let likedHandle = self.likedHandle, let userID = self.userID {
                             APIs.People.removeLikedObserver(ofPost: feed.postID, fromUser: userID, withHandle: likedHandle)
+                            self.likedHandle = nil
+                            self.userID = nil
                             
                             self.isLikeActionAvailable = false
                             self.liked = false
@@ -214,14 +216,21 @@ extension FeedListItem {
         if let feed = self.feed {
             if let likeCountHandle = self.likeCountHandle {
                 APIs.Likes.removeLikeCountObserver(of: feed.postID, withHandle: likeCountHandle)
+                
+                self.likeCountHandle = nil
             }
             if let likedHandle = self.likedHandle, let userID = self.userID {
                 APIs.People.removeLikedObserver(ofPost: feed.postID, fromUser: userID, withHandle: likedHandle)
+                
+                self.likedHandle = nil
+                self.userID = nil
             }
         }
         
         if let handle = self.handle {
             Auth.auth().removeStateDidChangeListener(handle)
+            
+            self.handle = nil
         }
 /*
         if let commentCountHandle = self.commentCountHandle {
