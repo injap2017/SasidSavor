@@ -11,16 +11,16 @@ import Firebase
 class LikesAPI {
     var likesReference = Database.database().reference().child("likes")
     
-    func removeObserver(withHandle handle: UInt) {
-        likesReference.removeObserver(withHandle: handle)
-    }
-    
     func observeLikeCount(of id: String, completion: @escaping (Int) -> Void) -> UInt {
         let likeCountHandle = likesReference.child(id).child("like_count").observe(.value) { (snapshot) in
             let likeCount = snapshot.value as? Int ?? 0
             completion(likeCount)
         }
         return likeCountHandle
+    }
+    
+    func removeLikeCountObserver(of id: String, withHandle handle: UInt) {
+        likesReference.child(id).child("like_count").removeObserver(withHandle: handle)
     }
     
     func setLikeCount(of id: String, to likeCount: Int) {

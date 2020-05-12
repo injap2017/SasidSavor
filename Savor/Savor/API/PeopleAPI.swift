@@ -11,16 +11,16 @@ import Firebase
 class PeopleAPI {
     var peopleReference = Database.database().reference().child("people")
     
-    func removeObserver(withHandle handle: UInt) {
-        peopleReference.removeObserver(withHandle: handle)
-    }
-    
     func observeLiked(ofPost postID: String, fromUser userID: String, completion: @escaping (Bool) -> Void) -> UInt {
         let likedHandle = peopleReference.child(userID).child("likes").child(postID).observe(.value) { (snapshot) in
             let liked = snapshot.value as? Bool ?? false
             completion(liked)
         }
         return likedHandle
+    }
+    
+    func removeLikedObserver(ofPost postID: String, fromUser userID: String, withHandle handle: UInt) {
+        peopleReference.child(userID).child("likes").child(postID).removeObserver(withHandle: handle)
     }
     
     func Liked(postID: String) {

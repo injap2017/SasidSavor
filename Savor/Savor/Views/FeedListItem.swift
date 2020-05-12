@@ -48,6 +48,7 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
     var delegate: FeedListItemDelegate?
     
     private var handle: AuthStateDidChangeListenerHandle?
+    private var userID: String?
     
     private var likeCountHandle: UInt?
     private var likedHandle: UInt?
@@ -130,6 +131,8 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
             commented = false
             isCommentActionAvailable = false
             
+            removeAllObservers()
+            
             if let feed = self.feed {
                 
                 if let photos = feed.photos,
@@ -152,35 +155,37 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
                 likeCountHandle = APIs.Likes.observeLikeCount(of: feed.postID) { (count) in
                     self.likeCount = count
                 }
-                
+/*
                 commentCountHandle = APIs.Comments.observeCommentCount(of: feed.postID) { (count) in
                     self.commentCount = count
                 }
-                
+                */
                 Auth.auth().addStateDidChangeListener { (auth, user) in
                     if SavorData.FireBase.isAuthenticated {
-                        self.likedHandle = APIs.People.observeLiked(ofPost: feed.postID, fromUser: SSUser.currentUser().uid) { (liked) in
+                        self.userID = SSUser.currentUser().uid
+                        self.likedHandle = APIs.People.observeLiked(ofPost: feed.postID, fromUser: self.userID!) { (liked) in
                             self.isLikeActionAvailable = true
                             self.liked = liked
                         }
-                        
+                        /*
                         self.commentedHandle = APIs.People.observeCommented(ofPost: feed.postID, fromUser: SSUser.currentUser().uid) { (commented) in
                             self.isCommentActionAvailable = true
                             self.commented = commented
-                        }
+                        }*/
                     } else {
-                        if let likedHandle = self.likedHandle {
-                            APIs.People.removeObserver(withHandle: likedHandle)
+                        if let likedHandle = self.likedHandle, let userID = self.userID {
+                            APIs.People.removeLikedObserver(ofPost: feed.postID, fromUser: userID, withHandle: likedHandle)
                             
                             self.isLikeActionAvailable = false
                             self.liked = false
                         }
+                        /*
                         if let commentedHandle = self.commentedHandle {
                             APIs.People.removeObserver(withHandle: commentedHandle)
                             
                             self.isCommentActionAvailable = false
                             self.commented = false
-                        }
+                        }*/
                     }
                 }
             }
@@ -188,18 +193,40 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
     }
     
     deinit {
-        if let likeCountHandle = self.likeCountHandle {
-            APIs.Likes.removeObserver(withHandle: likeCountHandle)
+        self.removeAllObservers()
+    }
+}
+
+// MARK: - Lifecycle
+extension FeedListItem {
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.removeAllObservers()
+    }
+}
+
+// MARK: - Functions
+extension FeedListItem {
+    
+    func removeAllObservers() {
+        if let feed = self.feed {
+            if let likeCountHandle = self.likeCountHandle {
+                APIs.Likes.removeLikeCountObserver(of: feed.postID, withHandle: likeCountHandle)
+            }
+            if let likedHandle = self.likedHandle, let userID = self.userID {
+                APIs.People.removeLikedObserver(ofPost: feed.postID, fromUser: userID, withHandle: likedHandle)
+            }
         }
-        if let likedHandle = self.likedHandle {
-            APIs.People.removeObserver(withHandle: likedHandle)
-        }
+
+/*
         if let commentCountHandle = self.commentCountHandle {
             APIs.Comments.removeObserver(withHandle: commentCountHandle)
         }
         if let commentedHandle = self.commentedHandle {
             APIs.People.removeObserver(withHandle: commentedHandle)
-        }
+        }*/
     }
 }
 
