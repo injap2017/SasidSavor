@@ -10,6 +10,7 @@ import UIKit
 import MagazineLayout
 import Cosmos
 import SDWebImage
+import Firebase
 
 protocol FeedListItemDelegate {
     func viewProfile(_ author: SSUser)
@@ -46,6 +47,68 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
     
     var delegate: FeedListItemDelegate?
     
+    private var handle: AuthStateDidChangeListenerHandle?
+    
+    private var likeCountHandle: UInt?
+    private var likedHandle: UInt?
+    
+    var isLikeActionAvailable: Bool = false {
+        didSet {
+            likeButton.isHidden = !isLikeActionAvailable
+        }
+    }
+    
+    var likeCount: Int = 0 {
+        didSet {
+            if likeCount > 0 {
+                self.likesImageView.isHidden = false
+                self.likesCountLabel.isHidden = false
+                self.likesCountLabel.text = "\(likeCount)"
+            } else {
+                likesImageView.isHidden = true
+                likesCountLabel.isHidden = true
+                likesCountLabel.text = nil
+            }
+        }
+    }
+    
+    var liked: Bool = false {
+        didSet {
+            likeButton.setImage(liked ? UIImage.init(named: "heart-red") : UIImage.init(named: "heart-outline-gray"), for: .normal)
+            likesImageView.image = liked ? UIImage.init(named: "heart-red") : UIImage.init(named: "heart-gray")
+        }
+    }
+    
+    private var commentCountHandle: UInt?
+    private var commentedHandle: UInt?
+    
+    var isCommentActionAvailable: Bool = false {
+        didSet {
+            commentButton.isHidden = !isCommentActionAvailable
+        }
+    }
+    
+    var commentCount: Int = 0 {
+        didSet {
+            if commentCount > 0 {
+                commentsImageView.isHidden = false
+                commentsCountLabel.isHidden = false
+                commentsCountLabel.text = "\(commentCount)"
+            } else {
+                commentsImageView.isHidden = true
+                commentsCountLabel.isHidden = true
+                commentsCountLabel.text = nil
+            }
+        }
+    }
+    
+    var commented: Bool = false {
+        didSet {
+            commentButton.setImage(commented ? UIImage.init(named: "chat-green") : UIImage.init(named: "chat-outline-gray"), for: .normal)
+            commentsImageView.image = commented ? UIImage.init(named: "chat-green") : UIImage.init(named: "chat-gray")
+        }
+    }
+    
     var feed: SSPost? {
         didSet {
             postPhotoImageView.image = UIImage.init(named: "image-off-outline")
@@ -59,18 +122,13 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
             
             postDateLabel.text = nil
             
-            commentsImageView.isHidden = true
-            commentsImageView.image = UIImage.init(named: "chat-gray")
-            commentsCountLabel.isHidden = true
-            commentsCountLabel.text = nil
+            likeCount = 0
+            liked = false
+            isLikeActionAvailable = false
             
-            likesImageView.isHidden = true
-            likesImageView.image = UIImage.init(named: "heart-gray")
-            likesCountLabel.isHidden = true
-            likesCountLabel.text = nil
-            
-            commentButton.setImage(UIImage.init(named: "chat-outline-gray"), for: .normal)
-            likeButton.setImage(UIImage.init(named: "heart-outline-gray"), for: .normal)
+            commentCount = 0
+            commented = false
+            isCommentActionAvailable = false
             
             if let feed = self.feed {
                 
@@ -90,31 +148,57 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
                 
                 let timestampDate = Date(timeIntervalSince1970: feed.timestamp)
                 postDateLabel.text = SavorData.Accessories.timestampText(timestampDate)
-/*
-                if feed.comments_count > 0 {
-                    commentsImageView.isHidden = false
-                    
-                    commentsCountLabel.isHidden = false
-                    commentsCountLabel.text = "\(feed.comments_count)"
+                
+                likeCountHandle = APIs.Likes.observeLikeCount(of: feed.postID) { (count) in
+                    self.likeCount = count
                 }
                 
-                if feed.likes_count > 0 {
-                    likesImageView.isHidden = false
-                    likesCountLabel.isHidden = false
-                    likesCountLabel.text = "\(feed.likes_count)"
+                commentCountHandle = APIs.Comments.observeCommentCount(of: feed.postID) { (count) in
+                    self.commentCount = count
                 }
                 
-                if feed.commented_by_u {
-                    commentButton.setImage(UIImage.init(named: "chat-green"), for: .normal)
-                    commentsImageView.image = UIImage.init(named: "chat-green")
+                Auth.auth().addStateDidChangeListener { (auth, user) in
+                    if SavorData.FireBase.isAuthenticated {
+                        self.likedHandle = APIs.People.observeLiked(ofPost: feed.postID, fromUser: SSUser.currentUser().uid) { (liked) in
+                            self.isLikeActionAvailable = true
+                            self.liked = liked
+                        }
+                        
+                        self.commentedHandle = APIs.People.observeCommented(ofPost: feed.postID, fromUser: SSUser.currentUser().uid) { (commented) in
+                            self.isCommentActionAvailable = true
+                            self.commented = commented
+                        }
+                    } else {
+                        if let likedHandle = self.likedHandle {
+                            APIs.People.removeObserver(withHandle: likedHandle)
+                            
+                            self.isLikeActionAvailable = false
+                            self.liked = false
+                        }
+                        if let commentedHandle = self.commentedHandle {
+                            APIs.People.removeObserver(withHandle: commentedHandle)
+                            
+                            self.isCommentActionAvailable = false
+                            self.commented = false
+                        }
+                    }
                 }
-                
-                if feed.liked_by_u {
-                    likeButton.setImage(UIImage.init(named: "heart-red"), for: .normal)
-                    likesImageView.image = UIImage.init(named: "heart-red")
-                }
- */
             }
+        }
+    }
+    
+    deinit {
+        if let likeCountHandle = self.likeCountHandle {
+            APIs.Likes.removeObserver(withHandle: likeCountHandle)
+        }
+        if let likedHandle = self.likedHandle {
+            APIs.People.removeObserver(withHandle: likedHandle)
+        }
+        if let commentCountHandle = self.commentCountHandle {
+            APIs.Comments.removeObserver(withHandle: commentCountHandle)
+        }
+        if let commentedHandle = self.commentedHandle {
+            APIs.People.removeObserver(withHandle: commentedHandle)
         }
     }
 }
@@ -134,16 +218,30 @@ extension FeedListItem {
     }
     
     @IBAction func like(_ sender: UIButton) {
-        if let delegate = self.delegate,
-            let feed = self.feed {
-            delegate.toggleLike(feed)
+        if let feed = self.feed, isLikeActionAvailable {
+            sender.isEnabled = false
+            if self.liked {
+                APIs.Likes.unliked(postID: feed.postID)
+                APIs.People.unliked(postID: feed.postID)
+                APIs.Likes.setLikeCount(of: feed.postID, to: self.likeCount-1)
+            } else {
+                let timestamp = Date().timeIntervalSince1970
+                APIs.Likes.Liked(postID: feed.postID, timestamp: timestamp)
+                APIs.People.Liked(postID: feed.postID)
+                APIs.Likes.setLikeCount(of: feed.postID, to: self.likeCount+1)
+            }
+            sender.isEnabled = true
         }
     }
     
     @IBAction func comment(_ sender: UIButton) {
-        if let delegate = self.delegate,
-            let feed = self.feed {
-            delegate.addComment(feed)
+        if let feed = self.feed, isCommentActionAvailable {
+            sender.isEnabled = false
+            let timestamp = Date().timeIntervalSince1970
+            let commentID = APIs.Comments.commented(postID: feed.postID, text: "its is very delicious", timestamp: timestamp)
+            APIs.People.commented(postID: feed.postID, commentID: commentID)
+            APIs.Comments.setCommentCount(of: feed.postID, to: self.commentCount+1)
+            sender.isEnabled = true
         }
     }
 }

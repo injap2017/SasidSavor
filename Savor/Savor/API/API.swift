@@ -13,4 +13,8 @@ struct APIs {
     static var Restaurants = RestaurantsAPI()
     static var Savored = SavoredAPI()
     static var Foods = FoodsAPI()
+    static var Likes = LikesAPI()
+    static var Comments = CommentsAPI()
+    static var CommentCollection = CommentCollectionAPI()
+    static var People = PeopleAPI()
 }

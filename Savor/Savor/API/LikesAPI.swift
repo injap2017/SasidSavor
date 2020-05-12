@@ -11,31 +11,32 @@ import Firebase
 class LikesAPI {
     var likesReference = Database.database().reference().child("likes")
     
-    func observeLikesPost(_ postID: String, completion: @escaping ([SSLike]) -> Void) -> UInt {
-        let likesPostReference = likesReference.child(postID)
-        let handler = likesPostReference.observe(.value) { (snapshot) in
-            var likes: [SSLike] = []
-            for child in snapshot.children {
-                let snapshot = child as! DataSnapshot
-                let like = SSLike.init(snapshot: snapshot)
-                likes.append(like)
-            }
-            completion(likes)
+    func removeObserver(withHandle handle: UInt) {
+        likesReference.removeObserver(withHandle: handle)
+    }
+    
+    func observeLikeCount(of id: String, completion: @escaping (Int) -> Void) -> UInt {
+        let likeCountHandle = likesReference.child(id).child("like_count").observe(.value) { (snapshot) in
+            let likeCount = snapshot.value as? Int ?? 0
+            completion(likeCount)
         }
-        return handler
+        return likeCountHandle
     }
     
-    func liked(postID: String, timestamp: Double) {
-        let likeReference = likesReference.child(postID).childByAutoId()
-        
-        let data = ["author": SSUser.currentUser().author(),
-                    "timestamp": timestamp] as [String: Any]
-        
-        likeReference.setValue(data)
+    func setLikeCount(of id: String, to likeCount: Int) {
+        likesReference.child(id).child("like_count").setValue(likeCount)
     }
     
-    func unliked(postID: String, likeID: String) {
-        let likeReference = likesReference.child(postID).child(likeID)
+    func Liked(postID: String, timestamp: Double) {
+        let userID = SSUser.currentUser().uid
+        let likeReference = likesReference.child(postID).child("likes").child(userID)
+        
+        likeReference.setValue(timestamp)
+    }
+    
+    func unliked(postID: String) {
+        let userID = SSUser.currentUser().uid
+        let likeReference = likesReference.child(postID).child("likes").child(userID)
         
         likeReference.removeValue()
     }

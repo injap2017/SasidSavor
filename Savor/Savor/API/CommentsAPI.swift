@@ -11,32 +11,38 @@ import Firebase
 class CommentsAPI {
     var commentsReference = Database.database().reference().child("comments")
     
-    func observeCommentsPost(_ postID: String, completion: @escaping ([SSComment]) -> Void) -> UInt {
-        let commentsPostReference = commentsReference.child(postID)
-        let handler = commentsPostReference.observe(.value) { (snapshot) in
-            var comments: [SSComment] = []
-            for child in snapshot.children {
-                let snapshot = child as! DataSnapshot
-                let comment = SSComment.init(snapshot: snapshot)
-                comments.append(comment)
-            }
-            completion(comments)
-        }
-        return handler
+    func removeObserver(withHandle handle: UInt) {
+        commentsReference.removeObserver(withHandle: handle)
     }
     
-    func commented(postID: String, text: String, timestamp: Double) {
-        let commentReference = commentsReference.child(postID).childByAutoId()
+    func observeCommentCount(of id: String, completion: @escaping (Int) -> Void) -> UInt {
+        let commentCountHandle = commentsReference.child(id).child("comment_count").observe(.value) { (snapshot) in
+            let commentCount = snapshot.value as? Int ?? 0
+            completion(commentCount)
+        }
+        return commentCountHandle
+    }
+    
+    func setCommentCount(of id: String, to commentCount: Int) {
+        commentsReference.child(id).child("comment_count").setValue(commentCount)
+    }
+    
+    func commented(postID: String, text: String, timestamp: Double) -> String {
+        let commentID = APIs.CommentCollection.commented(text: text, timestamp: timestamp)
         
-        let data = ["text": text,
-                    "author": SSUser.currentUser().author(),
-                    "timestamp": timestamp] as [String: Any]
+        let userID = SSUser.currentUser().uid
+        let commentReference = commentsReference.child(postID).child("comments").child(userID).child(commentID)
         
-        commentReference.setValue(data)
+        commentReference.setValue(timestamp)
+        
+        return commentID
     }
     
     func uncommented(postID: String, commentID: String) {
-        let commentReference = commentsReference.child(postID).child(commentID)
+        APIs.CommentCollection.uncommented(commentID: commentID)
+        
+        let userID = SSUser.currentUser().uid
+        let commentReference = commentsReference.child(postID).child("comments").child(userID).child(commentID)
         
         commentReference.removeValue()
     }
