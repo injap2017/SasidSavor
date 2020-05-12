@@ -160,7 +160,7 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
                     self.commentCount = count
                 }
                 */
-                Auth.auth().addStateDidChangeListener { (auth, user) in
+                handle = Auth.auth().addStateDidChangeListener { (auth, user) in
                     if SavorData.FireBase.isAuthenticated {
                         self.userID = SSUser.currentUser().uid
                         self.likedHandle = APIs.People.observeLiked(ofPost: feed.postID, fromUser: self.userID!) { (liked) in
@@ -219,7 +219,10 @@ extension FeedListItem {
                 APIs.People.removeLikedObserver(ofPost: feed.postID, fromUser: userID, withHandle: likedHandle)
             }
         }
-
+        
+        if let handle = self.handle {
+            Auth.auth().removeStateDidChangeListener(handle)
+        }
 /*
         if let commentCountHandle = self.commentCountHandle {
             APIs.Comments.removeObserver(withHandle: commentCountHandle)

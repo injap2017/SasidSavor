@@ -16,10 +16,12 @@ class PeopleAPI {
             let liked = snapshot.value as? Bool ?? false
             completion(liked)
         }
+        print("people observe:\(likedHandle), post:\(postID), userID:\(userID)")
         return likedHandle
     }
     
     func removeLikedObserver(ofPost postID: String, fromUser userID: String, withHandle handle: UInt) {
+        print("people remove observer:\(handle), post:\(postID), userID:\(userID)")
         peopleReference.child(userID).child("likes").child(postID).removeObserver(withHandle: handle)
     }
     
