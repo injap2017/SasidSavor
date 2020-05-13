@@ -16,7 +16,6 @@ protocol FeedListItemDelegate {
     func viewProfile(_ author: SSUser)
     func viewComments(_ post: SSPost)
     func viewLikes(_ post: SSPost)
-    func toggleLike(_ post: SSPost)
     func addComment(_ post: SSPost)
 }
 
@@ -255,18 +254,30 @@ extension FeedListItem {
 extension FeedListItem {
     
     @IBAction func user(_ sender: UIButton) {
-        if let delegate = self.delegate,
-            let user = self.feed?.author {
+        if let feed = self.feed,
+            let delegate = self.delegate,
+            let user = feed.author {
             delegate.viewProfile(user)
         }
     }
     
     @IBAction func commentsLikes(_ sender: UIButton) {
-        
+        if let feed = self.feed,
+            let delegate = self.delegate {
+            if self.commentCount > 0 {
+                delegate.viewComments(feed)
+                return
+            }
+            if self.likeCount > 0 {
+                delegate.viewLikes(feed)
+                return
+            }
+        }
     }
     
     @IBAction func like(_ sender: UIButton) {
-        if let feed = self.feed, isLikeActionAvailable {
+        if let feed = self.feed,
+            isLikeActionAvailable {
             sender.isEnabled = false
             if self.liked {
                 APIs.Likes.unliked(postID: feed.postID)
@@ -283,13 +294,10 @@ extension FeedListItem {
     }
     
     @IBAction func comment(_ sender: UIButton) {
-        if let feed = self.feed, isCommentActionAvailable {
-            sender.isEnabled = false
-            let timestamp = Date().timeIntervalSince1970
-            let commentID = APIs.Comments.commented(postID: feed.postID, text: "its is very delicious", timestamp: timestamp)
-            APIs.People.commented(postID: feed.postID, commentID: commentID)
-            APIs.Comments.setCommentCount(of: feed.postID, to: self.commentCount+1)
-            sender.isEnabled = true
+        if let feed = self.feed,
+            isCommentActionAvailable,
+            let delegate = self.delegate {
+            delegate.addComment(feed)
         }
     }
 }

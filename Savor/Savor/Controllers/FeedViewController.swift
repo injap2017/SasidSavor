@@ -301,15 +301,15 @@ extension FeedViewController: FeedListItemDelegate {
     }
     
     func viewComments(_ post: SSPost) {
-        print("view comments")
+        let viewController = CommentsLikesViewController.instance()
+        viewController.viewSelector = .comments
+        self.navigationController?.pushViewController(viewController)
     }
     
     func viewLikes(_ post: SSPost) {
-        print("view likes")
-    }
-    
-    func toggleLike(_ post: SSPost) {
-        print("toggle like")
+        let viewController = CommentsLikesViewController.instance()
+        viewController.viewSelector = .likes
+        self.navigationController?.pushViewController(viewController)
     }
     
     func addComment(_ post: SSPost) {
