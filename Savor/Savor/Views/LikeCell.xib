@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="56" id="KGk-i7-Jjw" customClass="LikeCell" customModule="SasiSavor" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bJg-nO-Fhx" customClass="DCCircleView" customModule="DCKit">
+                        <rect key="frame" x="8" y="8" width="40" height="40"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="account" translatesAutoresizingMaskIntoConstraints="NO" id="9zb-Vr-xKH">
+                                <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="9zb-Vr-xKH" firstAttribute="leading" secondItem="bJg-nO-Fhx" secondAttribute="leading" id="Nbr-ub-3sp"/>
+                            <constraint firstAttribute="bottom" secondItem="9zb-Vr-xKH" secondAttribute="bottom" id="glj-0n-yQ7"/>
+                            <constraint firstItem="9zb-Vr-xKH" firstAttribute="top" secondItem="bJg-nO-Fhx" secondAttribute="top" id="pni-Kd-qsP"/>
+                            <constraint firstAttribute="width" constant="40" id="rdW-Ud-UCe"/>
+                            <constraint firstAttribute="height" constant="40" id="sEe-lX-kY2"/>
+                            <constraint firstAttribute="trailing" secondItem="9zb-Vr-xKH" secondAttribute="trailing" id="yEX-Kg-GDJ"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xXg-96-H8T">
+                        <rect key="frame" x="56" y="8" width="59" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="17" id="c7K-Yh-yxG"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                        <state key="normal" title="edgarsia"/>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edgar Sia. Huh" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rA4-2S-uxj">
+                        <rect key="frame" x="56" y="29" width="95.5" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="xXg-96-H8T" firstAttribute="top" secondItem="bJg-nO-Fhx" secondAttribute="top" id="AcD-W2-bF1"/>
+                    <constraint firstItem="rA4-2S-uxj" firstAttribute="leading" secondItem="xXg-96-H8T" secondAttribute="leading" id="El5-AY-EPk"/>
+                    <constraint firstItem="bJg-nO-Fhx" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="FJz-ae-c1H"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="bJg-nO-Fhx" secondAttribute="bottom" constant="8" id="Sp5-JE-Lwf"/>
+                    <constraint firstItem="rA4-2S-uxj" firstAttribute="top" secondItem="xXg-96-H8T" secondAttribute="bottom" constant="4" id="cjb-Jl-JK7"/>
+                    <constraint firstItem="bJg-nO-Fhx" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="eEP-jt-6uh"/>
+                    <constraint firstItem="xXg-96-H8T" firstAttribute="leading" secondItem="bJg-nO-Fhx" secondAttribute="trailing" constant="8" id="tF6-1p-ZH4"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="userFullNameLabel" destination="rA4-2S-uxj" id="5hj-7G-Zei"/>
+                <outlet property="userNameButton" destination="xXg-96-H8T" id="bFb-Zk-tb6"/>
+                <outlet property="userPhotoImageView" destination="9zb-Vr-xKH" id="HD7-r8-Ywu"/>
+            </connections>
+            <point key="canvasLocation" x="131.8840579710145" y="135.9375"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="account" width="120" height="120"/>
+    </resources>
+</document>

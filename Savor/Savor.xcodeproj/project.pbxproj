@@ -39,6 +39,12 @@
 		4B3CE4522435952000BD5B14 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3CE4512435952000BD5B14 /* API.swift */; };
 		4B497AB42431B3C800BCEF7C /* SSUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B497AB32431B3C800BCEF7C /* SSUser.swift */; };
 		4B497AB62432065000BCEF7C /* SSFood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B497AB52432065000BCEF7C /* SSFood.swift */; };
+		4B5C236A246C2F07001CBC20 /* CommentsPostDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5C2368246C2F07001CBC20 /* CommentsPostDetailCell.swift */; };
+		4B5C236B246C2F07001CBC20 /* CommentsPostDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B5C2369246C2F07001CBC20 /* CommentsPostDetailCell.xib */; };
+		4B5C236E246C2F87001CBC20 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5C236C246C2F87001CBC20 /* CommentCell.swift */; };
+		4B5C236F246C2F87001CBC20 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B5C236D246C2F87001CBC20 /* CommentCell.xib */; };
+		4B5C2372246C2FD2001CBC20 /* LikeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5C2370246C2FD2001CBC20 /* LikeCell.swift */; };
+		4B5C2373246C2FD2001CBC20 /* LikeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B5C2371246C2FD2001CBC20 /* LikeCell.xib */; };
 		4B68E57F2421CDDA00BA0932 /* UITextViewX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B68E57E2421CDDA00BA0932 /* UITextViewX.swift */; };
 		4B915CB42451A74B00895E4D /* SavoredAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B915CB32451A74B00895E4D /* SavoredAPI.swift */; };
 		4B915CB62451E4B700895E4D /* FoodsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B915CB52451E4B700895E4D /* FoodsAPI.swift */; };
@@ -107,6 +113,12 @@
 		4B3CE4512435952000BD5B14 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		4B497AB32431B3C800BCEF7C /* SSUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSUser.swift; sourceTree = "<group>"; };
 		4B497AB52432065000BCEF7C /* SSFood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSFood.swift; sourceTree = "<group>"; };
+		4B5C2368246C2F07001CBC20 /* CommentsPostDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsPostDetailCell.swift; sourceTree = "<group>"; };
+		4B5C2369246C2F07001CBC20 /* CommentsPostDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentsPostDetailCell.xib; sourceTree = "<group>"; };
+		4B5C236C246C2F87001CBC20 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
+		4B5C236D246C2F87001CBC20 /* CommentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
+		4B5C2370246C2FD2001CBC20 /* LikeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeCell.swift; sourceTree = "<group>"; };
+		4B5C2371246C2FD2001CBC20 /* LikeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LikeCell.xib; sourceTree = "<group>"; };
 		4B68E57E2421CDDA00BA0932 /* UITextViewX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextViewX.swift; sourceTree = "<group>"; };
 		4B915CB32451A74B00895E4D /* SavoredAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavoredAPI.swift; sourceTree = "<group>"; };
 		4B915CB52451E4B700895E4D /* FoodsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodsAPI.swift; sourceTree = "<group>"; };
@@ -239,6 +251,12 @@
 				4BECB948244DD57A00662AE4 /* FeedDetailCell.xib */,
 				4B9BD4582450397E00953BC9 /* RestaurantItemCell.swift */,
 				4B9BD4592450397E00953BC9 /* RestaurantItemCell.xib */,
+				4B5C2368246C2F07001CBC20 /* CommentsPostDetailCell.swift */,
+				4B5C2369246C2F07001CBC20 /* CommentsPostDetailCell.xib */,
+				4B5C236C246C2F87001CBC20 /* CommentCell.swift */,
+				4B5C236D246C2F87001CBC20 /* CommentCell.xib */,
+				4B5C2370246C2FD2001CBC20 /* LikeCell.swift */,
+				4B5C2371246C2FD2001CBC20 /* LikeCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -422,6 +440,8 @@
 				4B1B674624486BAC00145C73 /* Detail.storyboard in Resources */,
 				4BB525EC243AC2B2002FF221 /* FeedSquareItem.xib in Resources */,
 				4B28064123FE970C001E9736 /* GoogleService-Info.plist in Resources */,
+				4B5C2373246C2FD2001CBC20 /* LikeCell.xib in Resources */,
+				4B5C236B246C2F07001CBC20 /* CommentsPostDetailCell.xib in Resources */,
 				4BB52A3823FF9B3C006647FF /* ActionCell.xib in Resources */,
 				4BBA3FC62461A58000D844D6 /* CommentsLikes.storyboard in Resources */,
 				4B9E1030239CC7CA0045DBE2 /* Assets.xcassets in Resources */,
@@ -430,6 +450,7 @@
 				4BECB94A244DD57A00662AE4 /* FeedDetailCell.xib in Resources */,
 				4B9E102E239CC7C80045DBE2 /* Main.storyboard in Resources */,
 				4B28064323FEB104001E9736 /* Authentication.storyboard in Resources */,
+				4B5C236F246C2F87001CBC20 /* CommentCell.xib in Resources */,
 				4BB853E2241A46E3005CE009 /* AddPhotoItem.xib in Resources */,
 				4B0451DA2449B1CB001B29AA /* FeedDetailHeader.xib in Resources */,
 				4B9BD45B2450397E00953BC9 /* RestaurantItemCell.xib in Resources */,
@@ -516,6 +537,7 @@
 				4BBA3FC82461A64B00D844D6 /* CommentsLikesViewController.swift in Sources */,
 				4BB525E7243AC263002FF221 /* FeedListItem.swift in Sources */,
 				4B248FB6246258E500BFE708 /* SSLike.swift in Sources */,
+				4B5C236E246C2F87001CBC20 /* CommentCell.swift in Sources */,
 				4B33815B2428D3C300ED6EB6 /* YelpX.swift in Sources */,
 				4B1B674424486B9400145C73 /* RestaurantDetailViewController.swift in Sources */,
 				4BB525EB243AC2B2002FF221 /* FeedSquareItem.swift in Sources */,
@@ -529,6 +551,7 @@
 				4B29A6EE241738C7004D520E /* MoreViewController.swift in Sources */,
 				4B227446243445BC00EEA3CF /* RestaurantsAPI.swift in Sources */,
 				4B248FB22462581E00BFE708 /* LikesAPI.swift in Sources */,
+				4B5C2372246C2FD2001CBC20 /* LikeCell.swift in Sources */,
 				4B2E9CFC239FF3E0008508CD /* ActivityViewController.swift in Sources */,
 				4B2E9CF6239FF3A5008508CD /* FeedViewController.swift in Sources */,
 				4B28064823FEB171001E9736 /* CreateNewAccountViewController.swift in Sources */,
@@ -543,6 +566,7 @@
 				4B22744E2434AB6800EEA3CF /* SSCoordinates.swift in Sources */,
 				4BB52A3723FF9B3C006647FF /* ActionCell.swift in Sources */,
 				4B497AB62432065000BCEF7C /* SSFood.swift in Sources */,
+				4B5C236A246C2F07001CBC20 /* CommentsPostDetailCell.swift in Sources */,
 				4B497AB42431B3C800BCEF7C /* SSUser.swift in Sources */,
 				4B29A6EB241738B8004D520E /* NewPostViewController.swift in Sources */,
 				4B3CE4522435952000BD5B14 /* API.swift in Sources */,

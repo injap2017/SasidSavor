@@ -53,6 +53,14 @@ extension CommentsLikesViewController {
         
         // title
         self.navigationItem.titleView = segmentedControl
+        
+        // cell
+        self.tableView.register(CommentsPostDetailCell.nib, forCellReuseIdentifier: CommentsPostDetailCell.identifier)
+        self.tableView.register(CommentCell.nib, forCellReuseIdentifier: CommentCell.identifier)
+        self.tableView.register(LikeCell.nib, forCellReuseIdentifier: LikeCell.identifier)
+        
+        // footer
+        self.tableView.tableFooterView = UIView.init()
     }
 }
 
@@ -72,10 +80,28 @@ extension CommentsLikesViewController {
 extension CommentsLikesViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        switch viewSelector {
+        case .comments:
+            return 3
+        default:
+            return 2
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell.init()
+        switch viewSelector {
+        case .comments:
+            if indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: CommentsPostDetailCell.identifier) as! CommentsPostDetailCell
+                return cell
+            }
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: CommentCell.identifier) as! CommentCell
+            return cell
+            
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: LikeCell.identifier) as! LikeCell
+            return cell
+        }
     }
 }
