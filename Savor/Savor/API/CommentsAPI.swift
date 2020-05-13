@@ -11,16 +11,18 @@ import Firebase
 class CommentsAPI {
     var commentsReference = Database.database().reference().child("comments")
     
-    func removeObserver(withHandle handle: UInt) {
-        commentsReference.removeObserver(withHandle: handle)
-    }
-    
     func observeCommentCount(of id: String, completion: @escaping (Int) -> Void) -> UInt {
         let commentCountHandle = commentsReference.child(id).child("comment_count").observe(.value) { (snapshot) in
             let commentCount = snapshot.value as? Int ?? 0
             completion(commentCount)
         }
+        print("comments count observe:\(commentCountHandle), post:\(id)")
         return commentCountHandle
+    }
+    
+    func removeCommentCountObserver(of id: String, withHandle handle: UInt) {
+        print("comments remove count observer:\(handle), post:\(id)")
+        commentsReference.child(id).child("comment_count").removeObserver(withHandle: handle)
     }
     
     func setCommentCount(of id: String, to commentCount: Int) {

@@ -16,10 +16,12 @@ class LikesAPI {
             let likeCount = snapshot.value as? Int ?? 0
             completion(likeCount)
         }
+        print("likes count observe:\(likeCountHandle), post:\(id)")
         return likeCountHandle
     }
     
     func removeLikeCountObserver(of id: String, withHandle handle: UInt) {
+        print("likes remove count observer:\(handle), post:\(id)")
         likesReference.child(id).child("like_count").removeObserver(withHandle: handle)
     }
     

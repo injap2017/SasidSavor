@@ -131,8 +131,6 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
             commented = false
             isCommentActionAvailable = false
             
-            removeAllObservers()
-            
             if let feed = self.feed {
                 
                 if let photos = feed.photos,
@@ -152,14 +150,15 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
                 let timestampDate = Date(timeIntervalSince1970: feed.timestamp)
                 postDateLabel.text = SavorData.Accessories.timestampText(timestampDate)
                 
+                // below install all observers
                 likeCountHandle = APIs.Likes.observeLikeCount(of: feed.postID) { (count) in
                     self.likeCount = count
                 }
-/*
+                
                 commentCountHandle = APIs.Comments.observeCommentCount(of: feed.postID) { (count) in
                     self.commentCount = count
                 }
-                */
+                
                 handle = Auth.auth().addStateDidChangeListener { (auth, user) in
                     if SavorData.FireBase.isAuthenticated {
                         self.userID = SSUser.currentUser().uid
@@ -167,27 +166,26 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
                             self.isLikeActionAvailable = true
                             self.liked = liked
                         }
-                        /*
-                        self.commentedHandle = APIs.People.observeCommented(ofPost: feed.postID, fromUser: SSUser.currentUser().uid) { (commented) in
+                        self.commentedHandle = APIs.People.observeCommented(ofPost: feed.postID, fromUser: self.userID!) { (commented) in
                             self.isCommentActionAvailable = true
                             self.commented = commented
-                        }*/
+                        }
                     } else {
                         if let likedHandle = self.likedHandle, let userID = self.userID {
                             APIs.People.removeLikedObserver(ofPost: feed.postID, fromUser: userID, withHandle: likedHandle)
                             self.likedHandle = nil
-                            self.userID = nil
                             
                             self.isLikeActionAvailable = false
                             self.liked = false
                         }
-                        /*
-                        if let commentedHandle = self.commentedHandle {
-                            APIs.People.removeObserver(withHandle: commentedHandle)
+                        if let commentedHandle = self.commentedHandle, let userID = self.userID {
+                            APIs.People.removeCommentedObserver(ofPost: feed.postID, fromUser: userID, withHandle: commentedHandle)
+                            self.commentedHandle = nil
                             
                             self.isCommentActionAvailable = false
                             self.commented = false
-                        }*/
+                        }
+                        self.userID = nil
                     }
                 }
             }
@@ -205,6 +203,7 @@ extension FeedListItem {
     override func prepareForReuse() {
         super.prepareForReuse()
         
+        /* iOS dequeueReusableCell returns previus created and used cell which still has lived handles, hence we have to release the handles before using it so that prevent listen handle duplicated into the ui elements */
         self.removeAllObservers()
     }
 }
@@ -213,18 +212,35 @@ extension FeedListItem {
 extension FeedListItem {
     
     func removeAllObservers() {
+        
         if let feed = self.feed {
             if let likeCountHandle = self.likeCountHandle {
                 APIs.Likes.removeLikeCountObserver(of: feed.postID, withHandle: likeCountHandle)
-                
                 self.likeCountHandle = nil
+                
+                self.likeCount = 0
+            }
+            if let commentCountHandle = self.commentCountHandle {
+                APIs.Comments.removeCommentCountObserver(of: feed.postID, withHandle: commentCountHandle)
+                self.commentCountHandle = nil
+                
+                self.commentCount = 0
             }
             if let likedHandle = self.likedHandle, let userID = self.userID {
                 APIs.People.removeLikedObserver(ofPost: feed.postID, fromUser: userID, withHandle: likedHandle)
-                
                 self.likedHandle = nil
-                self.userID = nil
+                
+                self.isLikeActionAvailable = false
+                self.liked = false
             }
+            if let commentedHandle = self.commentedHandle, let userID = self.userID {
+                APIs.People.removeCommentedObserver(ofPost: feed.postID, fromUser: userID, withHandle: commentedHandle)
+                self.commentedHandle = nil
+                
+                self.isCommentActionAvailable = false
+                self.commented = false
+            }
+            self.userID = nil
         }
         
         if let handle = self.handle {
@@ -232,13 +248,6 @@ extension FeedListItem {
             
             self.handle = nil
         }
-/*
-        if let commentCountHandle = self.commentCountHandle {
-            APIs.Comments.removeObserver(withHandle: commentCountHandle)
-        }
-        if let commentedHandle = self.commentedHandle {
-            APIs.People.removeObserver(withHandle: commentedHandle)
-        }*/
     }
 }
 
