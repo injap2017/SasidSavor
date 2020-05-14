@@ -11,6 +11,13 @@ import Firebase
 class CommentCollectionAPI {
     var commentCollectionReference = Database.database().reference().child("comment_collection")
     
+    func getCommentCollectionRecord(of id: String, completion: @escaping (SSCommentCollectionRecord) -> Void) {
+        commentCollectionReference.child(id).observeSingleEvent(of: .value) { (snapshot) in
+            let commentCollectionRecord = SSCommentCollectionRecord.init(snapshot: snapshot)
+            completion(commentCollectionRecord)
+        }
+    }
+    
     func commented(text: String, timestamp: Double) -> String {
         let commentReference = commentCollectionReference.childByAutoId()
         let data = ["text": text,

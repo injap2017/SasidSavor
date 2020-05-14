@@ -48,4 +48,26 @@ class CommentsAPI {
         
         commentReference.removeValue()
     }
+    
+    func getComments(ofPost postID: String, completion: @escaping ([(String, String, Double)]) -> Void) {
+        let commentsPostReference = commentsReference.child(postID).child("comments")
+        
+        commentsPostReference.observeSingleEvent(of: .value) { (snapshot) in
+            let commentsUsers = snapshot.children.allObjects as! [DataSnapshot]
+            
+            var results: [(String, String, Double)] = []
+            
+            for commentsUser in commentsUsers {
+                let userID = commentsUser.key
+                let comments = commentsUser.children.allObjects as! [DataSnapshot]
+                for comment in comments {
+                    let commentID = comment.key
+                    let timestamp = comment.value as? Double ?? 0
+                    results.append((userID, commentID, timestamp))
+                }
+            }
+            
+            completion(results)
+        }
+    }
 }

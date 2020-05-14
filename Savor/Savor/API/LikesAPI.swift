@@ -42,4 +42,22 @@ class LikesAPI {
         
         likeReference.removeValue()
     }
+    
+    func getLikes(ofPost postID: String, completion: @escaping ([(String, Double)]) -> Void) {
+        let likesPostReference = likesReference.child(postID).child("likes")
+        
+        likesPostReference.observeSingleEvent(of: .value) { (snapshot) in
+            let likesUsers = snapshot.children.allObjects as! [DataSnapshot]
+            
+            var results: [(String, Double)] = []
+            
+            for likesUser in likesUsers {
+                let userID = likesUser.key
+                let timestamp = likesUser.value as? Double ?? 0
+                results.append((userID, timestamp))
+            }
+            
+            completion(results)
+        }
+    }
 }

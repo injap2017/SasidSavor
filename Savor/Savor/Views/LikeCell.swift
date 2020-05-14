@@ -19,4 +19,21 @@ class LikeCell: UITableViewCell {
     static let identifier = "LikeCell"
     static let nib = UINib.init(nibName: "LikeCell", bundle: nil)
     
+    var like: SSLike? {
+        didSet {
+            userPhotoImageView.image = UIImage.init(named: "account-gray")
+            userNameButton.setTitle(nil, for: .normal)
+            userFullNameLabel.text = nil
+
+            if let like = self.like {
+                
+                if let pictureURL = like.author?.profilePictureURL {
+                    userPhotoImageView.sd_setImage(with: pictureURL)
+                }
+                
+                userNameButton.setTitle(like.author?.fullname, for: .normal)
+                userFullNameLabel.text = "First Name + Last Name"
+            }
+        }
+    }
 }

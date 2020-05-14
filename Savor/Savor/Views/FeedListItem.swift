@@ -299,5 +299,16 @@ extension FeedListItem {
             let delegate = self.delegate {
             delegate.addComment(feed)
         }
+        
+/* Legacy code for adding comments
+        if let feed = self.feed,
+            isCommentActionAvailable {
+            sender.isEnabled = false
+            let timestamp = Date().timeIntervalSince1970
+            let commentID = APIs.Comments.commented(postID: feed.postID, text: "I love this", timestamp: timestamp)
+            APIs.People.commented(postID: feed.postID, commentID: commentID)
+            APIs.Comments.setCommentCount(of: feed.postID, to: self.commentCount+1)
+            sender.isEnabled = true
+        }*/
     }
 }

@@ -301,9 +301,73 @@ extension FeedViewController: FeedListItemDelegate {
     }
     
     func viewComments(_ post: SSPost) {
-        let viewController = CommentsLikesViewController.instance()
-        viewController.viewSelector = .comments
-        self.navigationController?.pushViewController(viewController)
+        
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        // load all comments
+        // load all likes
+        var comments: [(String, String, Double)]?
+        var likes: [(String, Double)]?
+        
+        let dispatchGroup = DispatchGroup.init()
+        
+        dispatchGroup.enter()
+        APIs.Comments.getComments(ofPost: post.postID) { (_comments) in
+            comments = _comments
+        }
+        
+        dispatchGroup.enter()
+        APIs.Likes.getLikes(ofPost: post.postID) { (_likes) in
+            likes = _likes
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            
+            // load all commenters
+            // load all comment collections
+            var commenters: [(Int, SSUser)] = []
+            var commentCollections: [(Int, SSCommentCollectionRecord)] = []
+            for (i, comment) in comments!.enumerated() {
+                APIs.CommentCollection.getCommentCollectionRecord(of: comment.1) { (commentCollectionRecord) in
+                    commentCollections.append((i, commentCollectionRecord))
+                }
+            }
+            
+            // load all likers
+            var likers: [(Int, SSUser)] = []
+            for (i, like) in likes!.enumerated() {
+                
+            }
+            
+            // compound all comments
+            // compound all likes
+            var commentsFull: [SSComment] = []
+            var likesFull: [SSLike] = []
+            
+            for commentCollection in commentCollections {
+                let commentCollectionRecord = commentCollection.1
+                let commenter = commenters[commentCollection.0]
+                let timestamp = comments![commentCollection.0].2
+                let commentFull = SSComment.init(commentID: commentCollectionRecord.commentID,
+                                             text: commentCollectionRecord.text,
+                                             author: commenter.1,
+                                             timestamp: timestamp)
+                commentsFull.append(commentFull)
+            }
+            
+            for liker in likers {
+                let timestamp = likes![liker.0].1
+                let like = SSLike.init(author: liker.1, timestamp: timestamp)
+                likesFull.append(like)
+            }
+            
+            // go to comments and likes
+            let viewController = CommentsLikesViewController.instance(post: post, allComments: commentsFull, allLikes: likesFull)
+            viewController.viewSelector = .comments
+            self.navigationController?.pushViewController(viewController)
+            
+            SVProgressHUD.dismiss()
+        }
     }
     
     func viewLikes(_ post: SSPost) {
