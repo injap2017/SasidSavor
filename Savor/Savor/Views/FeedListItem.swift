@@ -159,8 +159,8 @@ class FeedListItem: MagazineLayoutCollectionViewCell {
                 }
                 
                 handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-                    if SavorData.FireBase.isAuthenticated {
-                        self.userID = SSUser.currentUser().uid
+                    if SSUser.isAuthenticated {
+                        self.userID = SSUser.authCurrentUser.uid
                         self.likedHandle = APIs.People.observeLiked(ofPost: feed.postID, fromUser: self.userID!) { (liked) in
                             self.isLikeActionAvailable = true
                             self.liked = liked

@@ -31,6 +31,7 @@
 		4B29A6EB241738B8004D520E /* NewPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B29A6EA241738B8004D520E /* NewPostViewController.swift */; };
 		4B29A6EE241738C7004D520E /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B29A6ED241738C7004D520E /* MoreViewController.swift */; };
 		4B29A6F0241739E8004D520E /* NewPost.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B29A6EF241739E8004D520E /* NewPost.storyboard */; };
+		4B2AA22B246E3C76008E1AFA /* UsersAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2AA22A246E3C76008E1AFA /* UsersAPI.swift */; };
 		4B2E9CF6239FF3A5008508CD /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E9CF5239FF3A5008508CD /* FeedViewController.swift */; };
 		4B2E9CF8239FF3BB008508CD /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E9CF7239FF3BB008508CD /* ExploreViewController.swift */; };
 		4B2E9CFC239FF3E0008508CD /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E9CFB239FF3E0008508CD /* ActivityViewController.swift */; };
@@ -106,6 +107,7 @@
 		4B29A6EA241738B8004D520E /* NewPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
 		4B29A6ED241738C7004D520E /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		4B29A6EF241739E8004D520E /* NewPost.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NewPost.storyboard; sourceTree = "<group>"; };
+		4B2AA22A246E3C76008E1AFA /* UsersAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersAPI.swift; sourceTree = "<group>"; };
 		4B2E9CF5239FF3A5008508CD /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		4B2E9CF7239FF3BB008508CD /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		4B2E9CFB239FF3E0008508CD /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 				4B19031A246AE25500F5085C /* CommentCollectionAPI.swift */,
 				4BB353B9246A9A69002F679C /* PeopleAPI.swift */,
 				4B3CE4512435952000BD5B14 /* API.swift */,
+				4B2AA22A246E3C76008E1AFA /* UsersAPI.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -540,6 +543,7 @@
 				4BBA3FC82461A64B00D844D6 /* CommentsLikesViewController.swift in Sources */,
 				4BB525E7243AC263002FF221 /* FeedListItem.swift in Sources */,
 				4B248FB6246258E500BFE708 /* SSLike.swift in Sources */,
+				4B2AA22B246E3C76008E1AFA /* UsersAPI.swift in Sources */,
 				4B5C236E246C2F87001CBC20 /* CommentCell.swift in Sources */,
 				4B33815B2428D3C300ED6EB6 /* YelpX.swift in Sources */,
 				4B1B674424486B9400145C73 /* RestaurantDetailViewController.swift in Sources */,

@@ -30,14 +30,14 @@ class LikesAPI {
     }
     
     func Liked(postID: String, timestamp: Double) {
-        let userID = SSUser.currentUser().uid
+        let userID = SSUser.authCurrentUser.uid
         let likeReference = likesReference.child(postID).child("likes").child(userID)
         
         likeReference.setValue(timestamp)
     }
     
     func unliked(postID: String) {
-        let userID = SSUser.currentUser().uid
+        let userID = SSUser.authCurrentUser.uid
         let likeReference = likesReference.child(postID).child("likes").child(userID)
         
         likeReference.removeValue()

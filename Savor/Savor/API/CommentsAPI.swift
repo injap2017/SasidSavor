@@ -32,7 +32,7 @@ class CommentsAPI {
     func commented(postID: String, text: String, timestamp: Double) -> String {
         let commentID = APIs.CommentCollection.commented(text: text, timestamp: timestamp)
         
-        let userID = SSUser.currentUser().uid
+        let userID = SSUser.authCurrentUser.uid
         let commentReference = commentsReference.child(postID).child("comments").child(userID).child(commentID)
         
         commentReference.setValue(timestamp)
@@ -43,7 +43,7 @@ class CommentsAPI {
     func uncommented(postID: String, commentID: String) {
         APIs.CommentCollection.uncommented(commentID: commentID)
         
-        let userID = SSUser.currentUser().uid
+        let userID = SSUser.authCurrentUser.uid
         let commentReference = commentsReference.child(postID).child("comments").child(userID).child(commentID)
         
         commentReference.removeValue()

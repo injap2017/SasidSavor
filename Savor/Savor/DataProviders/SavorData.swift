@@ -40,13 +40,6 @@ class SavorData {
         static let feedReference = database.reference(withPath: "feed")
         static let peopleReference = database.reference(withPath: "people")
         static let savoredReference = database.reference(withPath: "savored")
-        
-        // Authentication
-        class var isAuthenticated: Bool {
-            get {
-                return Auth.auth().currentUser != nil
-            }
-        }
     }
 
     // MARK: - Permission

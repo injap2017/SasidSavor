@@ -273,7 +273,7 @@ extension NewPostViewController {
         
         SVProgressHUD.show(withStatus: "Posting...")
         
-        let uid = SSUser.currentUser().uid
+        let uid = SSUser.authCurrentUser.uid
         let foodID = self.food!.foodID
         
         // create restaurant if not exist
@@ -342,7 +342,7 @@ extension NewPostViewController {
             let data = ["text": self.descriptionText,
                         "rating": self.rating,
                         "photos": fullURLs,
-                        "author": SSUser.currentUser().author(),
+                        "author": SSUser.authCurrentUser.author(),
                         "restaurant": self.business!.partialDocument(),
                         "food": self.food!.partialDocument(),
                         "timestamp": timestamp] as [String: Any]

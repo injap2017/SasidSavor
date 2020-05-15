@@ -26,12 +26,12 @@ class PeopleAPI {
     }
     
     func Liked(postID: String) {
-        let userID = SSUser.currentUser().uid
+        let userID = SSUser.authCurrentUser.uid
         peopleReference.child(userID).child("likes").child(postID).setValue(true)
     }
     
     func unliked(postID: String) {
-        let userID = SSUser.currentUser().uid
+        let userID = SSUser.authCurrentUser.uid
         peopleReference.child(userID).child("likes").child(postID).removeValue()
     }
     
@@ -50,12 +50,12 @@ class PeopleAPI {
     }
     
     func commented(postID: String, commentID: String) {
-        let userID = SSUser.currentUser().uid
+        let userID = SSUser.authCurrentUser.uid
         peopleReference.child(userID).child("comments").child(postID).child(commentID).setValue(true)
     }
     
     func uncommented(postID: String, commentID: String) {
-        let userID = SSUser.currentUser().uid
+        let userID = SSUser.authCurrentUser.uid
         peopleReference.child(userID).child("comments").child(postID).child(commentID).removeValue()
     }
 }

@@ -423,6 +423,13 @@ extension CreateNewAccountViewController {
                                 return
                             }
                             
+                            // set user profile
+                            let user = SSUser.init(authUser: Auth.auth().currentUser!)
+                            user.firstName = strongSelf.firstName
+                            user.lastName = strongSelf.lastName
+                            
+                            APIs.Users.setUser(user)
+                            
                             DispatchQueue.main.async {
                                 
                                 SVProgressHUD.dismiss()
@@ -441,6 +448,13 @@ extension CreateNewAccountViewController {
                             SVProgressHUD.showError(withStatus: error.localizedDescription)
                             return
                         }
+                        
+                        // set user profile
+                        let user = SSUser.init(authUser: Auth.auth().currentUser!)
+                        user.firstName = strongSelf.firstName
+                        user.lastName = strongSelf.lastName
+                        
+                        APIs.Users.setUser(user)
                         
                         DispatchQueue.main.async {
                             

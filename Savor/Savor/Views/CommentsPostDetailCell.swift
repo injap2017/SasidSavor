@@ -138,8 +138,8 @@ class CommentsPostDetailCell: UITableViewCell {
                 }
                 
                 handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-                    if SavorData.FireBase.isAuthenticated {
-                        self.userID = SSUser.currentUser().uid
+                    if SSUser.isAuthenticated {
+                        self.userID = SSUser.authCurrentUser.uid
                         self.likedHandle = APIs.People.observeLiked(ofPost: post.postID, fromUser: self.userID!) { (liked) in
                             self.liked = liked
                         }
