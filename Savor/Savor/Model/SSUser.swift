@@ -71,3 +71,11 @@ extension SSUser {
         }
     }
 }
+
+// MARK: - Functions
+extension SSUser {
+    
+    func fullName() -> String {
+        return firstName + " " + lastName
+    }
+}

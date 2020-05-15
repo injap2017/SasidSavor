@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 enum CommentsLikesViewSelector: Int {
     case comments
@@ -175,7 +176,18 @@ extension CommentsLikesViewController {
     }
     
     func didSelectFeedAction(_ feed: SSPost) {
-        // go to feed details, same code here with feed view
+        guard let partialRestaurant = feed.restaurant,
+            let partialFood = feed.food else {
+            return
+        }
+        
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        FeedDetailViewController.syncData(Restaurant: partialRestaurant.restaurantID, Food: partialFood.foodID, viewSelector: .posts) { (viewController) in
+            SVProgressHUD.dismiss()
+            
+            self.navigationController?.pushViewController(viewController)
+        }
     }
     
     func didSelectLikeAction(_ like: SSLike) {
@@ -206,7 +218,7 @@ extension CommentsLikesViewController {
             }
             
             let cell = tableView.dequeueReusableCell(withIdentifier: CommentCell.identifier) as! CommentCell
-            cell.comment = allComments![indexPath.row]
+            cell.comment = allComments![indexPath.row-1]
             cell.delegate = self
             return cell
             
@@ -220,8 +232,12 @@ extension CommentsLikesViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch viewSelector {
         case .comments:
-            self.didSelectFeedAction(post!)
+            if indexPath.row == 0 {
+                tableView.deselectRow(at: indexPath, animated: false)
+                self.didSelectFeedAction(post!)
+            }
         default:
+            tableView.deselectRow(at: indexPath, animated: false)
             let like = allLikes![indexPath.row]
             self.didSelectLikeAction(like)
         }

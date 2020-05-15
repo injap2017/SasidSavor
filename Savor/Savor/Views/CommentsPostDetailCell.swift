@@ -99,6 +99,8 @@ class CommentsPostDetailCell: UITableViewCell {
             restaurantNameAddressLabel.text = nil
             
             postScore.rating = 0.0
+            
+            userPhotoImageView.image = UIImage.init(named: "account-gray")
             userNameButton.setTitle(nil, for: .normal)
             
             postDateLabel.text = nil
@@ -123,6 +125,10 @@ class CommentsPostDetailCell: UITableViewCell {
                 restaurantNameAddressLabel.text = post.restaurant?.address()
                 
                 postScore.rating = post.rating // colour by score
+                
+                if let pictureURL = post.author?.profilePictureURL {
+                    userPhotoImageView.sd_setImage(with: pictureURL)
+                }
                 userNameButton.setTitle(post.author?.fullname, for: .normal)
                 
                 let timestampDate = Date(timeIntervalSince1970: post.timestamp)

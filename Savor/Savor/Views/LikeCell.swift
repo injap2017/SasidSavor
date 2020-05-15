@@ -32,7 +32,9 @@ class LikeCell: UITableViewCell {
                 }
                 
                 userNameButton.setTitle(like.author?.fullname, for: .normal)
-                userFullNameLabel.text = "First Name + Last Name"
+                if let author = like.author {
+                    userFullNameLabel.text = author.fullName()
+                }
             }
         }
     }
