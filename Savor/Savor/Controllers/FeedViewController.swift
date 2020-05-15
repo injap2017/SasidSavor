@@ -231,64 +231,10 @@ extension FeedViewController {
         
         SVProgressHUD.show(withStatus: "Loading...")
         
-        // load full restaurant data
-        // load full food data
-        // load all posts
-        // load totalRating
-        var restaurant: SSRestaurant?
-        var food: SSFood?
-        var postIDs: [String]?
-        var totalRating: Double?
-        
-        let dispatchGroup = DispatchGroup()
-        
-        dispatchGroup.enter()
-        APIs.Restaurants.getRestaurant(of: partialRestaurant.restaurantID) { (_restaurant) in
-            restaurant = _restaurant
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        APIs.Foods.getFood(of: partialFood.foodID) { (_food) in
-            food = _food
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        APIs.Savored.getPostsSavoredFood(partialFood.foodID, in: partialRestaurant.restaurantID) { (_postIDs, _totalRating) in
-            postIDs = _postIDs
-            totalRating = _totalRating
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.notify(queue: .main) {
+        FeedDetailViewController.syncData(Restaurant: partialRestaurant.restaurantID, Food: partialFood.foodID, viewSelector: .posts) { (viewController) in
+            SVProgressHUD.dismiss()
             
-            // load all posts
-            var posts: [SSPost] = []
-            
-            let dispatchGroup = DispatchGroup()
-            
-            for postID in postIDs! {
-                dispatchGroup.enter()
-                APIs.Posts.getPost(of: postID) { (post) in
-                    posts.append(post)
-                    dispatchGroup.leave()
-                }
-            }
-            
-            dispatchGroup.notify(queue: .main) {
-                // sort posts by timestamp
-                let sortedPosts = posts.sorted { (first, second) -> Bool in
-                    return first.timestamp > second.timestamp
-                }
-                
-                // go to details
-                let viewController = FeedDetailViewController.instance(food: food!, totalRating: totalRating!, allFeeds: sortedPosts, restaurant: restaurant!)
-                viewController.viewSelector = .posts
-                self.navigationController?.pushViewController(viewController)
-                
-                SVProgressHUD.dismiss()
-            }
+            self.navigationController?.pushViewController(viewController)
         }
     }
 }
@@ -304,76 +250,22 @@ extension FeedViewController: FeedListItemDelegate {
         
         SVProgressHUD.show(withStatus: "Loading...")
         
-        // load all comments
-        // load all likes
-        var comments: [(String, String, Double)]?
-        var likes: [(String, Double)]?
-        
-        let dispatchGroup = DispatchGroup.init()
-        
-        dispatchGroup.enter()
-        APIs.Comments.getComments(ofPost: post.postID) { (_comments) in
-            comments = _comments
-        }
-        
-        dispatchGroup.enter()
-        APIs.Likes.getLikes(ofPost: post.postID) { (_likes) in
-            likes = _likes
-        }
-        
-        dispatchGroup.notify(queue: .main) {
-            
-            // load all commenters
-            // load all comment collections
-            var commenters: [(Int, SSUser)] = []
-            var commentCollections: [(Int, SSCommentCollectionRecord)] = []
-            for (i, comment) in comments!.enumerated() {
-                APIs.CommentCollection.getCommentCollectionRecord(of: comment.1) { (commentCollectionRecord) in
-                    commentCollections.append((i, commentCollectionRecord))
-                }
-            }
-            
-            // load all likers
-            var likers: [(Int, SSUser)] = []
-            for (i, like) in likes!.enumerated() {
-                
-            }
-            
-            // compound all comments
-            // compound all likes
-            var commentsFull: [SSComment] = []
-            var likesFull: [SSLike] = []
-            
-            for commentCollection in commentCollections {
-                let commentCollectionRecord = commentCollection.1
-                let commenter = commenters[commentCollection.0]
-                let timestamp = comments![commentCollection.0].2
-                let commentFull = SSComment.init(commentID: commentCollectionRecord.commentID,
-                                             text: commentCollectionRecord.text,
-                                             author: commenter.1,
-                                             timestamp: timestamp)
-                commentsFull.append(commentFull)
-            }
-            
-            for liker in likers {
-                let timestamp = likes![liker.0].1
-                let like = SSLike.init(author: liker.1, timestamp: timestamp)
-                likesFull.append(like)
-            }
-            
-            // go to comments and likes
-            let viewController = CommentsLikesViewController.instance(post: post, allComments: commentsFull, allLikes: likesFull)
-            viewController.viewSelector = .comments
-            self.navigationController?.pushViewController(viewController)
-            
+        CommentsLikesViewController.syncData(Post: post, viewSelector: .comments) { (viewController) in
             SVProgressHUD.dismiss()
+            
+            self.navigationController?.pushViewController(viewController)
         }
     }
     
     func viewLikes(_ post: SSPost) {
-        let viewController = CommentsLikesViewController.instance()
-        viewController.viewSelector = .likes
-        self.navigationController?.pushViewController(viewController)
+        
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        CommentsLikesViewController.syncData(Post: post, viewSelector: .likes) { (viewController) in
+            SVProgressHUD.dismiss()
+            
+            self.navigationController?.pushViewController(viewController)
+        }
     }
     
     func addComment(_ post: SSPost) {

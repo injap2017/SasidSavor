@@ -56,6 +56,95 @@ extension FeedDetailViewController {
         return viewController
     }
     
+    class func syncData(Restaurant restaurant: SSRestaurant, Food food: SSFood, TotalRating totalRating: Double, AllPosts postIDs: [String], viewSelector: FeedDetailViewSelector, completion: @escaping (FeedDetailViewController) -> Void) {
+        // load all posts
+        var posts: [SSPost] = []
+        
+        let dispatchGroup = DispatchGroup()
+        
+        for postID in postIDs {
+            dispatchGroup.enter()
+            APIs.Posts.getPost(of: postID) { (post) in
+                posts.append(post)
+                dispatchGroup.leave()
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            // sort posts by timestamp
+            let sortedPosts = posts.sorted { (first, second) -> Bool in
+                return first.timestamp > second.timestamp
+            }
+            
+            // go to details
+            let viewController = FeedDetailViewController.instance(food: food, totalRating: totalRating, allFeeds: sortedPosts, restaurant: restaurant)
+            viewController.viewSelector = viewSelector
+            
+            completion(viewController)
+        }
+    }
+    
+    class func syncData(Restaurant restaurantID: String, Food foodID: String, viewSelector: FeedDetailViewSelector, completion: @escaping (FeedDetailViewController) -> Void) {
+        // load full restaurant data
+        // load full food data
+        // load all posts
+        // load totalRating
+        var restaurant: SSRestaurant?
+        var food: SSFood?
+        var postIDs: [String]?
+        var totalRating: Double?
+        
+        let dispatchGroup = DispatchGroup()
+        
+        dispatchGroup.enter()
+        APIs.Restaurants.getRestaurant(of: restaurantID) { (_restaurant) in
+            restaurant = _restaurant
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.enter()
+        APIs.Foods.getFood(of: foodID) { (_food) in
+            food = _food
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.enter()
+        APIs.Savored.getPostsSavoredFood(foodID, in: restaurantID) { (_postIDs, _totalRating) in
+            postIDs = _postIDs
+            totalRating = _totalRating
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            
+            // load all posts
+            var posts: [SSPost] = []
+            
+            let dispatchGroup = DispatchGroup()
+            
+            for postID in postIDs! {
+                dispatchGroup.enter()
+                APIs.Posts.getPost(of: postID) { (post) in
+                    posts.append(post)
+                    dispatchGroup.leave()
+                }
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                // sort posts by timestamp
+                let sortedPosts = posts.sorted { (first, second) -> Bool in
+                    return first.timestamp > second.timestamp
+                }
+                
+                // go to details
+                let viewController = FeedDetailViewController.instance(food: food!, totalRating: totalRating!, allFeeds: sortedPosts, restaurant: restaurant!)
+                viewController.viewSelector = viewSelector
+                
+                completion(viewController)
+            }
+        }
+    }
+    
     func initView() {
         // title
         self.title = food?.name
@@ -219,51 +308,10 @@ extension FeedDetailViewController {
         
         SVProgressHUD.show(withStatus: "Loading...")
         
-        // load all savored foods
-        APIs.Savored.getSavoredFoods(in: restaurant.restaurantID) { (savoredFoods) in
-            // load food, the total rating and the last post
-            var foods: [String: SSFood] = [:]
-            var lastPosts: [String: SSPost] = [:]
+        RestaurantDetailViewController.syncData(Restaurant: restaurant, viewSelector: .items) { (viewController) in
+            SVProgressHUD.dismiss()
             
-            let dispatchGroup = DispatchGroup()
-            
-            for savoredFood in savoredFoods {
-                let foodID = savoredFood.0
-                dispatchGroup.enter()
-                APIs.Foods.getFood(of: foodID) { (food) in
-                    foods[foodID] = food
-                    dispatchGroup.leave()
-                }
-                if let lastPostID = savoredFood.2.first {
-                    dispatchGroup.enter()
-                    APIs.Posts.getPost(of: lastPostID) { (post) in
-                        lastPosts[lastPostID] = post
-                        dispatchGroup.leave()
-                    }
-                }
-            }
-            
-            dispatchGroup.notify(queue: .main) {
-                var savored: [(SSFood, Double, [String], SSPost)] = []
-                for savoredFood in savoredFoods {
-                    let food = foods[savoredFood.0]
-                    var lastPost: SSPost?
-                    if let lastPostID = savoredFood.2.first {
-                        lastPost = lastPosts[lastPostID]
-                    }
-                    // needs one more time savored
-                    if let food = food, let lastPost = lastPost {
-                        savored.append((food, savoredFood.1, savoredFood.2, lastPost))
-                    }
-                }
-                
-                // go to details
-                let viewController = RestaurantDetailViewController.instance(restaurant: restaurant, savoredFoods: savored)
-                viewController.viewSelector = .items
-                self.navigationController?.pushViewController(viewController)
-                
-                SVProgressHUD.dismiss()
-            }
+            self.navigationController?.pushViewController(viewController)
         }
     }
     
