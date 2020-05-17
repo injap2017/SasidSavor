@@ -8,6 +8,8 @@
 
 import UIKit
 import SVProgressHUD
+import InputBarAccessoryView
+import Firebase
 
 enum CommentsLikesViewSelector: Int {
     case comments

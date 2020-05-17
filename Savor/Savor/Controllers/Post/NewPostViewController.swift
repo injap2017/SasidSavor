@@ -8,7 +8,7 @@
 
 import UIKit
 import Cosmos
-import UITextView_Placeholder
+import KMPlaceholderTextView
 import GooglePlaces
 import CDYelpFusionKit
 import IQKeyboardManagerSwift
@@ -24,7 +24,7 @@ class NewPostViewController: UIViewController {
     @IBOutlet weak var restaurantNameField: UITextField!
     @IBOutlet weak var foodNameField: UITextField!
     @IBOutlet weak var cosmosView: CosmosView!
-    @IBOutlet weak var descriptionTextView: UITextView!
+    @IBOutlet weak var descriptionTextView: KMPlaceholderTextView!
     @IBOutlet weak var collectionView: UICollectionView!
     
     // MARK: - Properties
@@ -131,7 +131,6 @@ extension NewPostViewController {
         }
         
         // uitextview placeholder
-        self.descriptionTextView.placeholder = "Comment (optional)"
         self.descriptionTextView.text = descriptionText
         
         // uicollectionview cell

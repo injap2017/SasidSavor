@@ -7,13 +7,13 @@ target 'Savor' do
 
   # Pods for Savor
   pod 'FTPopOverMenu_Swift'
-  pod 'UITextView+Placeholder'
+  pod 'KMPlaceholderTextView'
   pod 'Cosmos'
   pod 'MagazineLayout'
   pod 'ImageSlideshow'
   pod "ImageSlideshow/SDWebImage"
-##  pod 'SDWebImage'
   pod 'ESPullToRefresh'
+  pod 'InputBarAccessoryView'
   
   pod 'DCKit'
   pod 'SVProgressHUD'
