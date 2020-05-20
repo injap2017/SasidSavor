@@ -27,6 +27,13 @@ class CommentsLikesViewController: UIViewController {
     var allComments: [SSComment]?
     var allLikes: [SSLike]?
     
+    var commentsPostDetailCell: CommentsPostDetailCell?
+    var commentCount: Int {
+        get {
+            return commentsPostDetailCell?.commentCount ?? 0
+        }
+    }
+    
     var segmentedControl: UISegmentedControl!
     
     var viewSelector: CommentsLikesViewSelector = .comments {
@@ -36,9 +43,11 @@ class CommentsLikesViewController: UIViewController {
         }
     }
     
+    var openWithKeyboardActive: Bool = false
+    
     // inputbar accessory view
-    var inputBar: InputBarAccessoryView?
-    var keyboardManager: KeyboardManager?
+    var inputBar: InputBarAccessoryView!
+    var keyboardManager: KeyboardManager!
     
     // auth handle to hide/show inputbar accessory view
     var handle: AuthStateDidChangeListenerHandle?
@@ -56,6 +65,18 @@ extension CommentsLikesViewController {
         
         self.initView()
         self.observe()
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // one time keyboard active if true
+        if openWithKeyboardActive,
+            let inputBar = self.inputBar {
+            inputBar.inputTextView.becomeFirstResponder()
+            self.openWithKeyboardActive = false
+        }
     }
 }
 
@@ -154,8 +175,17 @@ extension CommentsLikesViewController {
                     likesFull.append(like)
                 }
                 
+                // sort by timestamp
+                let sortedCommentsFull = commentsFull.sorted { (first, second) -> Bool in
+                    return first.timestamp > second.timestamp
+                }
+                
+                let sortedLikesFull = likesFull.sorted { (first, second) -> Bool in
+                    return first.timestamp > second.timestamp
+                }
+                
                 // go to comments and likes
-                let viewController = CommentsLikesViewController.instance(post: post, allComments: commentsFull, allLikes: likesFull)
+                let viewController = CommentsLikesViewController.instance(post: post, allComments: sortedCommentsFull, allLikes: sortedLikesFull)
                 viewController.viewSelector = viewSelector
 
                 completion(viewController)
@@ -210,15 +240,16 @@ extension CommentsLikesViewController {
         }
         
         // set inputbar accessory view
-        let inputBar = InputBarAccessoryView()
-        let keyboardManager = KeyboardManager()
-        
+        self.inputBar = InputBarAccessoryView()
+        self.inputBar.inputTextView.keyboardType = .twitter
+        self.inputBar.inputTextView.placeholder = "Add a Comment..."
+        self.inputBar.sendButton.title = "Post"
+        self.inputBar.delegate = self
         self.view.addSubview(inputBar)
-        keyboardManager.bind(inputAccessoryView: inputBar)
-        keyboardManager.bind(to: tableView)
         
-        self.inputBar = inputBar
-        self.keyboardManager = keyboardManager
+        self.keyboardManager = KeyboardManager()
+        self.keyboardManager.bind(inputAccessoryView: inputBar)
+        self.keyboardManager.bind(to: tableView)
     }
     
     func removeInputBarAccessoryView() {
@@ -227,6 +258,18 @@ extension CommentsLikesViewController {
         }
         self.inputBar = nil
         self.keyboardManager = nil
+    }
+    
+    func isCurrentUserAbleToEditThisComment(_ comment: SSComment, ofPost post: SSPost) -> Bool {
+        if SSUser.isAuthenticated {
+            if SSUser.authCurrentUser.uid == post.author?.uid {
+                return true
+            } else if SSUser.authCurrentUser.uid == comment.author?.uid {
+                return true
+            }
+        }
+        
+        return false
     }
 }
 
@@ -261,6 +304,54 @@ extension CommentsLikesViewController {
     func didSelectLikeAction(_ like: SSLike) {
         // go to user profile
     }
+    
+    func didPostComment(withText text: String, at timestamp: Double) {
+        guard let post = self.post else {
+            return
+        }
+        
+        SVProgressHUD.show(withStatus: "Posting Comment...")
+        
+        // load current user
+        APIs.Users.getUser(of: SSUser.authCurrentUser.uid) { (user) in
+            
+            // post comment
+            let commentID = APIs.Comments.commented(postID: post.postID, text: text, timestamp: timestamp)
+            APIs.People.commented(postID: post.postID, commentID: commentID)
+            APIs.Comments.setCommentCount(of: post.postID, to: self.commentCount+1)
+            
+            // append cache
+            let comment = SSComment.init(commentID: commentID, text: text, author: user, timestamp: timestamp)
+            self.allComments!.insert(comment, at: 0)
+            
+            // update tableview
+            let indexPath = IndexPath.init(row: 1, section: 0)
+            self.tableView.beginUpdates()
+            self.tableView.insertRows(at: [indexPath], with: .automatic)
+            self.tableView.endUpdates()
+            
+            SVProgressHUD.dismiss()
+        }
+    }
+    
+    func didDeleteComment(_ comment: SSComment, at indexPath: IndexPath) {
+        guard let post = self.post else {
+            return
+        }
+        
+        // delete comment
+        APIs.Comments.uncommented(postID: post.postID, commentID: comment.commentID)
+        APIs.People.uncommented(postID: post.postID, commentID: comment.commentID)
+        APIs.Comments.setCommentCount(of: post.postID, to: self.commentCount-1)
+        
+        // remove cache
+        self.allComments!.remove(at: indexPath.row-1)
+        
+        // update tableview
+        self.tableView.beginUpdates()
+        self.tableView.deleteRows(at: [indexPath], with: .automatic)
+        self.tableView.endUpdates()
+    }
 }
 
 // MARK: - TableView
@@ -282,6 +373,7 @@ extension CommentsLikesViewController: UITableViewDataSource, UITableViewDelegat
                 let cell = tableView.dequeueReusableCell(withIdentifier: CommentsPostDetailCell.identifier) as! CommentsPostDetailCell
                 cell.post = post
                 cell.delegate = self
+                self.commentsPostDetailCell = cell
                 return cell
             }
             
@@ -310,6 +402,26 @@ extension CommentsLikesViewController: UITableViewDataSource, UITableViewDelegat
             self.didSelectLikeAction(like)
         }
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        switch viewSelector {
+        case .comments:
+            if indexPath.row == 0 {
+                return false
+            }
+            let comment = allComments![indexPath.row-1]
+            return isCurrentUserAbleToEditThisComment(comment, ofPost: post!)
+        default:
+            return false
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let comment = allComments![indexPath.row-1]
+            self.didDeleteComment(comment, at: indexPath)
+        }
+    }
 }
 
 // MARK: - CommentsPostDetailCell Delegate, CommentCell Delegate
@@ -317,5 +429,17 @@ extension CommentsLikesViewController: CommentsPostDetailCellDelegate, CommentCe
     
     func viewProfile(_ author: SSUser) {
         
+    }
+}
+
+// MARK: - InputBarAccessoryView Delegate
+extension CommentsLikesViewController: InputBarAccessoryViewDelegate {
+    
+    func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
+        inputBar.inputTextView.text = String()
+        inputBar.inputTextView.resignFirstResponder()
+        
+        let timestamp = Date().timeIntervalSince1970
+        self.didPostComment(withText: text, at: timestamp)
     }
 }

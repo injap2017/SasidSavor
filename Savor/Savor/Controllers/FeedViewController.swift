@@ -269,7 +269,16 @@ extension FeedViewController: FeedListItemDelegate {
     }
     
     func addComment(_ post: SSPost) {
-        print("add comment")
+        
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        CommentsLikesViewController.syncData(Post: post, viewSelector: .comments) { (viewController) in
+            SVProgressHUD.dismiss()
+            
+            viewController.openWithKeyboardActive = true
+            
+            self.navigationController?.pushViewController(viewController)
+        }
     }
 }
 
