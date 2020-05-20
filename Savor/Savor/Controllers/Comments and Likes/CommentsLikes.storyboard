@@ -3,26 +3,43 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Comments Likes View Controller-->
-        <scene sceneID="ZGk-gV-cmQ">
+        <scene sceneID="xO7-ow-0Wd">
             <objects>
-                <tableViewController storyboardIdentifier="commentsLikes" id="Y2K-vh-4wS" customClass="CommentsLikesViewController" customModule="SasiSavor" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="WM2-gO-EMQ">
+                <viewController storyboardIdentifier="commentsLikes" id="ZV9-84-C4v" customClass="CommentsLikesViewController" customModule="SasiSavor" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QYe-72-lib">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bb4-Aq-2gE">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="ZV9-84-C4v" id="0KZ-kW-dkQ"/>
+                                    <outlet property="delegate" destination="ZV9-84-C4v" id="XQe-Rw-WFZ"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <connections>
-                            <outlet property="dataSource" destination="Y2K-vh-4wS" id="cBe-XK-ADt"/>
-                            <outlet property="delegate" destination="Y2K-vh-4wS" id="sT9-76-lFC"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sYY-aq-2Jr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                        <constraints>
+                            <constraint firstItem="bb4-Aq-2gE" firstAttribute="trailing" secondItem="N6z-hI-zkP" secondAttribute="trailing" id="302-Vh-0BA"/>
+                            <constraint firstAttribute="bottom" secondItem="bb4-Aq-2gE" secondAttribute="bottom" id="Vvk-bu-T6I"/>
+                            <constraint firstItem="bb4-Aq-2gE" firstAttribute="top" secondItem="QYe-72-lib" secondAttribute="top" id="hda-7L-qzt"/>
+                            <constraint firstItem="bb4-Aq-2gE" firstAttribute="leading" secondItem="N6z-hI-zkP" secondAttribute="leading" id="zYb-y4-UuA"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="N6z-hI-zkP"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="bb4-Aq-2gE" id="Sby-QW-GaN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="w7x-gW-ujl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-456" y="202"/>
+            <point key="canvasLocation" x="301.44927536231887" y="203.57142857142856"/>
         </scene>
     </scenes>
 </document>

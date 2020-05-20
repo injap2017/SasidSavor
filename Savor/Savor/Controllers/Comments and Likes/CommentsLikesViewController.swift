@@ -10,13 +10,17 @@ import UIKit
 import SVProgressHUD
 import InputBarAccessoryView
 import Firebase
+import IQKeyboardManagerSwift
 
 enum CommentsLikesViewSelector: Int {
     case comments
     case likes
 }
 
-class CommentsLikesViewController: UITableViewController {
+class CommentsLikesViewController: UIViewController {
+    
+    // MARK: - IBOutlets
+    @IBOutlet weak var tableView: UITableView!
     
     // MARK: - Properties
     var post: SSPost?
@@ -31,6 +35,17 @@ class CommentsLikesViewController: UITableViewController {
             self.tableView?.reloadData()
         }
     }
+    
+    // inputbar accessory view
+    var inputBar: InputBarAccessoryView?
+    var keyboardManager: KeyboardManager?
+    
+    // auth handle to hide/show inputbar accessory view
+    var handle: AuthStateDidChangeListenerHandle?
+    
+    deinit {
+        removeObservers()
+    }
 }
 
 // MARK: - Lifecycle
@@ -40,6 +55,7 @@ extension CommentsLikesViewController {
         super.viewDidLoad()
         
         self.initView()
+        self.observe()
     }
 }
 
@@ -163,6 +179,54 @@ extension CommentsLikesViewController {
         
         // footer
         self.tableView.tableFooterView = UIView.init()
+        
+        // iqkeyboardmanager disable distance handling to control distance between inputaccessoryview and keyboard
+        IQKeyboardManager.shared.disabledDistanceHandlingClasses.append(CommentsLikesViewController.self)
+    }
+    
+    func observe() {
+        // auth state listner to hide/show input accessory view
+        self.handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+            if SSUser.isAuthenticated,
+                self.viewSelector == .comments {
+                self.setInputBarAccessoryViewIfNoExist()
+            } else {
+                self.removeInputBarAccessoryView()
+            }
+        }
+    }
+    
+    func removeObservers() {
+        // remove auth state change listener
+        Auth.auth().removeStateDidChangeListener(self.handle!)
+    }
+    
+    func setInputBarAccessoryViewIfNoExist() {
+        
+        // return if exist
+        if self.inputBar != nil,
+            self.keyboardManager != nil {
+            return
+        }
+        
+        // set inputbar accessory view
+        let inputBar = InputBarAccessoryView()
+        let keyboardManager = KeyboardManager()
+        
+        self.view.addSubview(inputBar)
+        keyboardManager.bind(inputAccessoryView: inputBar)
+        keyboardManager.bind(to: tableView)
+        
+        self.inputBar = inputBar
+        self.keyboardManager = keyboardManager
+    }
+    
+    func removeInputBarAccessoryView() {
+        if let inputBar = self.inputBar {
+            inputBar.removeFromSuperview()
+        }
+        self.inputBar = nil
+        self.keyboardManager = nil
     }
 }
 
@@ -172,8 +236,10 @@ extension CommentsLikesViewController {
     @objc func viewSelectorValueChanged(_ segmentedControl: UISegmentedControl) {
         if segmentedControl.selectedSegmentIndex == 0 {
             self.viewSelector = .comments
+            if SSUser.isAuthenticated { setInputBarAccessoryViewIfNoExist() }
         } else {
             self.viewSelector = .likes
+            self.removeInputBarAccessoryView()
         }
     }
     
@@ -198,9 +264,9 @@ extension CommentsLikesViewController {
 }
 
 // MARK: - TableView
-extension CommentsLikesViewController {
+extension CommentsLikesViewController: UITableViewDataSource, UITableViewDelegate {
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch viewSelector {
         case .comments:
             return 1 + (self.allComments?.count ?? 0)
@@ -209,7 +275,7 @@ extension CommentsLikesViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch viewSelector {
         case .comments:
             if indexPath.row == 0 {
@@ -231,7 +297,7 @@ extension CommentsLikesViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch viewSelector {
         case .comments:
             if indexPath.row == 0 {

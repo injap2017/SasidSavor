@@ -16,8 +16,7 @@ class MoreViewController: UITableViewController {
     private var handle: AuthStateDidChangeListenerHandle?
     
     deinit {
-        // remove auth state change listener
-        Auth.auth().removeStateDidChangeListener(self.handle!)
+        removeObservers()
     }
 }
 
@@ -28,11 +27,7 @@ extension MoreViewController {
         super.viewDidLoad()
         
         self.initView()
-        
-        // listen auth state change to refresh
-        self.handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-            self.refreshView()
-        }
+        self.observe()
     }
 }
 
@@ -51,6 +46,18 @@ extension MoreViewController {
         
         // table view
         self.tableView.reloadData()
+    }
+    
+    func observe() {
+        // listen auth state change to refresh
+        self.handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+            self.refreshView()
+        }
+    }
+    
+    func removeObservers() {
+        // remove auth state change listener
+        Auth.auth().removeStateDidChangeListener(self.handle!)
     }
 }
 
