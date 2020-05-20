@@ -210,6 +210,7 @@ extension FeedDetailViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: FeedDetailCell.identifier) as! FeedDetailCell
             cell.feed = allFeeds![indexPath.row]
             cell.selectionStyle = .none
+            cell.delegate = self
             return cell
         }
     }
@@ -320,5 +321,35 @@ extension FeedDetailViewController {
         let latitude = coordinate!.latitude
         let longitude = coordinate!.longitude
         SavorData.Accessories.navigate(latitude: latitude, longitude: longitude, on: self)
+    }
+}
+
+// MARK: - FeedDetailCell Delegate
+extension FeedDetailViewController: FeedDetailCellDelegate {
+    
+    func viewProfile(_ author: SSUser) {
+        print("view profile")
+    }
+    
+    func viewComments(_ post: SSPost) {
+        
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        CommentsLikesViewController.syncData(Post: post, viewSelector: .comments) { (viewController) in
+            SVProgressHUD.dismiss()
+            
+            self.navigationController?.pushViewController(viewController)
+        }
+    }
+    
+    func viewLikes(_ post: SSPost) {
+        
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        CommentsLikesViewController.syncData(Post: post, viewSelector: .likes) { (viewController) in
+            SVProgressHUD.dismiss()
+            
+            self.navigationController?.pushViewController(viewController)
+        }
     }
 }
