@@ -110,7 +110,7 @@ class ProfilePostCell: UITableViewCell {
             postPhotoImageView.image = UIImage.init(named: "image-off-outline")
             
             postTitleLabel.text = nil
-            postDescriptionLabel.text = nil
+            postDescriptionLabel.text = "\n\n" /*2 blank lines*/
             restaurantNameAddressLabel.text = nil
             
             postScore.rating = 0.0

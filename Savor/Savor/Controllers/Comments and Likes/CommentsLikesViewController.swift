@@ -302,7 +302,17 @@ extension CommentsLikesViewController {
     }
     
     func didSelectLikeAction(_ like: SSLike) {
-        // go to user profile
+        guard let author = like.author else {
+            return
+        }
+        
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        ProfileViewController.syncData(userID: author.uid) { (viewController) in
+            SVProgressHUD.dismiss()
+            
+            self.navigationController?.pushViewController(viewController)
+        }
     }
     
     func didPostComment(withText text: String, at timestamp: Double) {

@@ -9,6 +9,7 @@
 import UIKit
 import ESPullToRefresh
 import Firebase
+import SVProgressHUD
 
 enum FollowStatus: Int {
     case follow /* you don't follow him/her, able to follow */
@@ -69,37 +70,104 @@ extension ProfileViewController {
 // MARK: - Functions
 extension ProfileViewController {
     
-    class func instance() -> ProfileViewController {
+    class func instance(user: SSUser, initialPosts: [SSPost], followings: [(SSUser, Int)], followers: [(SSUser, Int)]) -> ProfileViewController {
         let storyboard = UIStoryboard.init(name: "Profile", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "profile") as! ProfileViewController
-        viewController.navigationItem.rightBarButtonItem = viewController.isItMe() ? viewController.editBarButtonItem() : nil
+        viewController.user = user
+        viewController.posts = initialPosts
+        viewController.followings = followings
+        viewController.followers = followers
         return viewController
     }
     
     class func syncData(userID: String, completion: @escaping (ProfileViewController) -> Void) {
         // load full user
-        // load initial posts ids
-        // load all followings ids
-        // load all followers ids
+        // load initial posts
+        // load all followings
+        // load all followers
         var user: SSUser?
         var initialPosts: [SSPost]?
-        var allFollowingIDs: [String]?
-        var allFollowerIDs: [String]?
+        var allFollowings: [SSUser]?
+        var allFollowers: [SSUser]?
         
+        let dispatchGroup = DispatchGroup()
+        
+        dispatchGroup.enter()
         APIs.Users.getUser(of: userID) { (_user) in
             user = _user
+            dispatchGroup.leave()
         }
         
-        APIs.People.getFollowers(ofUser: userID) { (followerIDs) in
-            
-        }
-        
-        APIs.People.getFollowings(ofUser: userID) { (followingIDs) in
-            
-        }
-        
+        dispatchGroup.enter()
         APIs.People.getRecentPosts(ofUser: userID, limit: postsPerLoad) { (posts) in
+            initialPosts = posts
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.enter()
+        APIs.People.getFollowings(ofUser: userID) { (followings) in
+            allFollowings = followings
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.enter()
+        APIs.People.getFollowers(ofUser: userID) { (followers) in
+            allFollowers = followers
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
             
+            let dispatchGroup = DispatchGroup()
+            
+            var followingsPostCounts: [(Int, Int)] = []
+            for (i, user) in allFollowings!.enumerated() {
+                dispatchGroup.enter()
+                APIs.People.getPostCount(ofUser: user.uid) { (postCount) in
+                    followingsPostCounts.append((i, postCount))
+                    dispatchGroup.leave()
+                }
+            }
+            
+            var followersPostCounts: [(Int, Int)] = []
+            for (i, user) in allFollowers!.enumerated() {
+                dispatchGroup.enter()
+                APIs.People.getPostCount(ofUser: user.uid) { (postCount) in
+                    followersPostCounts.append((i, postCount))
+                    dispatchGroup.leave()
+                }
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                
+                // sort by index
+                followingsPostCounts.sort { (first, second) -> Bool in
+                    return first.0 < second.0
+                }
+                
+                followersPostCounts.sort { (first, second) -> Bool in
+                    return first.0 < second.0
+                }
+                
+                var allFollowingsPostCounts: [(SSUser, Int)] = []
+                for followingPostCount in followingsPostCounts {
+                    let user = allFollowings![followingPostCount.0]
+                    let postCount = followingPostCount.1
+                    allFollowingsPostCounts.append((user, postCount))
+                }
+                
+                var allFollowersPostCounts: [(SSUser, Int)] = []
+                for followerPostCount in followersPostCounts {
+                    let user = allFollowers![followerPostCount.0]
+                    let postCount = followerPostCount.1
+                    allFollowersPostCounts.append((user, postCount))
+                }
+                
+                // go to profile
+                let viewController = ProfileViewController.instance(user: user!, initialPosts: initialPosts!, followings: allFollowingsPostCounts, followers: allFollowersPostCounts)
+                
+                completion(viewController)
+            }
         }
     }
     
@@ -170,17 +238,118 @@ extension ProfileViewController {
     }
     
     func editBarButtonItem() -> UIBarButtonItem {
-        let item = UIBarButtonItem.init(barButtonSystemItem: .cancel, target: self, action: #selector(self.editAction))
+        let item = UIBarButtonItem.init(barButtonSystemItem: .edit, target: self, action: #selector(self.editAction))
         return item
     }
     
     @objc func editAction() {
-        
-    }
-    
-    @objc func pullToRefreshAction() {
+        print("edit profile")
     }
     
     @objc func infiniteScrollingAction() {
+        
+    }
+    
+    func didSelectPostAction(_ post: SSPost) {
+        guard let partialRestaurant = post.restaurant,
+            let partialFood = post.food else {
+            return
+        }
+        
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        FeedDetailViewController.syncData(Restaurant: partialRestaurant.restaurantID, Food: partialFood.foodID, viewSelector: .posts) { (viewController) in
+            SVProgressHUD.dismiss()
+            
+            self.navigationController?.pushViewController(viewController)
+        }
+    }
+}
+
+// MARK: - UITableView
+extension ProfileViewController {
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch viewSelector {
+        case .posts:
+            return self.posts.count
+        case .following:
+            return self.followings.count
+        case .followers:
+            return self.followers.count
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch viewSelector {
+        case .posts:
+            let cell = tableView.dequeueReusableCell(withIdentifier: ProfilePostCell.identifier) as! ProfilePostCell
+            cell.post = posts[indexPath.row]
+            cell.delegate = self
+            return cell
+        case .following:
+            let cell = tableView.dequeueReusableCell(withIdentifier: FollowCell.identifier) as! FollowCell
+            let following = followings[indexPath.row]
+            cell.user = following.0
+            cell.postCount = following.1
+            return cell
+        case .followers:
+            let cell = tableView.dequeueReusableCell(withIdentifier: FollowCell.identifier) as! FollowCell
+            let follower = followers[indexPath.row]
+            cell.user = follower.0
+            cell.postCount = follower.1
+            return cell
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch viewSelector {
+        case .posts:
+            tableView.deselectRow(at: indexPath, animated: false)
+            let post = self.posts[indexPath.row]
+            self.didSelectPostAction(post)
+        case .following:
+            break
+        case .followers:
+            break
+        }
+    }
+}
+
+// MARK: - ProfilePostCell Delegate
+extension ProfileViewController: ProfilePostCellDelegate {
+    func viewComments(_ post: SSPost) {
+        
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        CommentsLikesViewController.syncData(Post: post, viewSelector: .comments) { (viewController) in
+            SVProgressHUD.dismiss()
+            
+            self.navigationController?.pushViewController(viewController)
+        }
+    }
+    
+    func viewLikes(_ post: SSPost) {
+        
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        CommentsLikesViewController.syncData(Post: post, viewSelector: .likes) { (viewController) in
+            SVProgressHUD.dismiss()
+            
+            self.navigationController?.pushViewController(viewController)
+        }
+    }
+    
+    func addComment(_ post: SSPost) {
+        
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        CommentsLikesViewController.syncData(Post: post, viewSelector: .comments) { (viewController) in
+            SVProgressHUD.dismiss()
+            
+            viewController.openWithKeyboardActive = true
+            
+            self.navigationController?.pushViewController(viewController)
+        }
     }
 }

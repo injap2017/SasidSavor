@@ -60,7 +60,7 @@ class PeopleAPI {
     }
     
     func getPostCount(ofUser userID: String, completion: @escaping (Int) -> Void) {
-        let peoplePostsReference = peopleReference.child(userID).child("psots")
+        let peoplePostsReference = peopleReference.child(userID).child("posts")
         peoplePostsReference.observeSingleEvent(of: .value) { (snapshot) in
             completion(Int(snapshot.childrenCount))
         }
@@ -80,35 +80,49 @@ class PeopleAPI {
         }
     }
     
-    func getFollowings(ofUser userID: String, completion: @escaping ([String]) -> Void) {
+    func getFollowings(ofUser userID: String, completion: @escaping ([SSUser]) -> Void) {
         let peopleFollowingsReference = peopleReference.child(userID).child("followings")
         peopleFollowingsReference.observeSingleEvent(of: .value) { (snapshot) in
             let followings = snapshot.children.allObjects as! [DataSnapshot]
             
-            var results: [String] = []
+            var results: [SSUser] = []
             
+            let dispatchGroup = DispatchGroup()
             for following in followings {
-                let userID = following.key
-                results.append(userID)
+                dispatchGroup.enter()
+                APIs.Users.getUser(of: following.key) { (user) in
+                    results.append(user)
+                    dispatchGroup.leave()
+                }
             }
             
-            completion(results)
+            dispatchGroup.notify(queue: .main) {
+                results.sort(by: {$0.fullname > $1.fullname})
+                completion(results)
+            }
         }
     }
     
-    func getFollowers(ofUser userID: String, completion: @escaping ([String]) -> Void) {
+    func getFollowers(ofUser userID: String, completion: @escaping ([SSUser]) -> Void) {
         let peopleFollowersReference = peopleReference.child(userID).child("followers")
         peopleFollowersReference.observeSingleEvent(of: .value) { (snapshot) in
             let followers = snapshot.children.allObjects as! [DataSnapshot]
             
-            var results: [String] = []
+            var results: [SSUser] = []
             
+            let dispatchGroup = DispatchGroup()
             for follower in followers {
-                let userID = follower.key
-                results.append(userID)
+                dispatchGroup.enter()
+                APIs.Users.getUser(of: follower.key) { (user) in
+                    results.append(user)
+                    dispatchGroup.leave()
+                }
             }
             
-            completion(results)
+            dispatchGroup.notify(queue: .main) {
+                results.sort(by: {$0.fullname > $1.fullname})
+                completion(results)
+            }
         }
     }
     

@@ -12,7 +12,7 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="149" id="KGk-i7-Jjw" customClass="ProfilePostCell" customModule="SasiSavor" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="393" height="149"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="393" height="149"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
@@ -54,7 +54,7 @@
                     </button>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4cD-d3-8XV" customClass="CosmosView" customModule="Cosmos">
                         <rect key="frame" x="96" y="8" width="80" height="16"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="aFQ-PD-sSd"/>
                             <constraint firstAttribute="width" constant="80" id="qaO-PY-7Jn"/>
@@ -143,6 +143,7 @@ Yorba Linda, CA</string>
                     <constraint firstItem="leL-e9-Wzg" firstAttribute="top" secondItem="wLu-cJ-zJq" secondAttribute="bottom" constant="8" id="5T2-hW-AYu"/>
                     <constraint firstItem="wLu-cJ-zJq" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="8Nn-gc-0eJ"/>
                     <constraint firstAttribute="trailing" secondItem="S9E-UQ-w75" secondAttribute="trailing" constant="8" id="Bvq-i5-8ml"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="leL-e9-Wzg" secondAttribute="bottom" constant="8" id="CgE-ag-6ai"/>
                     <constraint firstItem="kHq-2W-N4q" firstAttribute="trailing" secondItem="97Z-4h-lNy" secondAttribute="trailing" id="IGg-3t-0V4"/>
                     <constraint firstItem="kxb-eg-jkQ" firstAttribute="top" secondItem="wLu-cJ-zJq" secondAttribute="bottom" constant="8" id="IvC-9z-MZq"/>
                     <constraint firstItem="U0C-Xi-1IJ" firstAttribute="centerY" secondItem="4cD-d3-8XV" secondAttribute="centerY" id="M3K-iU-CM8"/>
@@ -162,8 +163,8 @@ Yorba Linda, CA</string>
                     <constraint firstItem="leL-e9-Wzg" firstAttribute="leading" secondItem="wLu-cJ-zJq" secondAttribute="leading" id="llx-jP-Rzs"/>
                     <constraint firstItem="Ijc-QA-TfG" firstAttribute="top" secondItem="S9E-UQ-w75" secondAttribute="bottom" constant="4" id="mKv-y4-h7M"/>
                     <constraint firstItem="kHq-2W-N4q" firstAttribute="bottom" secondItem="97Z-4h-lNy" secondAttribute="bottom" id="nFb-37-IKl"/>
-                    <constraint firstItem="4cD-d3-8XV" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="v1w-Oe-LDc"/>
                     <constraint firstAttribute="trailing" secondItem="U0C-Xi-1IJ" secondAttribute="trailing" constant="8" id="vAl-af-men"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Ijc-QA-TfG" secondAttribute="bottom" constant="8" id="wC1-OU-Ved"/>
                     <constraint firstItem="S9E-UQ-w75" firstAttribute="leading" secondItem="4cD-d3-8XV" secondAttribute="leading" id="xLh-i1-3wu"/>
                 </constraints>
             </tableViewCellContentView>

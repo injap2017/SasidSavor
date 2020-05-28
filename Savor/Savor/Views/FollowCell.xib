@@ -58,6 +58,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="i8b-pi-LM8" firstAttribute="leading" secondItem="vQD-4x-MhZ" secondAttribute="trailing" constant="8" id="9Od-xV-Ahw"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="vQD-4x-MhZ" secondAttribute="bottom" constant="8" id="Ifr-BY-DYD"/>
                     <constraint firstAttribute="trailing" secondItem="eVj-Me-XZL" secondAttribute="trailing" constant="8" id="S1H-M9-yG7"/>
                     <constraint firstItem="voZ-zz-Iro" firstAttribute="leading" secondItem="i8b-pi-LM8" secondAttribute="leading" id="az8-0J-CGl"/>
                     <constraint firstItem="vQD-4x-MhZ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="bmG-Rg-dzK"/>
