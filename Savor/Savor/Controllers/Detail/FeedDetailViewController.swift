@@ -328,7 +328,14 @@ extension FeedDetailViewController {
 extension FeedDetailViewController: FeedDetailCellDelegate {
     
     func viewProfile(_ author: SSUser) {
-        print("view profile")
+        
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        ProfileViewController.syncData(userID: author.uid) { (viewController) in
+            SVProgressHUD.dismiss()
+            
+            self.navigationController?.pushViewController(viewController)
+        }
     }
     
     func viewComments(_ post: SSPost) {

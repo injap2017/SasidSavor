@@ -12,7 +12,7 @@ class LikeCell: UITableViewCell {
     
     // MARK: - IBOutlets
     @IBOutlet weak var userPhotoImageView: UIImageView!
-    @IBOutlet weak var userNameButton: UIButton!
+    @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userFullNameLabel: UILabel!
     
     // MARK: - Properties
@@ -22,7 +22,7 @@ class LikeCell: UITableViewCell {
     var like: SSLike? {
         didSet {
             userPhotoImageView.image = UIImage.init(named: "account-gray")
-            userNameButton.setTitle(nil, for: .normal)
+            userNameLabel.text = nil
             userFullNameLabel.text = nil
 
             if let like = self.like {
@@ -31,7 +31,7 @@ class LikeCell: UITableViewCell {
                     userPhotoImageView.sd_setImage(with: pictureURL)
                 }
                 
-                userNameButton.setTitle(like.author?.fullname, for: .normal)
+                userNameLabel.text = like.author?.fullname
                 if let author = like.author {
                     userFullNameLabel.text = author.fullName()
                 }

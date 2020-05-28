@@ -77,6 +77,14 @@
 		4BECB946244DB68200662AE4 /* DetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BECB944244DB68200662AE4 /* DetailCell.xib */; };
 		4BECB949244DD57A00662AE4 /* FeedDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BECB947244DD57A00662AE4 /* FeedDetailCell.swift */; };
 		4BECB94A244DD57A00662AE4 /* FeedDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BECB948244DD57A00662AE4 /* FeedDetailCell.xib */; };
+		4BF7E5FE247D5CCD00242446 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BF7E5FD247D5CCD00242446 /* Profile.storyboard */; };
+		4BF7E600247D5DB500242446 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF7E5FF247D5DB500242446 /* ProfileViewController.swift */; };
+		4BF7E602247D5E9C00242446 /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF7E601247D5E9C00242446 /* ProfileHeader.swift */; };
+		4BF7E604247D5EBB00242446 /* ProfileHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BF7E603247D5EBB00242446 /* ProfileHeader.xib */; };
+		4BF7E607247D5F4900242446 /* ProfilePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF7E605247D5F4900242446 /* ProfilePostCell.swift */; };
+		4BF7E608247D5F4900242446 /* ProfilePostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BF7E606247D5F4900242446 /* ProfilePostCell.xib */; };
+		4BF7E60B247D5FBE00242446 /* FollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF7E609247D5FBE00242446 /* FollowCell.swift */; };
+		4BF7E60C247D5FBE00242446 /* FollowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BF7E60A247D5FBE00242446 /* FollowCell.xib */; };
 		89038FFAC3290ECA386D30C7 /* Pods_Savor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FD3E36564360BFE55F494CB /* Pods_Savor.framework */; };
 /* End PBXBuildFile section */
 
@@ -155,6 +163,14 @@
 		4BECB944244DB68200662AE4 /* DetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailCell.xib; sourceTree = "<group>"; };
 		4BECB947244DD57A00662AE4 /* FeedDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailCell.swift; sourceTree = "<group>"; };
 		4BECB948244DD57A00662AE4 /* FeedDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedDetailCell.xib; sourceTree = "<group>"; };
+		4BF7E5FD247D5CCD00242446 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
+		4BF7E5FF247D5DB500242446 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		4BF7E601247D5E9C00242446 /* ProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
+		4BF7E603247D5EBB00242446 /* ProfileHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileHeader.xib; sourceTree = "<group>"; };
+		4BF7E605247D5F4900242446 /* ProfilePostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePostCell.swift; sourceTree = "<group>"; };
+		4BF7E606247D5F4900242446 /* ProfilePostCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfilePostCell.xib; sourceTree = "<group>"; };
+		4BF7E609247D5FBE00242446 /* FollowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCell.swift; sourceTree = "<group>"; };
+		4BF7E60A247D5FBE00242446 /* FollowCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FollowCell.xib; sourceTree = "<group>"; };
 		4F69641B8A7A01F19C7920A5 /* Pods-Savor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Savor.release.xcconfig"; path = "Target Support Files/Pods-Savor/Pods-Savor.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -262,6 +278,12 @@
 				4B5C236D246C2F87001CBC20 /* CommentCell.xib */,
 				4B5C2370246C2FD2001CBC20 /* LikeCell.swift */,
 				4B5C2371246C2FD2001CBC20 /* LikeCell.xib */,
+				4BF7E601247D5E9C00242446 /* ProfileHeader.swift */,
+				4BF7E603247D5EBB00242446 /* ProfileHeader.xib */,
+				4BF7E605247D5F4900242446 /* ProfilePostCell.swift */,
+				4BF7E606247D5F4900242446 /* ProfilePostCell.xib */,
+				4BF7E609247D5FBE00242446 /* FollowCell.swift */,
+				4BF7E60A247D5FBE00242446 /* FollowCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -269,6 +291,7 @@
 		4B66DE3823A1FA9A00C0F147 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4BF7E5F8247D5C3900242446 /* Profile */,
 				4BBA3FC42461A4E600D844D6 /* Comments and Likes */,
 				4B1B67402448637800145C73 /* Detail */,
 				4B41D389241734BD00C54897 /* Post */,
@@ -370,6 +393,15 @@
 			path = "Comments and Likes";
 			sourceTree = "<group>";
 		};
+		4BF7E5F8247D5C3900242446 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				4BF7E5FD247D5CCD00242446 /* Profile.storyboard */,
+				4BF7E5FF247D5DB500242446 /* ProfileViewController.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		B7AAF128EFACC60D5276C7A0 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -451,13 +483,17 @@
 				4BB52A3823FF9B3C006647FF /* ActionCell.xib in Resources */,
 				4BBA3FC62461A58000D844D6 /* CommentsLikes.storyboard in Resources */,
 				4B9E1030239CC7CA0045DBE2 /* Assets.xcassets in Resources */,
+				4BF7E608247D5F4900242446 /* ProfilePostCell.xib in Resources */,
 				4BB52A3423FF92F9006647FF /* InputFieldCell.xib in Resources */,
+				4BF7E5FE247D5CCD00242446 /* Profile.storyboard in Resources */,
 				4BB853DE241A467F005CE009 /* PhotoItem.xib in Resources */,
 				4BECB94A244DD57A00662AE4 /* FeedDetailCell.xib in Resources */,
+				4BF7E60C247D5FBE00242446 /* FollowCell.xib in Resources */,
 				4B9E102E239CC7C80045DBE2 /* Main.storyboard in Resources */,
 				4B28064323FEB104001E9736 /* Authentication.storyboard in Resources */,
 				4B5C236F246C2F87001CBC20 /* CommentCell.xib in Resources */,
 				4BB853E2241A46E3005CE009 /* AddPhotoItem.xib in Resources */,
+				4BF7E604247D5EBB00242446 /* ProfileHeader.xib in Resources */,
 				4B0451DA2449B1CB001B29AA /* FeedDetailHeader.xib in Resources */,
 				4B9BD45B2450397E00953BC9 /* RestaurantItemCell.xib in Resources */,
 				4BECB946244DB68200662AE4 /* DetailCell.xib in Resources */,
@@ -537,6 +573,7 @@
 				4B248FB42462583000BFE708 /* CommentsAPI.swift in Sources */,
 				4BB353BA246A9A69002F679C /* PeopleAPI.swift in Sources */,
 				4B22744A2434AAD600EEA3CF /* SSRestaurant.swift in Sources */,
+				4BF7E607247D5F4900242446 /* ProfilePostCell.swift in Sources */,
 				4BB52A3323FF92F9006647FF /* InputFieldCell.swift in Sources */,
 				4BB998BC23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift in Sources */,
 				4B19031B246AE25500F5085C /* CommentCollectionAPI.swift in Sources */,
@@ -551,7 +588,9 @@
 				4B68E57F2421CDDA00BA0932 /* UITextViewX.swift in Sources */,
 				4BECB949244DD57A00662AE4 /* FeedDetailCell.swift in Sources */,
 				4B915CB62451E4B700895E4D /* FoodsAPI.swift in Sources */,
+				4BF7E60B247D5FBE00242446 /* FollowCell.swift in Sources */,
 				4B915CB42451A74B00895E4D /* SavoredAPI.swift in Sources */,
+				4BF7E600247D5DB500242446 /* ProfileViewController.swift in Sources */,
 				4B3381592428B63000ED6EB6 /* Debouncer.swift in Sources */,
 				4B2E9CF8239FF3BB008508CD /* ExploreViewController.swift in Sources */,
 				4B9BD45A2450397E00953BC9 /* RestaurantItemCell.swift in Sources */,
@@ -573,6 +612,7 @@
 				4B22744E2434AB6800EEA3CF /* SSCoordinates.swift in Sources */,
 				4BB52A3723FF9B3C006647FF /* ActionCell.swift in Sources */,
 				4B497AB62432065000BCEF7C /* SSFood.swift in Sources */,
+				4BF7E602247D5E9C00242446 /* ProfileHeader.swift in Sources */,
 				4B5C236A246C2F07001CBC20 /* CommentsPostDetailCell.swift in Sources */,
 				4B497AB42431B3C800BCEF7C /* SSUser.swift in Sources */,
 				4B29A6EB241738B8004D520E /* NewPostViewController.swift in Sources */,

@@ -58,4 +58,112 @@ class PeopleAPI {
         let userID = SSUser.authCurrentUser.uid
         peopleReference.child(userID).child("comments").child(postID).child(commentID).removeValue()
     }
+    
+    func getPostCount(ofUser userID: String, completion: @escaping (Int) -> Void) {
+        let peoplePostsReference = peopleReference.child(userID).child("psots")
+        peoplePostsReference.observeSingleEvent(of: .value) { (snapshot) in
+            completion(Int(snapshot.childrenCount))
+        }
+    }
+    
+    func getFollowingCount(ofUser userID: String, completion: @escaping (Int) -> Void) {
+        let peopleFollowingsReference = peopleReference.child(userID).child("followings")
+        peopleFollowingsReference.observeSingleEvent(of: .value) { (snapshot) in
+            completion(Int(snapshot.childrenCount))
+        }
+    }
+    
+    func getFollowerCount(ofUser userID: String, completion: @escaping (Int) -> Void) {
+        let peopleFollowersReference = peopleReference.child(userID).child("followers")
+        peopleFollowersReference.observeSingleEvent(of: .value) { (snapshot) in
+            completion(Int(snapshot.childrenCount))
+        }
+    }
+    
+    func getFollowings(ofUser userID: String, completion: @escaping ([String]) -> Void) {
+        let peopleFollowingsReference = peopleReference.child(userID).child("followings")
+        peopleFollowingsReference.observeSingleEvent(of: .value) { (snapshot) in
+            let followings = snapshot.children.allObjects as! [DataSnapshot]
+            
+            var results: [String] = []
+            
+            for following in followings {
+                let userID = following.key
+                results.append(userID)
+            }
+            
+            completion(results)
+        }
+    }
+    
+    func getFollowers(ofUser userID: String, completion: @escaping ([String]) -> Void) {
+        let peopleFollowersReference = peopleReference.child(userID).child("followers")
+        peopleFollowersReference.observeSingleEvent(of: .value) { (snapshot) in
+            let followers = snapshot.children.allObjects as! [DataSnapshot]
+            
+            var results: [String] = []
+            
+            for follower in followers {
+                let userID = follower.key
+                results.append(userID)
+            }
+            
+            completion(results)
+        }
+    }
+    
+    func getRecentPosts(ofUser userID: String, start timestamp: Double? = nil, limit: UInt, completionHandler: @escaping ([SSPost]) -> Void) {
+        let query = peopleReference.child(userID).child("posts").queryOrderedByValue()
+        var startingLimitedQuery: DatabaseQuery
+        if let latestPostTimestamp = timestamp, latestPostTimestamp > 0 {
+            startingLimitedQuery = query.queryStarting(atValue: latestPostTimestamp + 1).queryLimited(toLast: limit)
+        } else {
+            startingLimitedQuery = query.queryLimited(toLast: limit)
+        }
+        
+        startingLimitedQuery.observeSingleEvent(of: .value, with: { (snapshot) in
+            let items = snapshot.children.allObjects as! [DataSnapshot]
+            
+            var results: [SSPost] = []
+            
+            let dispatchGroup = DispatchGroup()
+            for item in items {
+                dispatchGroup.enter()
+                APIs.Posts.getPost(of: item.key) { (post) in
+                    results.append(post)
+                    dispatchGroup.leave()
+                }
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                results.sort(by: {$0.timestamp > $1.timestamp})
+                completionHandler(results)
+            }
+        })
+    }
+    
+    func getOldPosts(ofUser userID: String, start timestamp: Double, limit: UInt, completionHandler: @escaping ([SSPost]) -> Void) {
+        let query = peopleReference.child(userID).child("posts").queryOrderedByValue()
+        let endingLimitedQuery = query.queryEnding(atValue: timestamp - 1).queryLimited(toLast: limit)
+        
+        endingLimitedQuery.observeSingleEvent(of: .value, with: { (snapshot) in
+            let items = snapshot.children.allObjects as! [DataSnapshot]
+         
+            var results: [SSPost] = []
+            
+            let dispatchGroup = DispatchGroup()
+            for item in items {
+                dispatchGroup.enter()
+                APIs.Posts.getPost(of: item.key) { (post) in
+                    results.append(post)
+                    dispatchGroup.leave()
+                }
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                results.sort(by: {$0.timestamp > $1.timestamp })
+                completionHandler(results)
+            }
+        })
+    }
 }

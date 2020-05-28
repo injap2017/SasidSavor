@@ -429,6 +429,13 @@ extension CommentsLikesViewController: CommentsPostDetailCellDelegate, CommentCe
     
     func viewProfile(_ author: SSUser) {
         
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        ProfileViewController.syncData(userID: author.uid) { (viewController) in
+            SVProgressHUD.dismiss()
+            
+            self.navigationController?.pushViewController(viewController)
+        }
     }
 }
 
