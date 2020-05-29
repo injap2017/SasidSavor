@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class FollowCell: UITableViewCell {
     
@@ -23,26 +24,7 @@ class FollowCell: UITableViewCell {
     static let identifier = "FollowCell"
     static let nib = UINib.init(nibName: "FollowCell", bundle: nil)
     
-    var user: SSUser? {
-        didSet {
-            userPhotoImageView.image = UIImage.init(named: "account-gray")
-            userNameLabel.text = nil
-            userFullNameLabel.text = nil
-            
-            postCount = 0
-            
-            if let user = self.user {
-                
-                if let pictureURL = user.profilePictureURL {
-                    userPhotoImageView.sd_setImage(with: pictureURL)
-                }
-                
-                userNameLabel.text = user.fullname
-                userFullNameLabel.text = user.fullName()
-            }
-        }
-    }
-    
+    private var postCountHandle: UInt?
     var postCount: Int = 0 {
         didSet {
             let text = "\(postCount) Posts"
@@ -50,6 +32,7 @@ class FollowCell: UITableViewCell {
         }
     }
     
+    private var followedHandle: UInt?
     var followStatus: FollowStatus = .disabled {
         didSet {
             switch followStatus {
@@ -68,12 +51,105 @@ class FollowCell: UITableViewCell {
             }
         }
     }
+    
+    private var handle: AuthStateDidChangeListenerHandle?
+    private var userID: String?
+    
+    var user: SSUser? {
+        didSet {
+            userPhotoImageView.image = UIImage.init(named: "account-gray")
+            userNameLabel.text = nil
+            userFullNameLabel.text = nil
+            
+            postCount = 0
+            
+            if let user = self.user {
+                
+                if let pictureURL = user.profilePictureURL {
+                    userPhotoImageView.sd_setImage(with: pictureURL)
+                }
+                
+                userNameLabel.text = user.fullname
+                userFullNameLabel.text = user.fullName()
+                
+                // below install all observers
+                postCountHandle = APIs.People.observePostCount(ofUser: user.uid) { (count) in
+                    self.postCount = count
+                }
+                
+                handle = Auth.auth().addStateDidChangeListener { (auth, _user) in
+                    if SSUser.isAuthenticated {
+                        if SSUser.authCurrentUser.uid == user.uid {
+                            self.followStatus = .disabled
+                            return
+                        }
+                        self.userID = SSUser.authCurrentUser.uid
+                        self.followedHandle = APIs.People.observeFollowed(user: user.uid, fromUser: self.userID!) { (followed) in
+                            self.followStatus = followed ? .unfollow : .follow
+                        }
+                    } else {
+                        if let followedHandle = self.followedHandle, let userID = self.userID {
+                            APIs.People.removeFollowedObserver(ofUser: user.uid, fromUser: userID, withHandle: followedHandle)
+                            self.followedHandle = nil
+                            
+                            self.followStatus = .disabled
+                        }
+                        self.userID = nil
+                    }
+                }
+            }
+        }
+    }
+    
+    deinit {
+        self.removeAllObservers()
+    }
+}
+
+// MARK: - Lifecycle
+extension FollowCell {
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        /* iOS dequeueReusableCell returns previus created and used cell which still has lived handles, hence we have to release the handles before using it so that prevent listen handle duplicated into the ui elements */
+        self.removeAllObservers()
+    }
+}
+
+// MARK: - Functions
+extension FollowCell {
+    
+    func removeAllObservers() {
+        
+        if let user = self.user {
+            if let postCountHandle = self.postCountHandle {
+                APIs.People.removePostCountObserver(ofUser: user.uid, withHandle: postCountHandle)
+                self.postCountHandle = nil
+                
+                self.postCount = 0
+            }
+            if let followedHandle = self.followedHandle, let userID = self.userID {
+                APIs.People.removeFollowedObserver(ofUser: user.uid, fromUser: userID, withHandle: followedHandle)
+                self.followedHandle = nil
+                
+                self.followStatus = .disabled
+            }
+            self.userID = nil
+        }
+        
+        if let handle = self.handle {
+            Auth.auth().removeStateDidChangeListener(handle)
+            
+            self.handle = nil
+        }
+    }
 }
 
 // MARK: - Actions
 extension FollowCell {
     
     @IBAction func follow(_ sender: UIButton) {
-        print("follow")
+        
     }
 }

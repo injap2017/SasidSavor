@@ -25,7 +25,7 @@ class PeopleAPI {
         peopleReference.child(userID).child("likes").child(postID).removeObserver(withHandle: handle)
     }
     
-    func Liked(postID: String) {
+    func liked(postID: String) {
         let userID = SSUser.authCurrentUser.uid
         peopleReference.child(userID).child("likes").child(postID).setValue(true)
     }
@@ -120,6 +120,18 @@ class PeopleAPI {
     func removeFollowedObserver(ofUser userID: String, fromUser fromUserID: String, withHandle handle: UInt) {
         print("people remove followed observer:\(handle), user:\(userID), fromUser:\(fromUserID)")
         peopleReference.child(fromUserID).child("followings").child(userID).removeObserver(withHandle: handle)
+    }
+    
+    func followed(userID: String) {
+        let fromUserID = SSUser.authCurrentUser.uid
+        peopleReference.child(fromUserID).child("followings").child(userID).setValue(true)
+        peopleReference.child(userID).child("followers").child(fromUserID).setValue(true)
+    }
+    
+    func unfollowed(userID: String) {
+        let fromUserID = SSUser.authCurrentUser.uid
+        peopleReference.child(fromUserID).child("followings").child(userID).removeValue()
+        peopleReference.child(userID).child("followers").child(fromUserID).removeValue()
     }
     
     func getFollowings(ofUser userID: String, completion: @escaping ([SSUser]) -> Void) {

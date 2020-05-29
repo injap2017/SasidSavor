@@ -178,6 +178,7 @@ extension ProfileViewController {
         let height = CGFloat(152)
         let frame = CGRect.init(x: 0, y: 0, width: width, height: height)
         let profileHeader = ProfileHeader.init(frame: frame)
+        profileHeader.delegate = self
         profileHeader.user = self.user
         profileHeader.segmentedControl.selectedSegmentIndex = viewSelector.rawValue
         profileHeader.segmentedControl.addTarget(self, action: #selector(viewSelectorValueChanged(_:)), for: .valueChanged)
@@ -264,6 +265,32 @@ extension ProfileViewController {
             self.navigationController?.pushViewController(viewController)
         }
     }
+    
+    func didSelectFollowingAction(_ following: (SSUser, Int)) {
+        
+        let user = following.0
+        
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        ProfileViewController.syncData(userID: user.uid) { (viewController) in
+            SVProgressHUD.dismiss()
+            
+            self.navigationController?.pushViewController(viewController)
+        }
+    }
+    
+    func didSelectFollowerAction(_ follower: (SSUser, Int)) {
+        
+        let user = follower.0
+        
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        ProfileViewController.syncData(userID: user.uid) { (viewController) in
+            SVProgressHUD.dismiss()
+            
+            self.navigationController?.pushViewController(viewController)
+        }
+    }
 }
 
 // MARK: - UITableView
@@ -309,8 +336,14 @@ extension ProfileViewController {
             let post = self.posts[indexPath.row]
             self.didSelectPostAction(post)
         case .following:
+            tableView.deselectRow(at: indexPath, animated: false)
+            let following = self.followings[indexPath.row]
+            self.didSelectFollowingAction(following)
             break
         case .followers:
+            tableView.deselectRow(at: indexPath, animated: false)
+            let follower = self.followers[indexPath.row]
+            self.didSelectFollowerAction(follower)
             break
         }
     }
@@ -350,6 +383,66 @@ extension ProfileViewController: ProfilePostCellDelegate {
             viewController.openWithKeyboardActive = true
             
             self.navigationController?.pushViewController(viewController)
+        }
+    }
+}
+
+// MARK: - ProfileHeader Delegate
+extension ProfileViewController: ProfileHeaderDelegate {
+    
+    func followed() {
+        // load me
+        var user: SSUser?
+        var postCount: Int?
+        
+        SVProgressHUD.show(withStatus: "Following...")
+        
+        let dispatchGroup = DispatchGroup.init()
+        
+        dispatchGroup.enter()
+        APIs.Users.getUser(of: SSUser.authCurrentUser.uid) { (_user) in
+            user = _user
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.enter()
+        APIs.People.getPostCount(ofUser: SSUser.authCurrentUser.uid) { (_postCount) in
+            postCount = _postCount
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            let follower: (SSUser, Int) = (user!, postCount!)
+            
+            self.followers.insert(follower, at: 0)
+            
+            if self.viewSelector == .followers {
+                let indexPath = IndexPath.init(row: 0, section: 0)
+                
+                self.tableView.beginUpdates()
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
+                self.tableView.endUpdates()
+            }
+            
+            SVProgressHUD.dismiss()
+        }
+    }
+    
+    func unfollowed() {
+        let index = self.followers.firstIndex { (follower) -> Bool in
+            return follower.0.uid == SSUser.authCurrentUser.uid
+        }
+        
+        if let index = index {
+            self.followers.remove(at: index)
+            
+            if self.viewSelector == .followers {
+                let indexPath = IndexPath.init(row: index, section: 0)
+                
+                self.tableView.beginUpdates()
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                self.tableView.endUpdates()
+            }
         }
     }
 }

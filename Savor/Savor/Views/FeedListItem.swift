@@ -285,8 +285,8 @@ extension FeedListItem {
                 APIs.Likes.setLikeCount(of: feed.postID, to: self.likeCount-1)
             } else {
                 let timestamp = Date().timeIntervalSince1970
-                APIs.Likes.Liked(postID: feed.postID, timestamp: timestamp)
-                APIs.People.Liked(postID: feed.postID)
+                APIs.Likes.liked(postID: feed.postID, timestamp: timestamp)
+                APIs.People.liked(postID: feed.postID)
                 APIs.Likes.setLikeCount(of: feed.postID, to: self.likeCount+1)
             }
             sender.isEnabled = true

@@ -29,7 +29,7 @@ class LikesAPI {
         likesReference.child(id).child("like_count").setValue(likeCount)
     }
     
-    func Liked(postID: String, timestamp: Double) {
+    func liked(postID: String, timestamp: Double) {
         let userID = SSUser.authCurrentUser.uid
         let likeReference = likesReference.child(postID).child("likes").child(userID)
         

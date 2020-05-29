@@ -9,6 +9,11 @@
 import UIKit
 import Firebase
 
+protocol ProfileHeaderDelegate {
+    func followed()
+    func unfollowed()
+}
+
 class ProfileHeader: UIView {
     
     // MARK: - IBOutlets
@@ -23,6 +28,8 @@ class ProfileHeader: UIView {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     // MARK: - Properties
+    var delegate: ProfileHeaderDelegate?
+    
     private var followedHandle: UInt?
     var followStatus: FollowStatus = .disabled {
         didSet {
@@ -62,7 +69,7 @@ class ProfileHeader: UIView {
     private var followerCountHandle: UInt?
     var followerCount: Int = 0 {
         didSet {
-            let title = "\(followingCount)\nFollower"
+            let title = "\(followerCount)\nFollowers"
             segmentedControl.setTitle(title, forSegmentAt: 2)
         }
     }
@@ -210,6 +217,19 @@ extension ProfileHeader {
 extension ProfileHeader {
     
     @IBAction func follow(_ sender: UIButton) {
-        print("follow")
+        if let user = self.user {
+            sender.isEnabled = false
+            switch self.followStatus {
+            case .follow:
+                APIs.People.followed(userID: user.uid)
+                self.delegate?.followed()
+            case .unfollow:
+                APIs.People.unfollowed(userID: user.uid)
+                self.delegate?.unfollowed()
+            default:
+                break
+            }
+            sender.isEnabled = true
+        }
     }
 }

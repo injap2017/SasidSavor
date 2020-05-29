@@ -271,8 +271,8 @@ extension ProfilePostCell {
                 APIs.Likes.setLikeCount(of: post.postID, to: self.likeCount-1)
             } else {
                 let timestamp = Date().timeIntervalSince1970
-                APIs.Likes.Liked(postID: post.postID, timestamp: timestamp)
-                APIs.People.Liked(postID: post.postID)
+                APIs.Likes.liked(postID: post.postID, timestamp: timestamp)
+                APIs.People.liked(postID: post.postID)
                 APIs.Likes.setLikeCount(of: post.postID, to: self.likeCount+1)
             }
             sender.isEnabled = true
