@@ -66,18 +66,60 @@ class PeopleAPI {
         }
     }
     
-    func getFollowingCount(ofUser userID: String, completion: @escaping (Int) -> Void) {
-        let peopleFollowingsReference = peopleReference.child(userID).child("followings")
-        peopleFollowingsReference.observeSingleEvent(of: .value) { (snapshot) in
-            completion(Int(snapshot.childrenCount))
+    func observePostCount(ofUser userID: String, completion: @escaping (Int) -> Void) -> UInt {
+        let postCountHandle = peopleReference.child(userID).child("posts").observe(.value) { (snapshot) in
+            let postCount = snapshot.childrenCount
+            completion(Int(postCount))
         }
+        print("posts count observe:\(postCountHandle), user:\(userID)")
+        return postCountHandle
     }
     
-    func getFollowerCount(ofUser userID: String, completion: @escaping (Int) -> Void) {
-        let peopleFollowersReference = peopleReference.child(userID).child("followers")
-        peopleFollowersReference.observeSingleEvent(of: .value) { (snapshot) in
-            completion(Int(snapshot.childrenCount))
+    func removePostCountObserver(ofUser userID: String, withHandle handle: UInt) {
+        print("posts remove count observer:\(handle), post:\(userID)")
+        peopleReference.child(userID).child("posts").removeObserver(withHandle: handle)
+    }
+    
+    func observeFollowingCount(ofUser userID: String, completion: @escaping (Int) -> Void) -> UInt {
+        let followingCountHandle = peopleReference.child(userID).child("followings").observe(.value) { (snapshot) in
+            let followingCount = snapshot.childrenCount
+            completion(Int(followingCount))
         }
+        print("followings count observe:\(followingCountHandle), user:\(userID)")
+        return followingCountHandle
+    }
+    
+    func removeFollowingCountObserver(ofUser userID: String, withHandle handle: UInt) {
+        print("followings remove count observer:\(handle), post:\(userID)")
+        peopleReference.child(userID).child("followings").removeObserver(withHandle: handle)
+    }
+    
+    func observeFollowerCount(ofUser userID: String, completion: @escaping (Int) -> Void) -> UInt {
+        let followerCountHandle = peopleReference.child(userID).child("followers").observe(.value) { (snapshot) in
+            let followerCount = snapshot.childrenCount
+            completion(Int(followerCount))
+        }
+        print("followers count observe:\(followerCountHandle), user:\(userID)")
+        return followerCountHandle
+    }
+    
+    func removeFollowerCountObserver(ofUser userID: String, withHandle handle: UInt) {
+        print("followers remove count observer:\(handle), post:\(userID)")
+        peopleReference.child(userID).child("followers").removeObserver(withHandle: handle)
+    }
+    
+    func observeFollowed(user userID: String, fromUser fromUserID: String, completion: @escaping (Bool) -> Void) -> UInt {
+        let followedHandle = peopleReference.child(fromUserID).child("followings").child(userID).observe(.value) { (snapshot) in
+            let followed = snapshot.value as? Bool ?? false
+            completion(followed)
+        }
+        print("people followed observe:\(followedHandle), user:\(userID), fromUser:\(fromUserID)")
+        return followedHandle
+    }
+    
+    func removeFollowedObserver(ofUser userID: String, fromUser fromUserID: String, withHandle handle: UInt) {
+        print("people remove followed observer:\(handle), user:\(userID), fromUser:\(fromUserID)")
+        peopleReference.child(fromUserID).child("followings").child(userID).removeObserver(withHandle: handle)
     }
     
     func getFollowings(ofUser userID: String, completion: @escaping ([SSUser]) -> Void) {

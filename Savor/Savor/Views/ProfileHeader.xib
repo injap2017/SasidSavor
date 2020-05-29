@@ -60,6 +60,9 @@
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ar7-iK-7qd">
                                     <rect key="frame" x="362" y="8" width="44" height="30"/>
                                     <state key="normal" title="Follow"/>
+                                    <connections>
+                                        <action selector="follow:" destination="-1" eventType="touchUpInside" id="DoN-xn-kaf"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>

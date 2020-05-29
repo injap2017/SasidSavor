@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ProfileHeader: UIView {
     
@@ -22,6 +23,53 @@ class ProfileHeader: UIView {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     // MARK: - Properties
+    private var followedHandle: UInt?
+    var followStatus: FollowStatus = .disabled {
+        didSet {
+            switch followStatus {
+            case .disabled:
+                followButton.setTitle(nil, for: .normal)
+                followButton.setTitleColor(.systemGray, for: .normal)
+                followButton.isEnabled = false
+            case .follow:
+                followButton.setTitle("Follow", for: .normal)
+                followButton.setTitleColor(.systemBlue, for: .normal)
+                followButton.isEnabled = true
+            case .unfollow:
+                followButton.setTitle("Unfollow", for: .normal)
+                followButton.setTitleColor(.systemRed, for: .normal)
+                followButton.isEnabled = true
+            }
+        }
+    }
+    
+    private var postCountHandle: UInt?
+    var postCount: Int = 0 {
+        didSet {
+            let title = "\(postCount)\nPosts"
+            segmentedControl.setTitle(title, forSegmentAt: 0)
+        }
+    }
+    
+    private var followingCountHandle: UInt?
+    var followingCount: Int = 0 {
+        didSet {
+            let title = "\(followingCount)\nFollowing"
+            segmentedControl.setTitle(title, forSegmentAt: 1)
+        }
+    }
+    
+    private var followerCountHandle: UInt?
+    var followerCount: Int = 0 {
+        didSet {
+            let title = "\(followingCount)\nFollower"
+            segmentedControl.setTitle(title, forSegmentAt: 2)
+        }
+    }
+    
+    private var handle: AuthStateDidChangeListenerHandle?
+    private var userID: String?
+    
     var user: SSUser? {
         didSet {
             userPhotoImageView.image = UIImage.init(named: "account-gray")
@@ -42,47 +90,41 @@ class ProfileHeader: UIView {
                 
                 userNameLabel.text = user.fullname
                 userFullNameLabel.text = user.fullName()
+                
+                // below install all observers
+                postCountHandle = APIs.People.observePostCount(ofUser: user.uid) { (count) in
+                    self.postCount = count
+                }
+                
+                followingCountHandle = APIs.People.observeFollowingCount(ofUser: user.uid) { (count) in
+                    self.followingCount = count
+                }
+                
+                followerCountHandle = APIs.People.observeFollowerCount(ofUser: user.uid) { (count) in
+                    self.followerCount = count
+                }
+                
+                handle = Auth.auth().addStateDidChangeListener { (auth, _user) in
+                    if SSUser.isAuthenticated {
+                        if SSUser.authCurrentUser.uid == user.uid {
+                            self.followStatus = .disabled
+                            return
+                        }
+                        self.userID = SSUser.authCurrentUser.uid
+                        self.followedHandle = APIs.People.observeFollowed(user: user.uid, fromUser: self.userID!) { (followed) in
+                            self.followStatus = followed ? .unfollow : .follow
+                        }
+                    } else {
+                        if let followedHandle = self.followedHandle, let userID = self.userID {
+                            APIs.People.removeFollowedObserver(ofUser: user.uid, fromUser: userID, withHandle: followedHandle)
+                            self.followedHandle = nil
+                            
+                            self.followStatus = .disabled
+                        }
+                        self.userID = nil
+                    }
+                }
             }
-        }
-    }
-    
-    var followStatus: FollowStatus = .disabled {
-        didSet {
-            switch followStatus {
-            case .disabled:
-                followButton.setTitle(nil, for: .normal)
-                followButton.setTitleColor(.systemGray, for: .normal)
-                followButton.isEnabled = false
-            case .follow:
-                followButton.setTitle("Follow", for: .normal)
-                followButton.setTitleColor(.systemBlue, for: .normal)
-                followButton.isEnabled = true
-            case .unfollow:
-                followButton.setTitle("Unfollow", for: .normal)
-                followButton.setTitleColor(.systemRed, for: .normal)
-                followButton.isEnabled = true
-            }
-        }
-    }
-    
-    var postCount: Int = 0 {
-        didSet {
-            let title = "\(postCount)\nPosts"
-            segmentedControl.setTitle(title, forSegmentAt: 0)
-        }
-    }
-    
-    var followingCount: Int = 0 {
-        didSet {
-            let title = "\(followingCount)\nFollowing"
-            segmentedControl.setTitle(title, forSegmentAt: 1)
-        }
-    }
-    
-    var followerCount: Int = 0 {
-        didSet {
-            let title = "\(followingCount)\nFollower"
-            segmentedControl.setTitle(title, forSegmentAt: 2)
         }
     }
     
@@ -94,6 +136,20 @@ class ProfileHeader: UIView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         initialize()
+    }
+    
+    deinit {
+        self.removeAllObservers()
+    }
+}
+
+// MARK: - Lifecycle
+extension ProfileHeader {
+    
+    override func removeFromSuperview() {
+        super.removeFromSuperview()
+        
+        self.removeAllObservers()
     }
 }
 
@@ -110,6 +166,43 @@ extension ProfileHeader {
         contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         // multilines in segmented control
         UILabel.appearance(whenContainedInInstancesOf: [UISegmentedControl.self]).numberOfLines = 0
+    }
+    
+    func removeAllObservers() {
+        
+        if let user = self.user {
+            if let postCountHandle = self.postCountHandle {
+                APIs.People.removePostCountObserver(ofUser: user.uid, withHandle: postCountHandle)
+                self.postCountHandle = nil
+                
+                self.postCount = 0
+            }
+            if let followingCountHandle = self.followingCountHandle {
+                APIs.People.removeFollowingCountObserver(ofUser: user.uid, withHandle: followingCountHandle)
+                self.followingCountHandle = nil
+                
+                self.followingCount = 0
+            }
+            if let followerCountHandle = self.followerCountHandle {
+                APIs.People.removeFollowerCountObserver(ofUser: user.uid, withHandle: followerCountHandle)
+                self.followerCountHandle = nil
+                
+                self.followerCount = 0
+            }
+            if let followedHandle = self.followedHandle, let userID = self.userID {
+                APIs.People.removeFollowedObserver(ofUser: user.uid, fromUser: userID, withHandle: followedHandle)
+                self.followedHandle = nil
+                
+                self.followStatus = .disabled
+            }
+            self.userID = nil
+        }
+        
+        if let handle = self.handle {
+            Auth.auth().removeStateDidChangeListener(handle)
+            
+            self.handle = nil
+        }
     }
 }
 
