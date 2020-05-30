@@ -9,6 +9,11 @@
 import UIKit
 import Firebase
 
+protocol FollowCellDelegate {
+    func followed(_ data: (SSUser, Int))
+    func unfollowed(_ data: (SSUser, Int))
+}
+
 class FollowCell: UITableViewCell {
     
     // MARK: - IBOutlets
@@ -23,6 +28,8 @@ class FollowCell: UITableViewCell {
     // MARK: - Properties
     static let identifier = "FollowCell"
     static let nib = UINib.init(nibName: "FollowCell", bundle: nil)
+    
+    var delegate: FollowCellDelegate?
     
     private var postCountHandle: UInt?
     var postCount: Int = 0 {
@@ -150,6 +157,19 @@ extension FollowCell {
 extension FollowCell {
     
     @IBAction func follow(_ sender: UIButton) {
-        
+        if let user = self.user {
+            sender.isEnabled = false
+            switch self.followStatus {
+            case .follow:
+                APIs.People.followed(userID: user.uid)
+                self.delegate?.followed((user, postCount))
+            case .unfollow:
+                APIs.People.unfollowed(userID: user.uid)
+                self.delegate?.unfollowed((user, postCount))
+            default:
+                break
+            }
+            sender.isEnabled = true
+        }
     }
 }

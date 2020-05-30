@@ -8,11 +8,13 @@
 
 import UIKit
 import Firebase
+import SVProgressHUD
 
 class MoreViewController: UITableViewController {
     
-    
     // MARK: - Properties
+    var cells: [[((UITableView) -> UITableViewCell, (UITableView) -> Void)]] = [] /*(return cell, didSelectAction)*/
+    
     private var handle: AuthStateDidChangeListenerHandle?
     
     deinit {
@@ -38,20 +40,34 @@ extension MoreViewController {
         
         // cell
         self.tableView.register(ActionCell.nib, forCellReuseIdentifier: ActionCell.identifier)
-    }
-    
-    func refreshView() {
-        // bar button item
-        self.navigationItem.rightBarButtonItem = SSUser.isAuthenticated ? self.signOutBarButtonItem() : nil
         
-        // table view
-        self.tableView.reloadData()
     }
     
     func observe() {
-        // listen auth state change to refresh
+        // listen auth state to switch between signin createnewaccount / my profile
         self.handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-            self.refreshView()
+            if SSUser.isAuthenticated {
+                // signout bar button item
+                self.navigationItem.rightBarButtonItem = self.signOutBarButtonItem()
+                
+                // cells
+                self.cells.removeAll()
+                self.cells.append([(self.myProfileCell, self.didSelectMyProfile)])
+                
+                // table view
+                self.tableView.reloadData()
+            } else {
+                // none bar item
+                self.navigationItem.rightBarButtonItem = nil
+                
+                // cells
+                self.cells.removeAll()
+                self.cells.append([(self.signInCell, self.didSelectSignIn)])
+                self.cells.append([(self.createNewAccountCell, self.didSelectCreateNewAccount)])
+                
+                // table view
+                self.tableView.reloadData()
+            }
         }
     }
     
@@ -72,11 +88,33 @@ extension MoreViewController {
     @objc func signOutAction() {
         do {
             try Auth.auth().signOut()
-            
-            // refresh view will be called automatically by statedidchangelistner
-            
         } catch let error {
             print(error.localizedDescription)
+        }
+    }
+    
+    func didSelectSignIn(_ tableView: UITableView) {
+        let viewController = SignInViewController.instance {
+            
+        }
+        self.navigationController?.pushViewController(viewController)
+    }
+    
+    func didSelectCreateNewAccount(_ tableView: UITableView) {
+        let viewController = CreateNewAccountViewController.instanceOnNavigationController {
+            
+        }
+        self.present(viewController, animated: true, completion: nil)
+    }
+    
+    func didSelectMyProfile(_ tableView: UITableView) {
+        
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        ProfileViewController.syncData(userID: SSUser.authCurrentUser.uid) { (viewController) in
+            SVProgressHUD.dismiss()
+            
+            self.navigationController?.pushViewController(viewController)
         }
     }
 }
@@ -85,62 +123,41 @@ extension MoreViewController {
 extension MoreViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return self.cells.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return SSUser.isAuthenticated ? 0 : 1
-        case 1:
-            return SSUser.isAuthenticated ? 0 : 1
-        default:
-            return SSUser.isAuthenticated ? 1 : 0
-        }
+        return self.cells[section].count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        switch indexPath.section {
-        case 0:
-            let cell = UITableViewCell.init()
-            cell.accessoryType = .disclosureIndicator
-            cell.textLabel?.text = "Sign In"
-            return cell
-        case 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: ActionCell.identifier) as! ActionCell
-            cell.title = "Create New Account"
-            cell.isEnabled = true
-            return cell
-        default:
-            let cell = UITableViewCell.init()
-            cell.accessoryType = .disclosureIndicator
-            cell.textLabel?.text = "My Profile"
-            return cell
-        }
+        let cell = self.cells[indexPath.section][indexPath.row].0(tableView)
+        return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        
-        switch indexPath.section {
-        case 0:
-            // sign in
-            let viewController = SignInViewController.instance {
-                // refresh view will be called automatically by statedidchangelistner
-            }
-            self.navigationController?.pushViewController(viewController)
-            
-        case 1:
-            // create new account
-            let viewController = CreateNewAccountViewController.instanceOnNavigationController {
-                // refresh view will be called automatically by statedidchangelistner
-            }
-            self.present(viewController, animated: true, completion: nil)
-            
-        default:
-            // my profile
-            break
-        }
+        self.cells[indexPath.section][indexPath.row].1(tableView)
+    }
+    
+    func signInCell(_ tableView: UITableView) -> UITableViewCell {
+        let cell = UITableViewCell.init()
+        cell.accessoryType = .disclosureIndicator
+        cell.textLabel?.text = "Sign In"
+        return cell
+    }
+    
+    func createNewAccountCell(_ tableView: UITableView) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ActionCell.identifier) as! ActionCell
+        cell.title = "Create New Account"
+        cell.isEnabled = true
+        return cell
+    }
+    
+    func myProfileCell(_ tableView: UITableView) -> UITableViewCell {
+        let cell = UITableViewCell.init()
+        cell.accessoryType = .disclosureIndicator
+        cell.textLabel?.text = "My Profile"
+        return cell
     }
 }

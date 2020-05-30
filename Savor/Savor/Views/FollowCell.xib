@@ -48,6 +48,9 @@
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eVj-Me-XZL">
                         <rect key="frame" x="318" y="23" width="44" height="30"/>
                         <state key="normal" title="Follow"/>
+                        <connections>
+                            <action selector="follow:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="MDq-eR-O5r"/>
+                        </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="edgarsia" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i8b-pi-LM8">
                         <rect key="frame" x="76" y="8" width="59" height="17"/>

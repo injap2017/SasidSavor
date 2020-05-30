@@ -319,12 +319,14 @@ extension ProfileViewController {
             let following = followings[indexPath.row]
             cell.user = following.0
             cell.postCount = following.1
+            cell.delegate = self
             return cell
         case .followers:
             let cell = tableView.dequeueReusableCell(withIdentifier: FollowCell.identifier) as! FollowCell
             let follower = followers[indexPath.row]
             cell.user = follower.0
             cell.postCount = follower.1
+            cell.delegate = self
             return cell
         }
     }
@@ -442,6 +444,36 @@ extension ProfileViewController: ProfileHeaderDelegate {
                 self.tableView.beginUpdates()
                 self.tableView.deleteRows(at: [indexPath], with: .automatic)
                 self.tableView.endUpdates()
+            }
+        }
+    }
+}
+
+// MARK: - FollowCell Delegate
+extension ProfileViewController: FollowCellDelegate {
+    
+    func followed(_ data: (SSUser, Int)) {
+        if isItMe() {
+            self.followings.insert(data, at: 0)
+        }
+    }
+    
+    func unfollowed(_ data: (SSUser, Int)) {
+        if isItMe() {
+            let index = self.followings.firstIndex { (following) -> Bool in
+                return data.0.uid == following.0.uid
+            }
+            
+            if let index = index {
+                self.followings.remove(at: index)
+                
+                if self.viewSelector == .following {
+                    let indexPath = IndexPath.init(row: index, section: 0)
+                    
+                    self.tableView.beginUpdates()
+                    self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                    self.tableView.endUpdates()
+                }
             }
         }
     }
