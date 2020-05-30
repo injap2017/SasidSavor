@@ -68,6 +68,8 @@ class FollowCell: UITableViewCell {
             userNameLabel.text = nil
             userFullNameLabel.text = nil
             
+            followStatus = .disabled
+            
             postCount = 0
             
             if let user = self.user {
