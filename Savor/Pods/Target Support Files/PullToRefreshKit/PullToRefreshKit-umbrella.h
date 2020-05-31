@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ESPullToRefreshVersionNumber;
-FOUNDATION_EXPORT const unsigned char ESPullToRefreshVersionString[];
+FOUNDATION_EXPORT double PullToRefreshKitVersionNumber;
+FOUNDATION_EXPORT const unsigned char PullToRefreshKitVersionString[];
 

@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import ESPullToRefresh
 import Firebase
 import SVProgressHUD
+import PullToRefreshKit
 
 enum FollowStatus: Int {
     case follow /* you don't follow him/her, able to follow */
@@ -39,13 +39,18 @@ class ProfileViewController: UITableViewController {
             // refresh tableview to see the view parts
             self.tableView?.reloadData()
             // add infinite scrolling
-            if viewSelector == .posts {
-                self.tableView?.es.addInfiniteScrolling(handler: infiniteScrollingAction)
+            if viewSelector == .posts,
+                moreData {
+                self.tableView.configRefreshFooter(container: self, action: infiniteScrollingAction)
             } else {
-                self.tableView?.es.removeRefreshFooter()
+                self.tableView.switchRefreshFooter(to: .removed)
             }
         }
     }
+    
+    fileprivate var isLoadingPosts: Bool = false
+    
+    fileprivate var moreData: Bool = true
     
     static let postsPerLoad: UInt = 20
     
@@ -192,6 +197,10 @@ extension ProfileViewController {
         // footer
         self.tableView.tableFooterView = UIView.init()
         
+        // add infinite scrolling
+        let adding = posts.count
+        self.moreData = adding >= ProfileViewController.postsPerLoad
+        
         // viewSelector
         self.viewSelectorValueChanged(profileHeader.segmentedControl)
     }
@@ -248,7 +257,51 @@ extension ProfileViewController {
     }
     
     @objc func infiniteScrollingAction() {
+        guard self.isLoadingPosts == false else {
+            return
+        }
         
+        guard let lastPostTimestamp = self.posts.last?.timestamp else {
+            self.tableView.switchRefreshFooter(to: .removed)
+            return
+        }
+        
+        self.isLoadingPosts = true
+        print("scroll loading true")
+        
+        APIs.People.getOldPosts(ofUser: user.uid, start: lastPostTimestamp, limit: ProfileViewController.postsPerLoad) { (posts) in
+            
+            let count = self.posts.count
+            let adding = posts.count
+            
+            self.posts.append(contentsOf: posts)
+            
+            DispatchQueue.main.async {
+                
+                if self.viewSelector == .posts {
+                    self.tableView.performBatchUpdates({
+                        
+                        var indexPaths: [IndexPath] = []
+                        for i in (count..<count+adding) {
+                            indexPaths.append(IndexPath.init(row: i, section: 0))
+                        }
+                        
+                        self.tableView.insertRows(at: indexPaths, with: .automatic)
+                        
+                    }) { (finished) in
+                        self.tableView.switchRefreshFooter(to: .normal)
+                        
+                        self.moreData = adding >= ProfileViewController.postsPerLoad
+                        if !self.moreData {
+                            self.tableView.switchRefreshFooter(to: .removed)
+                        }
+                        
+                        self.isLoadingPosts = false
+                        print("scroll loading false")
+                    }
+                }
+            }
+        }
     }
     
     func didSelectPostAction(_ post: SSPost) {

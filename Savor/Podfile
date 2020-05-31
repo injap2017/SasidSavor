@@ -11,8 +11,8 @@ target 'Savor' do
   pod 'Cosmos'
   pod 'MagazineLayout'
   pod 'ImageSlideshow'
+  pod 'PullToRefreshKit'
   pod "ImageSlideshow/SDWebImage"
-  pod 'ESPullToRefresh'
   pod 'InputBarAccessoryView'
   
   pod 'DCKit'

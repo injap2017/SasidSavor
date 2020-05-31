@@ -10,7 +10,7 @@ import UIKit
 import MagazineLayout
 import FTPopOverMenu_Swift
 import SVProgressHUD
-import ESPullToRefresh
+import PullToRefreshKit
 
 enum FeedsViewMode: Int {
     case list
@@ -72,13 +72,11 @@ extension FeedViewController {
         // uicollectionview
         self.listCollectionView.collectionViewLayout = MagazineLayout.init()
         self.listCollectionView.register(FeedListItem.nib, forCellWithReuseIdentifier: FeedListItem.identifier)
-        self.listCollectionView.es.addPullToRefresh(handler: pullToRefreshAction)
-        self.listCollectionView.es.addInfiniteScrolling(handler: infiniteScrollingAction)
+        self.listCollectionView.configRefreshHeader(container: self, action: pullToRefreshAction)
         
         self.squareCollectionView.collectionViewLayout = MagazineLayout.init()
         self.squareCollectionView.register(FeedSquareItem.nib, forCellWithReuseIdentifier: FeedSquareItem.identifier)
-        self.squareCollectionView.es.addPullToRefresh(handler: pullToRefreshAction)
-        self.squareCollectionView.es.addInfiniteScrolling(handler: infiniteScrollingAction)
+        self.squareCollectionView.configRefreshHeader(container: self, action: pullToRefreshAction)
         
         // view mode popover
         self.configureFTPopOverMenu()
@@ -138,17 +136,28 @@ extension FeedViewController {
         SVProgressHUD.show(withStatus: "Loading...")
         APIs.Posts.getRecentPosts(start: nil, limit: FeedViewController.postsPerLoad) { (posts) in
             
+            let adding = posts.count
+            
             self.posts = posts
             
             DispatchQueue.main.async {
                 
+                var collectionView: UICollectionView
+                
                 switch self.viewMode {
                 case .list:
-                    self.listCollectionView.reloadData()
-                    self.listCollectionView.es.stopPullToRefresh()
+                    collectionView = self.listCollectionView
                 case .square:
-                    self.squareCollectionView.reloadData()
-                    self.squareCollectionView.es.stopPullToRefresh()
+                    collectionView = self.squareCollectionView
+                }
+                
+                collectionView.reloadData()
+                collectionView.switchRefreshHeader(to: .normal(.none, 0.0))
+                
+                // add infinite scrolling
+                if adding >= FeedViewController.postsPerLoad {
+                    self.listCollectionView.configRefreshFooter(container: self, action: self.infiniteScrollingAction)
+                    self.squareCollectionView.configRefreshFooter(container: self, action: self.infiniteScrollingAction)
                 }
                 
                 print("pull loading false")
@@ -164,12 +173,8 @@ extension FeedViewController {
         }
         
         guard let lastPostTimestamp = self.posts.last?.timestamp else {
-            switch self.viewMode {
-            case .list:
-                self.listCollectionView.es.stopLoadingMore()
-            case .square:
-                self.squareCollectionView.es.stopLoadingMore()
-            }
+            self.listCollectionView.switchRefreshFooter(to: .removed)
+            self.squareCollectionView.switchRefreshFooter(to: .removed)
             return
         }
         
@@ -185,39 +190,35 @@ extension FeedViewController {
             
             DispatchQueue.main.async {
                 
+                var collectionView: UICollectionView
+                
                 switch self.viewMode {
                 case .list:
-                    self.listCollectionView.performBatchUpdates({
-                        
-                        var indexPaths: [IndexPath] = []
-                        for i in (count..<count+adding) {
-                            indexPaths.append(IndexPath.init(row: i, section: 0))
-                        }
-                        
-                        self.listCollectionView.insertItems(at: indexPaths)
-                        
-                    }) { (finished) in
-                        self.listCollectionView.es.stopLoadingMore()
-                        
-                        self.isLoadingPosts = false
-                        print("scroll loading false")
-                    }
+                    collectionView = self.listCollectionView
                 case .square:
-                    self.squareCollectionView.performBatchUpdates({
-                        
-                        var indexPaths: [IndexPath] = []
-                        for i in (count..<count+adding) {
-                            indexPaths.append(IndexPath.init(row: i, section: 0))
-                        }
-                        
-                        self.squareCollectionView.insertItems(at: indexPaths)
-                        
-                    }) { (finished) in
-                        self.squareCollectionView.es.stopLoadingMore()
-                        
-                        self.isLoadingPosts = false
-                        print("scroll loading false")
+                    collectionView = self.squareCollectionView
+                }
+                
+                collectionView.performBatchUpdates({
+                    
+                    var indexPaths: [IndexPath] = []
+                    for i in (count..<count+adding) {
+                        indexPaths.append(IndexPath.init(row: i, section: 0))
                     }
+                    
+                    collectionView.insertItems(at: indexPaths)
+                    
+                }) { (finished) in
+                    
+                    collectionView.switchRefreshFooter(to: .normal)
+                    
+                    if adding < FeedViewController.postsPerLoad {
+                        self.listCollectionView.switchRefreshFooter(to: .removed)
+                        self.squareCollectionView.switchRefreshFooter(to: .removed)
+                    }
+                    
+                    self.isLoadingPosts = false
+                    print("scroll loading false")
                 }
             }
         }

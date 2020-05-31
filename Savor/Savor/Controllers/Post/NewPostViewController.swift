@@ -349,8 +349,8 @@ extension NewPostViewController {
             postRef.setValue(data)
             
             // remark the post in user/posts (to show this post in user profile) and feed/user (to show this post in this user feed)
-            SavorData.FireBase.rootReference.updateChildValues(["people/\(uid)/posts/\(postID)": true,
-                                                                "feed/\(uid)/\(postID)": true])
+            SavorData.FireBase.rootReference.updateChildValues(["people/\(uid)/posts/\(postID)": timestamp,
+                                                                "feed/\(uid)/\(postID)": timestamp])
             // remark the food savored as rating (calculate total rating, add postID)
             APIs.Savored.savored(foodID: foodID, in: restaurantID, postID: postID, rating: self.rating, timestamp: timestamp) { (error) in
                 if let error = error {

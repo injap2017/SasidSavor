@@ -18,7 +18,6 @@ PODS:
     - AlamofireObjectMapper (= 5.2.0)
   - Cosmos (20.0.1)
   - DCKit (1.0.13)
-  - ESPullToRefresh (2.9.2)
   - Firebase/Analytics (6.19.0):
     - Firebase/Core
   - Firebase/Auth (6.19.0):
@@ -129,6 +128,7 @@ PODS:
   - ObjectMapper (3.5.1)
   - PMAlertController (3.5.0)
   - PromisesObjC (1.2.8)
+  - PullToRefreshKit (0.8.8)
   - SDWebImage (5.7.0):
     - SDWebImage/Core (= 5.7.0)
   - SDWebImage/Core (5.7.0)
@@ -164,7 +164,6 @@ DEPENDENCIES:
   - CDYelpFusionKit
   - Cosmos
   - DCKit
-  - ESPullToRefresh
   - Firebase/Analytics
   - Firebase/Auth
   - Firebase/Database
@@ -177,6 +176,7 @@ DEPENDENCIES:
   - IQKeyboardManagerSwift
   - KMPlaceholderTextView
   - MagazineLayout
+  - PullToRefreshKit
   - SnapKit
   - SVProgressHUD
   - SwifterSwift
@@ -190,7 +190,6 @@ SPEC REPOS:
     - CDYelpFusionKit
     - Cosmos
     - DCKit
-    - ESPullToRefresh
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -219,6 +218,7 @@ SPEC REPOS:
     - ObjectMapper
     - PMAlertController
     - PromisesObjC
+    - PullToRefreshKit
     - SDWebImage
     - SnapKit
     - SVProgressHUD
@@ -232,7 +232,6 @@ SPEC CHECKSUMS:
   CDYelpFusionKit: 94a7802fa23ef0eb78514c8a6f246f55b6bc91f0
   Cosmos: b47fddf2102bb48580cd3025d9ce0a5c658a65da
   DCKit: ca310752c3a4d442e772de66ce4e4168ea906d62
-  ESPullToRefresh: efed00d52597065e9a84e1e52fa444fdb1a1dee0
   Firebase: d55ddb0e0bb3207166cddc028647833d8a1b5b6f
   FirebaseAnalytics: 572e467f3d977825266e8ccd52674aa3e6f47eac
   FirebaseAuth: 5ce2b03a3d7fe56b7a6e4c5ec7ff1522890b1d6f
@@ -261,12 +260,13 @@ SPEC CHECKSUMS:
   ObjectMapper: 70187b8941977c62ccfb423caf6b50be405cabf0
   PMAlertController: 06dab8160066fc4ce991c880e3722cd403e2926a
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
+  PullToRefreshKit: 7cc53e720e69f135cffa1a57784dfb534f0222ab
   SDWebImage: a99471f452bdfa0ca52ddf5b1adf2b61cab1d1eb
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwifterSwift: a9e8e144832638c2850b43da5feaf9598c6ad65b
   SwiftLocation: 609ac8859f2c5d48a6cadd2a58c63b1dae02dc25
 
-PODFILE CHECKSUM: 71c1f23cc49988923e83df984bb58fa849f2d2fb
+PODFILE CHECKSUM: e6e960fcd0f9ad4e0e92fc253e139ac5aca51511
 
 COCOAPODS: 1.9.1
