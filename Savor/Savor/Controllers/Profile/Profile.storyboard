@@ -24,5 +24,83 @@
             </objects>
             <point key="canvasLocation" x="-109" y="155"/>
         </scene>
+        <!--Edit Profile View Controller-->
+        <scene sceneID="nVB-V4-K89">
+            <objects>
+                <tableViewController storyboardIdentifier="editProfile" id="1dS-VA-tOF" customClass="EditProfileViewController" customModule="SasiSavor" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="el4-k5-iXb">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="yLn-Uc-Bje">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="80"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rw5-M2-LmN" customClass="DCCircleView" customModule="DCKit">
+                                    <rect key="frame" x="8" y="8" width="64" height="64"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="account-gray" translatesAutoresizingMaskIntoConstraints="NO" id="Y8p-gX-2St">
+                                            <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                        </imageView>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fqz-MZ-Xl4">
+                                            <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                        </imageView>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lWe-fU-e9X">
+                                            <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                            <connections>
+                                                <action selector="profilePicture:" destination="1dS-VA-tOF" eventType="touchUpInside" id="S3M-1N-D3y"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="64" id="73R-4f-Pix"/>
+                                        <constraint firstItem="Y8p-gX-2St" firstAttribute="leading" secondItem="rw5-M2-LmN" secondAttribute="leading" id="8zd-mD-son"/>
+                                        <constraint firstAttribute="height" constant="64" id="9pg-J0-K0e"/>
+                                        <constraint firstAttribute="bottom" secondItem="Y8p-gX-2St" secondAttribute="bottom" id="AT9-02-BZn"/>
+                                        <constraint firstAttribute="trailing" secondItem="fqz-MZ-Xl4" secondAttribute="trailing" id="FQ2-GH-spf"/>
+                                        <constraint firstAttribute="trailing" secondItem="lWe-fU-e9X" secondAttribute="trailing" id="Kzc-bO-Req"/>
+                                        <constraint firstItem="fqz-MZ-Xl4" firstAttribute="leading" secondItem="rw5-M2-LmN" secondAttribute="leading" id="POr-eR-5We"/>
+                                        <constraint firstAttribute="bottom" secondItem="fqz-MZ-Xl4" secondAttribute="bottom" id="V4g-45-VIn"/>
+                                        <constraint firstAttribute="trailing" secondItem="Y8p-gX-2St" secondAttribute="trailing" id="Vci-vb-SDw"/>
+                                        <constraint firstItem="Y8p-gX-2St" firstAttribute="top" secondItem="rw5-M2-LmN" secondAttribute="top" id="chd-F7-3Bc"/>
+                                        <constraint firstItem="lWe-fU-e9X" firstAttribute="leading" secondItem="rw5-M2-LmN" secondAttribute="leading" id="tkV-SF-tWG"/>
+                                        <constraint firstItem="lWe-fU-e9X" firstAttribute="top" secondItem="rw5-M2-LmN" secondAttribute="top" id="xWy-Oz-noH"/>
+                                        <constraint firstAttribute="bottom" secondItem="lWe-fU-e9X" secondAttribute="bottom" id="xjw-mU-f3M"/>
+                                        <constraint firstItem="fqz-MZ-Xl4" firstAttribute="top" secondItem="rw5-M2-LmN" secondAttribute="top" id="zoS-gw-h0W"/>
+                                    </constraints>
+                                </view>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Profile photos can't be deceptive, misleading, infringe on anyone else's copyright, or be in violation of the site's Terms." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mA7-y7-K2v">
+                                    <rect key="frame" x="80" y="16.5" width="318" height="47"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <color key="textColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="mA7-y7-K2v" firstAttribute="centerY" secondItem="yLn-Uc-Bje" secondAttribute="centerY" id="8MN-Rh-jOD"/>
+                                <constraint firstItem="rw5-M2-LmN" firstAttribute="top" secondItem="yLn-Uc-Bje" secondAttribute="top" constant="8" id="C2z-V2-TE8"/>
+                                <constraint firstItem="rw5-M2-LmN" firstAttribute="leading" secondItem="yLn-Uc-Bje" secondAttribute="leading" constant="8" id="Idt-u3-fAg"/>
+                                <constraint firstAttribute="trailing" secondItem="mA7-y7-K2v" secondAttribute="trailing" constant="16" id="KFg-aK-zY9"/>
+                                <constraint firstItem="mA7-y7-K2v" firstAttribute="leading" secondItem="rw5-M2-LmN" secondAttribute="trailing" constant="8" id="noB-TK-Min"/>
+                            </constraints>
+                        </view>
+                        <connections>
+                            <outlet property="dataSource" destination="1dS-VA-tOF" id="o7l-Px-Io5"/>
+                            <outlet property="delegate" destination="1dS-VA-tOF" id="oYO-vd-E7L"/>
+                        </connections>
+                    </tableView>
+                    <connections>
+                        <outlet property="photoView" destination="fqz-MZ-Xl4" id="bTO-MD-RRk"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="o7b-i5-wce" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="727" y="155"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="account-gray" width="85.333335876464844" height="85.333335876464844"/>
+    </resources>
 </document>

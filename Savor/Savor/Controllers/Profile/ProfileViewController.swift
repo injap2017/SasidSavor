@@ -58,6 +58,7 @@ class ProfileViewController: UITableViewController {
     
     deinit {
         removeObservers()
+        removeNotificationListeners()
     }
 }
 
@@ -69,6 +70,7 @@ extension ProfileViewController {
         
         self.initView()
         self.observe()
+        self.listenNotifications()
     }
 }
 
@@ -184,7 +186,7 @@ extension ProfileViewController {
         let frame = CGRect.init(x: 0, y: 0, width: width, height: height)
         let profileHeader = ProfileHeader.init(frame: frame)
         profileHeader.delegate = self
-        profileHeader.user = self.user
+        profileHeader.data = (self.user, true)
         profileHeader.segmentedControl.selectedSegmentIndex = viewSelector.rawValue
         profileHeader.segmentedControl.addTarget(self, action: #selector(viewSelectorValueChanged(_:)), for: .valueChanged)
         self.tableView.tableHeaderView = profileHeader
@@ -231,6 +233,14 @@ extension ProfileViewController {
         }
         return false
     }
+    
+    func listenNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(editNotificationHandler), name: Notification.Name.init(EditProfileViewController.editNotification), object: nil)
+    }
+    
+    func removeNotificationListeners() {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
 // MARK: - Actions
@@ -252,8 +262,29 @@ extension ProfileViewController {
         return item
     }
     
+    @objc func editNotificationHandler() {
+        if isItMe() {
+            // reload current user
+            APIs.Users.getUser(of: SSUser.authCurrentUser.uid) { (user) in
+                self.user = user
+                
+                // update header
+                if let profileHeader = self.profileHeader {
+                    profileHeader.data = (self.user, false)
+                }
+            }
+        }
+    }
+    
     @objc func editAction() {
-        print("edit profile")
+        
+        SVProgressHUD.show(withStatus: "Loading...")
+        
+        EditProfileViewController.syncData() { (viewController) in
+            SVProgressHUD.dismiss()
+            
+            self.present(viewController, animated: true, completion: nil)
+        }
     }
     
     @objc func infiniteScrollingAction() {

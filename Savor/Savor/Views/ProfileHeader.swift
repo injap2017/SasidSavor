@@ -77,7 +77,7 @@ class ProfileHeader: UIView {
     private var handle: AuthStateDidChangeListenerHandle?
     private var userID: String?
     
-    var user: SSUser? {
+    var data: (SSUser, Bool)? {
         didSet {
             userPhotoImageView.image = UIImage.init(named: "account-gray")
             userNameLabel.text = nil
@@ -89,7 +89,8 @@ class ProfileHeader: UIView {
             followingCount = 0
             followerCount = 0
             
-            if let user = self.user {
+            if let data = self.data {
+                let user = data.0
                 
                 if let pictureURL = user.profilePictureURL {
                     userPhotoImageView.sd_setImage(with: pictureURL)
@@ -98,37 +99,40 @@ class ProfileHeader: UIView {
                 userNameLabel.text = user.fullname
                 userFullNameLabel.text = user.fullName()
                 
-                // below install all observers
-                postCountHandle = APIs.People.observePostCount(ofUser: user.uid) { (count) in
-                    self.postCount = count
-                }
-                
-                followingCountHandle = APIs.People.observeFollowingCount(ofUser: user.uid) { (count) in
-                    self.followingCount = count
-                }
-                
-                followerCountHandle = APIs.People.observeFollowerCount(ofUser: user.uid) { (count) in
-                    self.followerCount = count
-                }
-                
-                handle = Auth.auth().addStateDidChangeListener { (auth, _user) in
-                    if SSUser.isAuthenticated {
-                        if SSUser.authCurrentUser.uid == user.uid {
-                            self.followStatus = .disabled
-                            return
+                let needInstallObservers = data.1
+                if needInstallObservers {
+                    // below install all observers
+                    postCountHandle = APIs.People.observePostCount(ofUser: user.uid) { (count) in
+                        self.postCount = count
+                    }
+                    
+                    followingCountHandle = APIs.People.observeFollowingCount(ofUser: user.uid) { (count) in
+                        self.followingCount = count
+                    }
+                    
+                    followerCountHandle = APIs.People.observeFollowerCount(ofUser: user.uid) { (count) in
+                        self.followerCount = count
+                    }
+                    
+                    handle = Auth.auth().addStateDidChangeListener { (auth, _user) in
+                        if SSUser.isAuthenticated {
+                            if SSUser.authCurrentUser.uid == user.uid {
+                                self.followStatus = .disabled
+                                return
+                            }
+                            self.userID = SSUser.authCurrentUser.uid
+                            self.followedHandle = APIs.People.observeFollowed(user: user.uid, fromUser: self.userID!) { (followed) in
+                                self.followStatus = followed ? .unfollow : .follow
+                            }
+                        } else {
+                            if let followedHandle = self.followedHandle, let userID = self.userID {
+                                APIs.People.removeFollowedObserver(ofUser: user.uid, fromUser: userID, withHandle: followedHandle)
+                                self.followedHandle = nil
+                                
+                                self.followStatus = .disabled
+                            }
+                            self.userID = nil
                         }
-                        self.userID = SSUser.authCurrentUser.uid
-                        self.followedHandle = APIs.People.observeFollowed(user: user.uid, fromUser: self.userID!) { (followed) in
-                            self.followStatus = followed ? .unfollow : .follow
-                        }
-                    } else {
-                        if let followedHandle = self.followedHandle, let userID = self.userID {
-                            APIs.People.removeFollowedObserver(ofUser: user.uid, fromUser: userID, withHandle: followedHandle)
-                            self.followedHandle = nil
-                            
-                            self.followStatus = .disabled
-                        }
-                        self.userID = nil
                     }
                 }
             }
@@ -177,7 +181,9 @@ extension ProfileHeader {
     
     func removeAllObservers() {
         
-        if let user = self.user {
+        if let data = self.data {
+            let user = data.0
+            
             if let postCountHandle = self.postCountHandle {
                 APIs.People.removePostCountObserver(ofUser: user.uid, withHandle: postCountHandle)
                 self.postCountHandle = nil
@@ -217,7 +223,8 @@ extension ProfileHeader {
 extension ProfileHeader {
     
     @IBAction func follow(_ sender: UIButton) {
-        if let user = self.user {
+        if let data = self.data {
+            let user = data.0
             sender.isEnabled = false
             switch self.followStatus {
             case .follow:

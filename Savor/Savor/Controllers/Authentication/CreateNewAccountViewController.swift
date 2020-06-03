@@ -348,43 +348,6 @@ extension CreateNewAccountViewController: UITextFieldDelegate {
 // MARK: - Server API Calls
 extension CreateNewAccountViewController {
     
-    func uploadData(_ data: Data, and metaData: StorageMetadata? = nil, to reference: StorageReference,
-                    completion: @escaping (_ url: URL?, _ error: Error?) -> Void) {
-        // put data to storage
-        reference.putData(data, metadata: metaData) { (metaData, error) in
-            if let error = error {
-                completion(nil, error)
-                return
-            }
-            
-            // get download URL
-            reference.downloadURL { (url, error) in
-                if let error = error {
-                    completion(nil, error)
-                    return
-                }
-                
-                completion(url, nil)
-            }
-        }
-    }
-    
-    func requestProfileChangeOf(user: User, displayName: String, photoURL: URL?,
-                              completion: @escaping (_ error: Error?) -> Void) {
-        // request profile change
-        let request = user.createProfileChangeRequest()
-        request.displayName = displayName
-        request.photoURL = photoURL
-        request.commitChanges { (error) in
-            if let error = error {
-                completion(error)
-                return
-            }
-            
-            completion(nil)
-        }
-    }
-    
     func createNewAccount() {
         
         // trim
@@ -394,29 +357,26 @@ extension CreateNewAccountViewController {
         SVProgressHUD.show(withStatus: "Creating new account...")
         
         // create user
-        Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
-            guard let strongSelf = self else { return }
-            
+        Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
             if let error = error {
                 print(error)
                 SVProgressHUD.showError(withStatus: error.localizedDescription)
                 return
             }
             
-            if let user = result?.user {
+            if let authUser = result?.user {
                 
-                // upload profile picture
-                if let photo = strongSelf.photo, let data = photo.jpegData(compressionQuality: 0.5) {
-                    let reference = Storage.storage().reference().child("profilePictures").child("\(user.uid).png")
-                    
-                    strongSelf.uploadData(data, to: reference) { (url, error) in
+                if let photo = self.photo {
+                    // upload profile picture
+                    APIs.ProfilePictures.uploadPhoto(photo, ofUser: authUser.uid) { (url, error) in
                         if let error = error {
                             print(error)
                             SVProgressHUD.showError(withStatus: error.localizedDescription)
                             return
                         }
                         
-                        strongSelf.requestProfileChangeOf(user: user, displayName: strongSelf.userName, photoURL: url) { (error) in
+                        // request profile change
+                        authUser.requestProfileChange(displayName: self.userName, photoURL: url) { (error) in
                             if let error = error {
                                 print(error)
                                 SVProgressHUD.showError(withStatus: error.localizedDescription)
@@ -424,9 +384,9 @@ extension CreateNewAccountViewController {
                             }
                             
                             // set user profile
-                            let user = SSUser.init(authUser: Auth.auth().currentUser!)
-                            user.firstName = strongSelf.firstName
-                            user.lastName = strongSelf.lastName
+                            let user = SSUser.authCurrentUser
+                            user.firstName = self.firstName
+                            user.lastName = self.lastName
                             
                             APIs.Users.setUser(user)
                             
@@ -434,15 +394,16 @@ extension CreateNewAccountViewController {
                                 
                                 SVProgressHUD.dismiss()
                                 
-                                strongSelf.cancelAction()
+                                self.cancelAction()
                                 
-                                strongSelf.completion?()
+                                self.completion?()
                             }
                         }
                     }
                 }
                 else {
-                    strongSelf.requestProfileChangeOf(user: user, displayName: strongSelf.userName, photoURL: nil) { (error) in
+                    // request profile change
+                    authUser.requestProfileChange(displayName: self.userName) { (error) in
                         if let error = error {
                             print(error)
                             SVProgressHUD.showError(withStatus: error.localizedDescription)
@@ -450,9 +411,9 @@ extension CreateNewAccountViewController {
                         }
                         
                         // set user profile
-                        let user = SSUser.init(authUser: Auth.auth().currentUser!)
-                        user.firstName = strongSelf.firstName
-                        user.lastName = strongSelf.lastName
+                        let user = SSUser.authCurrentUser
+                        user.firstName = self.firstName
+                        user.lastName = self.lastName
                         
                         APIs.Users.setUser(user)
                         
@@ -460,9 +421,9 @@ extension CreateNewAccountViewController {
                             
                             SVProgressHUD.dismiss()
                             
-                            strongSelf.cancelAction()
+                            self.cancelAction()
                             
-                            strongSelf.completion?()
+                            self.completion?()
                         }
                     }
                 }

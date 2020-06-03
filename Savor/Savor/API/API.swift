@@ -18,4 +18,5 @@ struct APIs {
     static var CommentCollection = CommentCollectionAPI()
     static var People = PeopleAPI()
     static var Users = UsersAPI()
+    static var ProfilePictures = ProfilePicturesAPI()
 }
