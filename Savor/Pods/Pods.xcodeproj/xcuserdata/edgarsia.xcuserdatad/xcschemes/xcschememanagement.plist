@@ -39,13 +39,6 @@
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
-		<key>FTPopOverMenu_Swift.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>16</integer>
-		</dict>
 		<key>Firebase.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -121,72 +114,79 @@
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>23</integer>
+			<integer>22</integer>
 		</dict>
 		<key>GoogleAppMeasurement.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>17</integer>
+			<integer>16</integer>
 		</dict>
 		<key>GoogleDataTransport.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>18</integer>
+			<integer>17</integer>
 		</dict>
 		<key>GoogleDataTransportCCTSupport.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>19</integer>
+			<integer>18</integer>
 		</dict>
 		<key>GoogleMaps.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>20</integer>
+			<integer>19</integer>
 		</dict>
 		<key>GooglePlaces.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>21</integer>
+			<integer>20</integer>
 		</dict>
 		<key>GoogleUtilities.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>22</integer>
+			<integer>21</integer>
 		</dict>
 		<key>IQKeyboardManagerSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>26</integer>
+			<integer>25</integer>
 		</dict>
 		<key>ImageSlideshow.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>24</integer>
+			<integer>23</integer>
 		</dict>
 		<key>InputBarAccessoryView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>25</integer>
+			<integer>24</integer>
 		</dict>
 		<key>KMPlaceholderTextView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>26</integer>
+		</dict>
+		<key>KUIPopOver.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

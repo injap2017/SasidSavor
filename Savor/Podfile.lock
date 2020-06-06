@@ -74,7 +74,6 @@ PODS:
     - FirebaseAuthInterop (~> 1.1)
     - FirebaseCore (~> 6.6)
     - GTMSessionFetcher/Core (~> 1.1)
-  - FTPopOverMenu_Swift (0.2.1)
   - GoogleAppMeasurement (6.3.1):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
@@ -118,6 +117,7 @@ PODS:
   - InputBarAccessoryView/Core (4.3.2)
   - IQKeyboardManagerSwift (6.5.5)
   - KMPlaceholderTextView (1.4.0)
+  - KUIPopOver (1.2.0)
   - leveldb-library (1.22)
   - MagazineLayout (1.5.5)
   - nanopb (0.3.9011):
@@ -168,13 +168,13 @@ DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Database
   - Firebase/Storage
-  - FTPopOverMenu_Swift
   - GooglePlaces
   - ImageSlideshow
   - ImageSlideshow/SDWebImage
   - InputBarAccessoryView
   - IQKeyboardManagerSwift
   - KMPlaceholderTextView
+  - KUIPopOver
   - MagazineLayout
   - PullToRefreshKit
   - SnapKit
@@ -200,7 +200,6 @@ SPEC REPOS:
     - FirebaseDatabase
     - FirebaseInstallations
     - FirebaseStorage
-    - FTPopOverMenu_Swift
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
@@ -212,6 +211,7 @@ SPEC REPOS:
     - InputBarAccessoryView
     - IQKeyboardManagerSwift
     - KMPlaceholderTextView
+    - KUIPopOver
     - leveldb-library
     - MagazineLayout
     - nanopb
@@ -242,7 +242,6 @@ SPEC CHECKSUMS:
   FirebaseDatabase: 0144e0706a4761f1b0e8679572eba8095ddb59be
   FirebaseInstallations: 575cd32f2aec0feeb0e44f5d0110a09e5e60b47b
   FirebaseStorage: b43ee271294227e1a3225544b073f3b49b427f46
-  FTPopOverMenu_Swift: c91ce7301c358264743de028bc28177ee9d8e1a4
   GoogleAppMeasurement: c29d405ff76e18551b5d158eaba6753fda8c7542
   GoogleDataTransport: a857c6a002d201b524dd4bc2ed7e7355ed07e785
   GoogleDataTransportCCTSupport: 32f75fbe904c82772fcbb6b6bd4525bfb6f2a862
@@ -254,6 +253,7 @@ SPEC CHECKSUMS:
   InputBarAccessoryView: 7985d418040a05fe894bd4b8328dd43ab35517c3
   IQKeyboardManagerSwift: 0fb93310284665245591f50f7a5e38de615960b7
   KMPlaceholderTextView: 2206c3df39979e9396e2d96fa9f427a8951121b0
+  KUIPopOver: 71644b6a9219a1d175aba44e06d02f1b70aa4b77
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   MagazineLayout: 343e50e92513a892e92fb07ace34826552704e48
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
@@ -267,6 +267,6 @@ SPEC CHECKSUMS:
   SwifterSwift: a9e8e144832638c2850b43da5feaf9598c6ad65b
   SwiftLocation: 609ac8859f2c5d48a6cadd2a58c63b1dae02dc25
 
-PODFILE CHECKSUM: e6e960fcd0f9ad4e0e92fc253e139ac5aca51511
+PODFILE CHECKSUM: 42209c1ac223b392bac0ec8276136bb0295bc34d
 
 COCOAPODS: 1.9.1

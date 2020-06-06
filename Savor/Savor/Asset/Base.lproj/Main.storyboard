@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Nnw-fa-PYI">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -102,6 +101,11 @@
                         <barButtonItem key="leftBarButtonItem" title="View" id="uCI-bS-dGn">
                             <connections>
                                 <action selector="viewMode:event:" destination="gXT-bf-Njt" id="9LN-8Q-cdL"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Filter" id="KLN-3g-HYQ">
+                            <connections>
+                                <action selector="filterMode:event:" destination="gXT-bf-Njt" id="Gfk-CQ-40j"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

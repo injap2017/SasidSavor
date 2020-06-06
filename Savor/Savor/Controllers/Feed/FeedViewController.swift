@@ -8,13 +8,18 @@
 
 import UIKit
 import MagazineLayout
-import FTPopOverMenu_Swift
+import KUIPopOver
 import SVProgressHUD
 import PullToRefreshKit
 
-enum FeedsViewMode: Int {
+enum FeedViewMode: Int {
     case list
     case square
+}
+
+enum FeedSource: Int {
+    case allPosts
+    case friends
 }
 
 class FeedViewController: UIViewController {
@@ -25,7 +30,7 @@ class FeedViewController: UIViewController {
     
     // MARK: - Properties
     var posts: [SSPost] = []
-    var viewMode: FeedsViewMode = .list {
+    var viewMode: FeedViewMode = .list {
         didSet {
             var frontView: UICollectionView
             switch viewMode {
@@ -40,6 +45,12 @@ class FeedViewController: UIViewController {
             frontView.reloadData()
         }
     }
+    var source: FeedSource = .allPosts {
+        didSet {
+            
+        }
+    }
+    
     
     fileprivate var isLoadingPosts: Bool = false
     
@@ -78,15 +89,11 @@ extension FeedViewController {
         self.squareCollectionView.register(FeedSquareItem.nib, forCellWithReuseIdentifier: FeedSquareItem.identifier)
         self.squareCollectionView.configRefreshHeader(container: self, action: pullToRefreshAction)
         
-        // view mode popover
-        self.configureFTPopOverMenu()
-        
         // set view mode init list
         self.viewMode = .list
-    }
-    
-    func configureFTPopOverMenu() {
         
+        // set filter mode init all posts
+        self.source = .allPosts
     }
     
     func listenNotifications() {
@@ -107,16 +114,24 @@ extension FeedViewController {
             return
         }
         
-        FTPopOverMenu.showForEvent(event: event, with: ["List", "Gallery"], menuImageArray: ["format-list-bulleted-square", "view-grid"], done: { (selectedIndex) in
+        let viewController = FeedViewModePopUp.init()
+        viewController.viewMode = viewMode
+        viewController.delegate = self
+        viewController.showPopover(barButtonItem: sender) {
             
-            switch selectedIndex {
-            case FeedsViewMode.list.rawValue:
-                self.viewMode = .list
-            default:
-                self.viewMode = .square
-            }
-            
-        }) {
+        }
+    }
+    
+    @IBAction func filterMode(_ sender: UIBarButtonItem, event: UIEvent) {
+        // stop filtering while loading posts
+        guard self.isLoadingPosts == false else {
+            return
+        }
+        
+        let viewController = FeedFilterModePopUp.init()
+        viewController.source = source
+        viewController.delegate = self
+        viewController.showPopover(barButtonItem: sender) {
             
         }
     }
@@ -370,5 +385,21 @@ extension FeedViewController: UICollectionViewDelegateMagazineLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetsForItemsInSectionAtIndex index: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+}
+
+// MARK: - FeedViewModePopUp Delgate
+extension FeedViewController: FeedViewModePopUpDelegate {
+    
+    func didSelectViewMode(_ viewMode: FeedViewMode) {
+        self.viewMode = viewMode
+    }
+}
+
+// MARK: - FeedFilterModePopUp Delegate
+extension FeedViewController: FeedFilterModePopUpDelegate {
+    
+    func didSelectSource(_ source: FeedSource) {
+        self.source = source
     }
 }

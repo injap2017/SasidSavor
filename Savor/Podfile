@@ -6,7 +6,7 @@ target 'Savor' do
   use_frameworks!
 
   # Pods for Savor
-  pod 'FTPopOverMenu_Swift'
+  pod 'KUIPopOver'
   pod 'KMPlaceholderTextView'
   pod 'Cosmos'
   pod 'MagazineLayout'

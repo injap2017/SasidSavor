@@ -80,6 +80,8 @@
 		4BECB946244DB68200662AE4 /* DetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BECB944244DB68200662AE4 /* DetailCell.xib */; };
 		4BECB949244DD57A00662AE4 /* FeedDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BECB947244DD57A00662AE4 /* FeedDetailCell.swift */; };
 		4BECB94A244DD57A00662AE4 /* FeedDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BECB948244DD57A00662AE4 /* FeedDetailCell.xib */; };
+		4BEFF6742489FFCD004AFE6B /* FeedFilterModePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEFF6732489FFCD004AFE6B /* FeedFilterModePopUp.swift */; };
+		4BEFF6762489FFE2004AFE6B /* FeedViewModePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEFF6752489FFE2004AFE6B /* FeedViewModePopUp.swift */; };
 		4BF7E5FE247D5CCD00242446 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BF7E5FD247D5CCD00242446 /* Profile.storyboard */; };
 		4BF7E600247D5DB500242446 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF7E5FF247D5DB500242446 /* ProfileViewController.swift */; };
 		4BF7E602247D5E9C00242446 /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF7E601247D5E9C00242446 /* ProfileHeader.swift */; };
@@ -169,6 +171,8 @@
 		4BECB944244DB68200662AE4 /* DetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailCell.xib; sourceTree = "<group>"; };
 		4BECB947244DD57A00662AE4 /* FeedDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailCell.swift; sourceTree = "<group>"; };
 		4BECB948244DD57A00662AE4 /* FeedDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedDetailCell.xib; sourceTree = "<group>"; };
+		4BEFF6732489FFCD004AFE6B /* FeedFilterModePopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFilterModePopUp.swift; sourceTree = "<group>"; };
+		4BEFF6752489FFE2004AFE6B /* FeedViewModePopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModePopUp.swift; sourceTree = "<group>"; };
 		4BF7E5FD247D5CCD00242446 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		4BF7E5FF247D5DB500242446 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		4BF7E601247D5E9C00242446 /* ProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
@@ -298,13 +302,13 @@
 		4B66DE3823A1FA9A00C0F147 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4BEFF6702489FF39004AFE6B /* Feed */,
 				4BF7E5F8247D5C3900242446 /* Profile */,
 				4BBA3FC42461A4E600D844D6 /* Comments and Likes */,
 				4B1B67402448637800145C73 /* Detail */,
 				4B41D389241734BD00C54897 /* Post */,
 				4B29A6EC241738C7004D520E /* More */,
 				4B28064423FEB114001E9736 /* Authentication */,
-				4B2E9CF5239FF3A5008508CD /* FeedViewController.swift */,
 				4B2E9CF7239FF3BB008508CD /* ExploreViewController.swift */,
 				4B2E9CFB239FF3E0008508CD /* ActivityViewController.swift */,
 				4BB8CE1423CF108300F40733 /* TabBarController.swift */,
@@ -399,6 +403,16 @@
 				4BBA3FC72461A64B00D844D6 /* CommentsLikesViewController.swift */,
 			);
 			path = "Comments and Likes";
+			sourceTree = "<group>";
+		};
+		4BEFF6702489FF39004AFE6B /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				4B2E9CF5239FF3A5008508CD /* FeedViewController.swift */,
+				4BEFF6752489FFE2004AFE6B /* FeedViewModePopUp.swift */,
+				4BEFF6732489FFCD004AFE6B /* FeedFilterModePopUp.swift */,
+			);
+			path = Feed;
 			sourceTree = "<group>";
 		};
 		4BF7E5F8247D5C3900242446 /* Profile */ = {
@@ -610,6 +624,7 @@
 				4B248FB22462581E00BFE708 /* LikesAPI.swift in Sources */,
 				4B5C2372246C2FD2001CBC20 /* LikeCell.swift in Sources */,
 				4B2E9CFC239FF3E0008508CD /* ActivityViewController.swift in Sources */,
+				4BEFF6762489FFE2004AFE6B /* FeedViewModePopUp.swift in Sources */,
 				4B2E9CF6239FF3A5008508CD /* FeedViewController.swift in Sources */,
 				4B28064823FEB171001E9736 /* CreateNewAccountViewController.swift in Sources */,
 				4B9E1029239CC7C80045DBE2 /* AppDelegate.swift in Sources */,
@@ -631,6 +646,7 @@
 				4B3CE4522435952000BD5B14 /* API.swift in Sources */,
 				4B3E5BC6246D8AD600A36B2E /* SSCommentCollectionRecord.swift in Sources */,
 				4BB853DD241A467F005CE009 /* PhotoItem.swift in Sources */,
+				4BEFF6742489FFCD004AFE6B /* FeedFilterModePopUp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

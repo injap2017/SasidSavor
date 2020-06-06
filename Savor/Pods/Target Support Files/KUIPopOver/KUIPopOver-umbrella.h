@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double FTPopOverMenu_SwiftVersionNumber;
-FOUNDATION_EXPORT const unsigned char FTPopOverMenu_SwiftVersionString[];
+FOUNDATION_EXPORT double KUIPopOverVersionNumber;
+FOUNDATION_EXPORT const unsigned char KUIPopOverVersionString[];
 
