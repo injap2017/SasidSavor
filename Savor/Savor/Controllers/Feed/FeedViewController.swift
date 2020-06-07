@@ -53,7 +53,10 @@ class FeedViewController: UIViewController {
         }
     }
     
-    var handle: AuthStateDidChangeListenerHandle?
+    private var followingCountHandle: UInt?
+    
+    private var handle: AuthStateDidChangeListenerHandle?
+    private var userID: String?
     
     fileprivate var isLoadingPosts: Bool = false
     
@@ -103,16 +106,40 @@ extension FeedViewController {
         self.handle = Auth.auth().addStateDidChangeListener { (auth, user) in
             if SSUser.isAuthenticated {
                 self.source = .allPosts
+                
+                self.userID = SSUser.authCurrentUser.uid
+                self.followingCountHandle = APIs.People.observeFollowingCount(ofUser: self.userID!) { _ in
+                    // if more followed, or unfollowed from other places, then pull to refresh
+                    self.pullToRefreshAction()
+                }
+                
             } else {
                 // disable source friends
                 self.source = .allPosts
+                
+                // remove observers
+                if let followingCountHandle = self.followingCountHandle, let userID = self.userID {
+                    APIs.People.removeFollowingCountObserver(ofUser: userID, withHandle: followingCountHandle)
+                    self.followingCountHandle = nil
+                }
+                self.userID = nil
             }
         }
     }
     
     func removeObservers() {
-        // remove auth state change listener
-        Auth.auth().removeStateDidChangeListener(self.handle!)
+        
+        if let followingCountHandle = self.followingCountHandle, let userID = self.userID {
+            APIs.People.removeFollowingCountObserver(ofUser: userID, withHandle: followingCountHandle)
+            self.followingCountHandle = nil
+        }
+        self.userID = nil
+        
+        if let handle = self.handle {
+            Auth.auth().removeStateDidChangeListener(handle)
+            
+            self.handle = nil
+        }
     }
     
     func listenNotifications() {
