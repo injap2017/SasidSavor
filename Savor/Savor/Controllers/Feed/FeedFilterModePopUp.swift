@@ -112,8 +112,8 @@ extension FeedFilterModePopUp {
             self.source = .friends
         }
         
-        self.delegate?.didSelectSource(source)
-        
-        self.dismissPopover(animated: true)
+        self.dismissPopover(animated: true) {
+            self.delegate?.didSelectSource(self.source)
+        }
     }
 }

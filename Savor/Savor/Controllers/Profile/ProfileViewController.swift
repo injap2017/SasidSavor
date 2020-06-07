@@ -537,7 +537,8 @@ extension ProfileViewController: ProfileHeaderDelegate {
 extension ProfileViewController: FollowCellDelegate {
     
     func followed(_ data: (SSUser, Int)) {
-        if isItMe() {
+        if isItMe(),
+            self.viewSelector == .followers {
             self.followings.insert(data, at: 0)
         }
     }

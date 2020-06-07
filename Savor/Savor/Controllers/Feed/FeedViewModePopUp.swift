@@ -112,8 +112,8 @@ extension FeedViewModePopUp {
             self.viewMode = .square
         }
         
-        self.delegate?.didSelectViewMode(viewMode)
-        
-        self.dismissPopover(animated: true)
+        self.dismissPopover(animated: true) {
+            self.delegate?.didSelectViewMode(self.viewMode)
+        }
     }
 }

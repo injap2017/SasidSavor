@@ -11,6 +11,7 @@ import MagazineLayout
 import KUIPopOver
 import SVProgressHUD
 import PullToRefreshKit
+import Firebase
 
 enum FeedViewMode: Int {
     case list
@@ -52,13 +53,15 @@ class FeedViewController: UIViewController {
         }
     }
     
+    var handle: AuthStateDidChangeListenerHandle?
     
     fileprivate var isLoadingPosts: Bool = false
     
     static let postsPerLoad: UInt = 20
     
     deinit {
-        self.removeNotificationListeners()
+        removeObservers()
+        removeNotificationListeners()
     }
 }
 
@@ -69,10 +72,8 @@ extension FeedViewController {
         super.viewDidLoad()
         
         self.initView()
-        
+        self.observe()
         self.listenNotifications()
-        
-        self.source = .allPosts
     }
 }
 
@@ -95,6 +96,23 @@ extension FeedViewController {
         
         // set filter mode init all posts
         self.source = .allPosts
+    }
+    
+    func observe() {
+        // auth state listner to pull to refresh
+        self.handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+            if SSUser.isAuthenticated {
+                self.source = .allPosts
+            } else {
+                // disable source friends
+                self.source = .allPosts
+            }
+        }
+    }
+    
+    func removeObservers() {
+        // remove auth state change listener
+        Auth.auth().removeStateDidChangeListener(self.handle!)
     }
     
     func listenNotifications() {
@@ -153,7 +171,7 @@ extension FeedViewController {
         
         var getRecentPosts: (Double?, UInt, @escaping ([SSPost]) -> Void) -> Void
         if SSUser.isAuthenticated,
-            source == .friends {
+            self.source == .friends {
             getRecentPosts = APIs.Feed.getRecentPosts
         } else {
             getRecentPosts = APIs.Posts.getRecentPosts
@@ -207,7 +225,7 @@ extension FeedViewController {
         
         var getOldPosts: (Double, UInt, @escaping ([SSPost]) -> Void) -> Void
         if SSUser.isAuthenticated,
-            source == .friends {
+            self.source == .friends {
             getOldPosts = APIs.Feed.getOldPosts
         } else {
             getOldPosts = APIs.Posts.getOldPosts
@@ -416,6 +434,42 @@ extension FeedViewController: FeedViewModePopUpDelegate {
 extension FeedViewController: FeedFilterModePopUpDelegate {
     
     func didSelectSource(_ source: FeedSource) {
-        self.source = source
+        switch source {
+        case .allPosts:
+            self.source = .allPosts
+        case .friends:
+            if SSUser.isAuthenticated {
+                self.source = .friends
+            } else {
+                self.promptAuthentication()
+            }
+        }
+    }
+}
+
+// MARK: - Authentication
+extension FeedViewController {
+    
+    func promptAuthentication() {
+        let alertController = UIAlertController.init(title: "", message: "You must be a registered user to access this feature.", preferredStyle: .alert)
+        let signUp = UIAlertAction.init(title: "Sign Up", style: .default) { (action) in
+            let viewController = CreateNewAccountViewController.instanceOnNavigationController {
+                // automatically refresh to source allPosts
+            }
+            self.present(viewController, animated: true, completion: nil)
+        }
+        let signIn = UIAlertAction.init(title: "Sign In", style: .default) { (action) in
+            let viewController = SignInViewController.instanceOnNavigationController {
+                // automatically refresh to source allPosts
+            }
+            self.present(viewController, animated: true, completion: nil)
+        }
+        let cancel = UIAlertAction.init(title: "Cancel", style: .cancel) { (action) in
+            
+        }
+        alertController.addAction(signUp)
+        alertController.addAction(signIn)
+        alertController.addAction(cancel)
+        self.present(alertController, animated: true, completion: nil)
     }
 }
