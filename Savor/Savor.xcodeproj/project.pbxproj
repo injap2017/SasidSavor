@@ -76,6 +76,7 @@
 		4BB998BC23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB998BB23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift */; };
 		4BBA3FC62461A58000D844D6 /* CommentsLikes.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BBA3FC52461A58000D844D6 /* CommentsLikes.storyboard */; };
 		4BBA3FC82461A64B00D844D6 /* CommentsLikesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA3FC72461A64B00D844D6 /* CommentsLikesViewController.swift */; };
+		4BC0868E248D44670081D07A /* FeedAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC0868D248D44670081D07A /* FeedAPI.swift */; };
 		4BECB945244DB68200662AE4 /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BECB943244DB68200662AE4 /* DetailCell.swift */; };
 		4BECB946244DB68200662AE4 /* DetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BECB944244DB68200662AE4 /* DetailCell.xib */; };
 		4BECB949244DD57A00662AE4 /* FeedDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BECB947244DD57A00662AE4 /* FeedDetailCell.swift */; };
@@ -167,6 +168,7 @@
 		4BB998BB23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostPlaceHolderViewController.swift; sourceTree = "<group>"; };
 		4BBA3FC52461A58000D844D6 /* CommentsLikes.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CommentsLikes.storyboard; sourceTree = "<group>"; };
 		4BBA3FC72461A64B00D844D6 /* CommentsLikesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsLikesViewController.swift; sourceTree = "<group>"; };
+		4BC0868D248D44670081D07A /* FeedAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedAPI.swift; sourceTree = "<group>"; };
 		4BECB943244DB68200662AE4 /* DetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCell.swift; sourceTree = "<group>"; };
 		4BECB944244DB68200662AE4 /* DetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailCell.xib; sourceTree = "<group>"; };
 		4BECB947244DD57A00662AE4 /* FeedDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailCell.swift; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				4B227443243445A100EEA3CF /* PostsAPI.swift */,
+				4BC0868D248D44670081D07A /* FeedAPI.swift */,
 				4B227445243445BC00EEA3CF /* RestaurantsAPI.swift */,
 				4B915CB32451A74B00895E4D /* SavoredAPI.swift */,
 				4B915CB52451E4B700895E4D /* FoodsAPI.swift */,
@@ -630,6 +633,7 @@
 				4B9E1029239CC7C80045DBE2 /* AppDelegate.swift in Sources */,
 				4B22744C2434AB5700EEA3CF /* SSLocation.swift in Sources */,
 				4B1B674224486B7600145C73 /* FeedDetailViewController.swift in Sources */,
+				4BC0868E248D44670081D07A /* FeedAPI.swift in Sources */,
 				4B2274482434A52A00EEA3CF /* SSPost.swift in Sources */,
 				4BECB945244DB68200662AE4 /* DetailCell.swift in Sources */,
 				4BB8CE1523CF108300F40733 /* TabBarController.swift in Sources */,

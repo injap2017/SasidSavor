@@ -47,7 +47,8 @@ class FeedViewController: UIViewController {
     }
     var source: FeedSource = .allPosts {
         didSet {
-            
+            // try pull to refresh
+            self.pullToRefreshAction()
         }
     }
     
@@ -71,7 +72,7 @@ extension FeedViewController {
         
         self.listenNotifications()
         
-        self.pullToRefreshAction()
+        self.source = .allPosts
     }
 }
 
@@ -149,7 +150,15 @@ extension FeedViewController {
         self.isLoadingPosts = true
         print("pull loading true")
         SVProgressHUD.show(withStatus: "Loading...")
-        APIs.Posts.getRecentPosts(start: nil, limit: FeedViewController.postsPerLoad) { (posts) in
+        
+        var getRecentPosts: (Double?, UInt, @escaping ([SSPost]) -> Void) -> Void
+        if SSUser.isAuthenticated,
+            source == .friends {
+            getRecentPosts = APIs.Feed.getRecentPosts
+        } else {
+            getRecentPosts = APIs.Posts.getRecentPosts
+        }
+        getRecentPosts(nil, FeedViewController.postsPerLoad) { (posts) in
             
             let adding = posts.count
             
@@ -196,7 +205,14 @@ extension FeedViewController {
         self.isLoadingPosts = true
         print("scroll loading true")
         
-        APIs.Posts.getOldPosts(start: lastPostTimestamp, limit: FeedViewController.postsPerLoad) { (posts) in
+        var getOldPosts: (Double, UInt, @escaping ([SSPost]) -> Void) -> Void
+        if SSUser.isAuthenticated,
+            source == .friends {
+            getOldPosts = APIs.Feed.getOldPosts
+        } else {
+            getOldPosts = APIs.Posts.getOldPosts
+        }
+        getOldPosts(lastPostTimestamp, FeedViewController.postsPerLoad) { (posts) in
             
             let count = self.posts.count
             let adding = posts.count

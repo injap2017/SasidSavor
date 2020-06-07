@@ -17,7 +17,7 @@ class FeedViewModePopUp: UITableViewController, KUIPopOverUsable {
     
     // MARK: - KUIPopOverUsable
     var contentSize: CGSize {
-        return CGSize(width: 200.0, height: 88.0)
+        return CGSize(width: 200.0, height: 87.0)
     }
     
     // MARK: - Properties

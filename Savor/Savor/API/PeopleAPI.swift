@@ -124,12 +124,27 @@ class PeopleAPI {
     
     func followed(userID: String) {
         let fromUserID = SSUser.authCurrentUser.uid
+        peopleReference.child(userID).child("posts").observeSingleEvent(of: .value) { (snapshot) in
+            let items = snapshot.children.allObjects as! [DataSnapshot]
+            for item in items {
+                let postID = item.key
+                let timestamp = item.value as? Double ?? 0.0
+                APIs.Feed.feedReference.child(fromUserID).child(postID).setValue(timestamp)
+            }
+        }
         peopleReference.child(fromUserID).child("followings").child(userID).setValue(true)
         peopleReference.child(userID).child("followers").child(fromUserID).setValue(true)
     }
     
     func unfollowed(userID: String) {
         let fromUserID = SSUser.authCurrentUser.uid
+        peopleReference.child(userID).child("posts").observeSingleEvent(of: .value) { (snapshot) in
+            let items = snapshot.children.allObjects as! [DataSnapshot]
+            for item in items {
+                let postID = item.key
+                APIs.Feed.feedReference.child(fromUserID).child(postID).setValue(nil)
+            }
+        }
         peopleReference.child(fromUserID).child("followings").child(userID).removeValue()
         peopleReference.child(userID).child("followers").child(fromUserID).removeValue()
     }
