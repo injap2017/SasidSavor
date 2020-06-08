@@ -186,7 +186,7 @@ extension ProfileViewController {
         let frame = CGRect.init(x: 0, y: 0, width: width, height: height)
         let profileHeader = ProfileHeader.init(frame: frame)
         profileHeader.delegate = self
-        profileHeader.data = (self.user, true)
+        profileHeader.user = self.user
         profileHeader.segmentedControl.selectedSegmentIndex = viewSelector.rawValue
         profileHeader.segmentedControl.addTarget(self, action: #selector(viewSelectorValueChanged(_:)), for: .valueChanged)
         self.tableView.tableHeaderView = profileHeader
@@ -270,7 +270,7 @@ extension ProfileViewController {
                 
                 // update header
                 if let profileHeader = self.profileHeader {
-                    profileHeader.data = (self.user, false)
+                    profileHeader.updateUserInfo(self.user)
                 }
             }
         }
