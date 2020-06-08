@@ -78,4 +78,38 @@ class PostsAPI {
             block(SSPost.init(snapshot: snapshot))
         }
     }
+    
+    func deletePost(of id: String, completion: @escaping (_ error: Error?) -> Void) {
+        postsReference.child(id).observeSingleEvent(of: .value) { (snapshot) in
+            let post = SSPost.init(snapshot: snapshot)
+            let postID = post.postID
+            let userID = post.author!.uid
+            let restaurantID = post.restaurant!.restaurantID
+            let foodID = post.food!.foodID
+            let rating = post.rating
+            
+            // remove associated values
+            let update = [ "people/\(userID)/posts/\(postID)": NSNull(),
+                           "comments/\(postID)": NSNull(),
+                           "likes/\(postID)": NSNull(),
+                           "posts/\(postID)": NSNull(),
+                           "feed/\(userID)/\(postID)": NSNull()]
+            SavorData.FireBase.rootReference.updateChildValues(update)
+            
+            // remove photos from storage
+            let storage = Storage.storage()
+            if let photos = post.photos {
+                for photo in photos {
+                    if let fullStorageURI = photo["full_storage_uri"] {
+                        storage.reference(withPath: fullStorageURI).delete()
+                    }
+                }
+            }
+            
+            // unsavored
+            APIs.Savored.unsavored(foodID: foodID, in: restaurantID, postID: postID, rating: rating) { (error) in
+                completion(error)
+            }
+        }
+    }
 }

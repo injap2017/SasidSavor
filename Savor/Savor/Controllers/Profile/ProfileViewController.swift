@@ -375,6 +375,24 @@ extension ProfileViewController {
             self.navigationController?.pushViewController(viewController)
         }
     }
+    
+    func didDeletePostAction(_ post: SSPost, at indexPath: IndexPath) {
+        
+        SVProgressHUD.show(withStatus: "Deleting...")
+        
+        APIs.Posts.deletePost(of: post.postID) { (error) in
+            
+            self.posts.remove(at: indexPath.row)
+            
+            if self.viewSelector == .posts {
+                self.tableView.beginUpdates()
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                self.tableView.endUpdates()
+            }
+            
+            SVProgressHUD.dismiss()
+        }
+    }
 }
 
 // MARK: - UITableView
@@ -430,6 +448,31 @@ extension ProfileViewController {
             tableView.deselectRow(at: indexPath, animated: false)
             let follower = self.followers[indexPath.row]
             self.didSelectFollowerAction(follower)
+            break
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        switch viewSelector {
+        case .posts:
+            return isItMe()
+        case .following:
+            return false
+        case .followers:
+            return false
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        switch viewSelector {
+        case .posts:
+            if editingStyle == .delete {
+                let post = self.posts[indexPath.row]
+                self.didDeletePostAction(post, at: indexPath)
+            }
+        case .following:
+            break
+        case .followers:
             break
         }
     }

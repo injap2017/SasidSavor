@@ -45,6 +45,40 @@ class SavoredAPI {
         }
     }
     
+    func unsavored(foodID: String, in restaurantID: String,
+                   postID: String, rating: Double,
+                   completion: @escaping (_ error: Error?) -> Void) {
+        
+        let savoredFoodReference = savoredReference.child(restaurantID).child(foodID)
+        savoredFoodReference.runTransactionBlock({ (currentData: MutableData) -> TransactionResult in
+            var savoredFood: [String: AnyObject]
+            var posts: Dictionary<String, Double>
+            var totalRating: Double
+            if let value = currentData.value as? [String: AnyObject] {
+                savoredFood = value
+                posts = value["posts"] as? [String: Double] ?? [:]
+                totalRating = value["total_rating"] as? Double ?? 0
+            } else {
+                savoredFood = [:]
+                posts = [:]
+                totalRating = 0
+            }
+            
+            totalRating -= rating
+            posts.removeValue(forKey: postID)
+            
+            savoredFood["posts"] = posts as AnyObject?
+            savoredFood["total_rating"] = totalRating as AnyObject?
+            
+            currentData.value = savoredFood
+            
+            return TransactionResult.success(withValue: currentData)
+            
+        }) { (error, committed, snapshot) in
+            completion(error)
+        }
+    }
+    
     func getPostsSavoredFood(_ foodID: String, in restaurantID: String, completion: @escaping (_ posts: [String], _ totalRating: Double) -> Void) {
         let savoredFoodReference = savoredReference.child(restaurantID).child(foodID)
         savoredFoodReference.observeSingleEvent(of: .value) { (snapshot) in
