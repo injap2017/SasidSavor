@@ -65,7 +65,7 @@ extension FeedDetailViewController {
         for postID in postIDs {
             dispatchGroup.enter()
             APIs.Posts.getPost(of: postID) { (post) in
-                posts.append(post)
+                if let post = post { posts.append(post) }
                 dispatchGroup.leave()
             }
         }
@@ -125,7 +125,7 @@ extension FeedDetailViewController {
             for postID in postIDs! {
                 dispatchGroup.enter()
                 APIs.Posts.getPost(of: postID) { (post) in
-                    posts.append(post)
+                    if let post = post { posts.append(post) }
                     dispatchGroup.leave()
                 }
             }

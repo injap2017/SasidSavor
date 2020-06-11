@@ -11,7 +11,7 @@ import Firebase
 class PostsAPI {
     var postsReference = Database.database().reference().child("posts")
     
-    func getPost(of id: String, completion: @escaping (SSPost) -> Void) {
+    func getPost(of id: String, completion: @escaping (SSPost?) -> Void) {
         postsReference.child(id).observeSingleEvent(of: .value) { (snapshot) in
             let post = SSPost.init(snapshot: snapshot)
             completion(post)
@@ -36,7 +36,7 @@ class PostsAPI {
             for item in items {
                 dispatchGroup.enter()
                 APIs.Posts.getPost(of: item.key) { (post) in
-                    results.append(post)
+                    if let post = post { results.append(post) }
                     dispatchGroup.leave()
                 }
             }
@@ -61,7 +61,7 @@ class PostsAPI {
             for item in items {
                 dispatchGroup.enter()
                 APIs.Posts.getPost(of: item.key) { (post) in
-                    results.append(post)
+                    if let post = post { results.append(post) }
                     dispatchGroup.leave()
                 }
             }
@@ -73,15 +73,13 @@ class PostsAPI {
         })
     }
     
-    func listenNewPostAdded(with block: @escaping (SSPost) -> Void) {
-        postsReference.observe(.childAdded) { (snapshot) in
-            block(SSPost.init(snapshot: snapshot))
-        }
-    }
-    
     func deletePost(of id: String, completion: @escaping (_ error: Error?) -> Void) {
         postsReference.child(id).observeSingleEvent(of: .value) { (snapshot) in
-            let post = SSPost.init(snapshot: snapshot)
+            guard let post = SSPost.init(snapshot: snapshot) else {
+                completion(nil)
+                return
+            }
+            
             let postID = post.postID
             let userID = post.author!.uid
             let restaurantID = post.restaurant!.restaurantID

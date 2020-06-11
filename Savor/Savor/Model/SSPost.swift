@@ -18,7 +18,11 @@ class SSPost {
     var photos: [[String: String]]?
     var timestamp: Double
     
-    convenience init(snapshot: DataSnapshot) {
+    convenience init?(snapshot: DataSnapshot) {
+        guard snapshot.exists() else {
+            return nil
+        }
+        
         let postID = snapshot.key
         let value = snapshot.value as! [String: Any]
         self.init(id: postID, value: value)

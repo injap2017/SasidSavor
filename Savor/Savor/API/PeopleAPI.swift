@@ -213,7 +213,7 @@ class PeopleAPI {
             for item in items {
                 dispatchGroup.enter()
                 APIs.Posts.getPost(of: item.key) { (post) in
-                    results.append(post)
+                    if let post = post { results.append(post) }
                     dispatchGroup.leave()
                 }
             }
@@ -238,7 +238,7 @@ class PeopleAPI {
             for item in items {
                 dispatchGroup.enter()
                 APIs.Posts.getPost(of: item.key) { (post) in
-                    results.append(post)
+                    if let post = post { results.append(post) }
                     dispatchGroup.leave()
                 }
             }
