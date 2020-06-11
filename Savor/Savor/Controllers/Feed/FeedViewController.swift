@@ -144,6 +144,7 @@ extension FeedViewController {
     
     func listenNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(postNotificationHandler), name: Notification.Name.init(NewPostViewController.postNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deleteNotificationHandler), name: NSNotification.Name.init(ProfileViewController.deleteNotification), object: nil)
     }
     
     func removeNotificationListeners() {
@@ -183,6 +184,11 @@ extension FeedViewController {
     }
     
     @objc func postNotificationHandler() {
+        // reload
+        self.pullToRefreshAction()
+    }
+    
+    @objc func deleteNotificationHandler() {
         // reload
         self.pullToRefreshAction()
     }

@@ -56,6 +56,8 @@ class ProfileViewController: UITableViewController {
     
     var handle: AuthStateDidChangeListenerHandle?
     
+    static let deleteNotification = "deleteNotification"
+    
     deinit {
         removeObservers()
         removeNotificationListeners()
@@ -389,6 +391,9 @@ extension ProfileViewController {
                 self.tableView.deleteRows(at: [indexPath], with: .automatic)
                 self.tableView.endUpdates()
             }
+            
+            // notify feed view needs to delete this post
+            NotificationCenter.default.post(name: Notification.Name.init(ProfileViewController.deleteNotification), object: nil)
             
             SVProgressHUD.dismiss()
         }
