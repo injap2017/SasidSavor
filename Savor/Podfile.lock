@@ -74,6 +74,8 @@ PODS:
     - FirebaseAuthInterop (~> 1.1)
     - FirebaseCore (~> 6.6)
     - GTMSessionFetcher/Core (~> 1.1)
+  - GeoFire (4.0.1):
+    - Firebase/Database (~> 6.0)
   - GoogleAppMeasurement (6.3.1):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
@@ -168,6 +170,7 @@ DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Database
   - Firebase/Storage
+  - GeoFire
   - GooglePlaces
   - ImageSlideshow
   - ImageSlideshow/SDWebImage
@@ -200,6 +203,7 @@ SPEC REPOS:
     - FirebaseDatabase
     - FirebaseInstallations
     - FirebaseStorage
+    - GeoFire
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
@@ -242,6 +246,7 @@ SPEC CHECKSUMS:
   FirebaseDatabase: 0144e0706a4761f1b0e8679572eba8095ddb59be
   FirebaseInstallations: 575cd32f2aec0feeb0e44f5d0110a09e5e60b47b
   FirebaseStorage: b43ee271294227e1a3225544b073f3b49b427f46
+  GeoFire: 67b5276c561434b4e4c7ea567c2c4d64e711339c
   GoogleAppMeasurement: c29d405ff76e18551b5d158eaba6753fda8c7542
   GoogleDataTransport: a857c6a002d201b524dd4bc2ed7e7355ed07e785
   GoogleDataTransportCCTSupport: 32f75fbe904c82772fcbb6b6bd4525bfb6f2a862
@@ -267,6 +272,6 @@ SPEC CHECKSUMS:
   SwifterSwift: a9e8e144832638c2850b43da5feaf9598c6ad65b
   SwiftLocation: 609ac8859f2c5d48a6cadd2a58c63b1dae02dc25
 
-PODFILE CHECKSUM: 42209c1ac223b392bac0ec8276136bb0295bc34d
+PODFILE CHECKSUM: e5c098fd173b8bc70ac09177020ce99e6b85661c
 
 COCOAPODS: 1.9.1

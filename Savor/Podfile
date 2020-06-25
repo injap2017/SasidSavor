@@ -34,6 +34,8 @@ target 'Savor' do
   pod 'Firebase/Storage'
   pod 'Firebase/Database'
   
+  pod 'GeoFire'
+  
   pod 'GooglePlaces'
   
 end
