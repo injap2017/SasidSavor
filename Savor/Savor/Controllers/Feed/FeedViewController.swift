@@ -52,6 +52,18 @@ class FeedViewController: UIViewController {
             self.pullToRefreshAction()
         }
     }
+    var minimumRating: Float = 3.0 {
+        didSet {
+            // try pull to refresh
+            self.pullToRefreshAction()
+        }
+    }
+    var areaOfInterest: Double = -1 {
+        didSet {
+            // try pull to refresh
+            self.pullToRefreshAction()
+        }
+    }
     
     private var followingCountHandle: UInt?
     
@@ -177,6 +189,8 @@ extension FeedViewController {
         
         let viewController = FeedFilterModePopUp.init()
         viewController.source = source
+        viewController.areaOfInterest = areaOfInterest
+        viewController.minimumRating = minimumRating
         viewController.delegate = self
         viewController.showPopover(barButtonItem: sender) {
             
@@ -477,6 +491,14 @@ extension FeedViewController: FeedFilterModePopUpDelegate {
                 self.promptAuthentication()
             }
         }
+    }
+    
+    func didSelectMinimumRating(_ minimumRating: Float) {
+        print(minimumRating)
+    }
+    
+    func didSelectAreaOfInterest(_ areaOfInterest: Double) {
+        print(areaOfInterest)
     }
 }
 

@@ -24,16 +24,12 @@ class FeedViewModePopUp: UITableViewController, KUIPopOverUsable {
     var listCell: UITableViewCell?
     var galleryCell: UITableViewCell?
     
-    var _viewMode: FeedViewMode = .list
+    private var _viewMode: FeedViewMode = .list
     var viewMode: FeedViewMode {
         get {
             return _viewMode
         }
         set {
-            if _viewMode == newValue {
-                return
-            }
-            
             switch _viewMode {
             case .list:
                 listCell?.accessoryType = .none
@@ -69,6 +65,9 @@ extension FeedViewModePopUp {
 extension FeedViewModePopUp {
     
     func initView() {
+        // footer
+        self.tableView.tableFooterView = UIView.init()
+        
         // disable scrolling
         self.tableView.alwaysBounceVertical = false
     }
@@ -86,18 +85,20 @@ extension FeedViewModePopUp {
         case 0:
             let cell = UITableViewCell.init()
             cell.textLabel?.text = "List"
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 15.0)
             cell.imageView?.image = UIImage.init(named: "format-list-bulleted-square")?.withRenderingMode(.alwaysTemplate)
             cell.imageView?.tintColor = UIColor.black
-            cell.accessoryType = self.viewMode == .list ? .checkmark : .none
             self.listCell = cell
+            self.viewMode = _viewMode
             return cell
         default:
             let cell = UITableViewCell.init()
             cell.textLabel?.text = "Gallery"
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 15.0)
             cell.imageView?.image = UIImage.init(named: "view-grid")?.withRenderingMode(.alwaysTemplate)
             cell.imageView?.tintColor = UIColor.black
-            cell.accessoryType = self.viewMode == .square ? .checkmark : .none
             self.galleryCell = cell
+            self.viewMode = _viewMode
             return cell
         }
     }
@@ -105,12 +106,19 @@ extension FeedViewModePopUp {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
         
+        var value: FeedViewMode
         switch indexPath.row {
         case 0:
-            self.viewMode = .list
+            value = .list
         default:
-            self.viewMode = .square
+            value = .square
         }
+        if viewMode == value {
+            self.dismissPopover(animated: true)
+            return
+        }
+        
+        self.viewMode = value
         
         self.dismissPopover(animated: true) {
             self.delegate?.didSelectViewMode(self.viewMode)
