@@ -494,11 +494,11 @@ extension FeedViewController: FeedFilterModePopUpDelegate {
     }
     
     func didSelectMinimumRating(_ minimumRating: Float) {
-        print(minimumRating)
+        self.minimumRating = minimumRating
     }
     
     func didSelectAreaOfInterest(_ areaOfInterest: Double) {
-        print(areaOfInterest)
+        self.areaOfInterest = areaOfInterest
     }
 }
 

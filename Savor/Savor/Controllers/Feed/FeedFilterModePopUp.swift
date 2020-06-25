@@ -57,6 +57,7 @@ class FeedFilterModePopUp: UITableViewController, KUIPopOverUsable {
     }
     
     private var _minimumRating: Float = 3.0
+    private var _minimumRatingValueChanged: Bool = false
     var minimumRating: Float {
         get {
             return _minimumRating
@@ -74,6 +75,7 @@ class FeedFilterModePopUp: UITableViewController, KUIPopOverUsable {
     let areaOfInterestValues: [Double] = [0.1, 0.3, 0.5, 1, 2, 3, 4, 5, 10, 15, 20, 25, 50, 100, 150, 500, 1000, 3000, -1]
     
     private var _areaOfInterest: Double = -1
+    private var _areaOfInterestValueChanged: Bool = false
     var areaOfInterest: Double {
         get {
             return _areaOfInterest
@@ -295,7 +297,16 @@ extension FeedFilterModePopUp {
 // MARK: - Slider
 extension FeedFilterModePopUp {
     
-    @objc func minimumRatingValueChanged(_ sender: UISlider) {
+    @objc func minimumRatingValueChanged(_ sender: UISlider, event: UIEvent) {
+        if let touchEvent = event.allTouches?.first,
+            touchEvent.phase == .ended {
+            self.dismissPopover(animated: true) {
+                if self._minimumRatingValueChanged {
+                    self.delegate?.didSelectMinimumRating(self.minimumRating)
+                }
+            }
+        }
+        
         let step = Int(sender.value + 0.5)
         sender.value = Float(step)
         
@@ -305,13 +316,19 @@ extension FeedFilterModePopUp {
         }
         
         self.minimumRating = value
-        
-        self.dismissPopover(animated: true) {
-            self.delegate?.didSelectMinimumRating(self.minimumRating)
-        }
+        self._minimumRatingValueChanged = true
     }
     
-    @objc func areaOfInterestValueChanged(_ sender: UISlider) {
+    @objc func areaOfInterestValueChanged(_ sender: UISlider, event: UIEvent) {
+        if let touchEvent = event.allTouches?.first,
+            touchEvent.phase == .ended {
+            self.dismissPopover(animated: true) {
+                if self._areaOfInterestValueChanged {
+                    self.delegate?.didSelectAreaOfInterest(self.areaOfInterest)
+                }
+            }
+        }
+        
         let step = Int(sender.value + 0.5)
         sender.value = Float(step)
         
@@ -321,9 +338,6 @@ extension FeedFilterModePopUp {
         }
         
         self.areaOfInterest = value
-        
-        self.dismissPopover(animated: true) {
-            self.delegate?.didSelectAreaOfInterest(self.areaOfInterest)
-        }
+        self._areaOfInterestValueChanged = true
     }
 }
