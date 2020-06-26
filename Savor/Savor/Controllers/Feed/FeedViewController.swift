@@ -30,7 +30,10 @@ class FeedViewController: UIViewController {
     @IBOutlet weak var squareCollectionView: UICollectionView!
     
     // MARK: - Properties
+    var postIDs: [String] = []
     var posts: [SSPost] = []
+    var pageNumber: Int = 0
+    
     var viewMode: FeedViewMode = .list {
         didSet {
             var frontView: UICollectionView
@@ -72,7 +75,7 @@ class FeedViewController: UIViewController {
     
     fileprivate var isLoadingPosts: Bool = false
     
-    static let postsPerLoad: UInt = 20
+    static let postsPerLoad: Int = 20
     
     deinit {
         removeObservers()
@@ -216,20 +219,39 @@ extension FeedViewController {
         print("pull loading true")
         SVProgressHUD.show(withStatus: "Loading...")
         
-        var getRecentPosts: (Double?, UInt, @escaping ([SSPost]) -> Void) -> Void
-        if SSUser.isAuthenticated,
-            self.source == .friends {
-            getRecentPosts = APIs.Feed.getRecentPosts
-        } else {
-            getRecentPosts = APIs.Posts.getRecentPosts
-        }
-        getRecentPosts(nil, FeedViewController.postsPerLoad) { (posts) in
+        APIs.Filter.getPosts(source: source, minimumRating: minimumRating, areaOfInterest: areaOfInterest, at: nil) { (postIDs) in
             
-            let adding = posts.count
+            self.postIDs = postIDs
             
-            self.posts = posts
+            self.pageNumber = 0
+            self.posts.removeAll()
             
-            DispatchQueue.main.async {
+            let start = 0
+            var end = FeedViewController.postsPerLoad
+            
+            let count = postIDs.count
+            if count < end {
+                end = count
+            }
+            
+            let page: [String] = Array(postIDs[start..<end])
+            
+            var posts: [SSPost] = []
+            
+            let dispatchGroup = DispatchGroup()
+            for postID in page {
+                dispatchGroup.enter()
+                APIs.Posts.getPost(of: postID) { (post) in
+                    if let post = post { posts.append(post) }
+                    dispatchGroup.leave()
+                }
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                posts.sort(by: {$0.timestamp > $1.timestamp })
+                
+                self.posts.append(contentsOf: posts)
+                self.pageNumber += 1
                 
                 var collectionView: UICollectionView
                 
@@ -244,7 +266,7 @@ extension FeedViewController {
                 collectionView.switchRefreshHeader(to: .normal(.none, 0.0))
                 
                 // add infinite scrolling
-                if adding >= FeedViewController.postsPerLoad {
+                if count > FeedViewController.postsPerLoad {
                     self.listCollectionView.configRefreshFooter(container: self, action: self.infiniteScrollingAction)
                     self.squareCollectionView.configRefreshFooter(container: self, action: self.infiniteScrollingAction)
                 }
@@ -261,61 +283,65 @@ extension FeedViewController {
             return
         }
         
-        guard let lastPostTimestamp = self.posts.last?.timestamp else {
-            self.listCollectionView.switchRefreshFooter(to: .removed)
-            self.squareCollectionView.switchRefreshFooter(to: .removed)
-            return
-        }
-        
         self.isLoadingPosts = true
         print("scroll loading true")
         
-        var getOldPosts: (Double, UInt, @escaping ([SSPost]) -> Void) -> Void
-        if SSUser.isAuthenticated,
-            self.source == .friends {
-            getOldPosts = APIs.Feed.getOldPosts
-        } else {
-            getOldPosts = APIs.Posts.getOldPosts
+        let start = self.pageNumber * FeedViewController.postsPerLoad
+        var end = start + FeedViewController.postsPerLoad
+        
+        let count = postIDs.count
+        if count < end {
+            end = count
         }
-        getOldPosts(lastPostTimestamp, FeedViewController.postsPerLoad) { (posts) in
-            
-            let count = self.posts.count
-            let adding = posts.count
+        
+        let page: [String] = Array(postIDs[start..<end])
+        
+        var posts: [SSPost] = []
+        
+        let dispatchGroup = DispatchGroup()
+        for postID in page {
+            dispatchGroup.enter()
+            APIs.Posts.getPost(of: postID) { (post) in
+                if let post = post { posts.append(post) }
+                dispatchGroup.leave()
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            posts.sort(by: {$0.timestamp > $1.timestamp })
             
             self.posts.append(contentsOf: posts)
+            self.pageNumber += 1
             
-            DispatchQueue.main.async {
+            var collectionView: UICollectionView
+            
+            switch self.viewMode {
+            case .list:
+                collectionView = self.listCollectionView
+            case .square:
+                collectionView = self.squareCollectionView
+            }
+            
+            collectionView.performBatchUpdates({
                 
-                var collectionView: UICollectionView
-                
-                switch self.viewMode {
-                case .list:
-                    collectionView = self.listCollectionView
-                case .square:
-                    collectionView = self.squareCollectionView
+                var indexPaths: [IndexPath] = []
+                for i in (start..<end) {
+                    indexPaths.append(IndexPath.init(row: i, section: 0))
                 }
                 
-                collectionView.performBatchUpdates({
-                    
-                    var indexPaths: [IndexPath] = []
-                    for i in (count..<count+adding) {
-                        indexPaths.append(IndexPath.init(row: i, section: 0))
-                    }
-                    
-                    collectionView.insertItems(at: indexPaths)
-                    
-                }) { (finished) in
-                    
-                    collectionView.switchRefreshFooter(to: .normal)
-                    
-                    if adding < FeedViewController.postsPerLoad {
-                        self.listCollectionView.switchRefreshFooter(to: .removed)
-                        self.squareCollectionView.switchRefreshFooter(to: .removed)
-                    }
-                    
-                    self.isLoadingPosts = false
-                    print("scroll loading false")
+                collectionView.insertItems(at: indexPaths)
+                
+            }) { (finished) in
+                
+                collectionView.switchRefreshFooter(to: .normal)
+                
+                if end < count {
+                    self.listCollectionView.switchRefreshFooter(to: .removed)
+                    self.squareCollectionView.switchRefreshFooter(to: .removed)
                 }
+                
+                self.isLoadingPosts = false
+                print("scroll loading false")
             }
         }
     }

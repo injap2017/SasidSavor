@@ -20,4 +20,7 @@ struct APIs {
     static var People = PeopleAPI()
     static var Users = UsersAPI()
     static var ProfilePictures = ProfilePicturesAPI()
+    static var GeoPosts = GeoPostsAPI()
+    static var GeoFeed = GeoFeedAPI()
+    static var Filter = FilterAPI()
 }

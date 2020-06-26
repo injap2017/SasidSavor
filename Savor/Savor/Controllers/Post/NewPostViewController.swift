@@ -348,9 +348,24 @@ extension NewPostViewController {
             
             postRef.setValue(data)
             
-            // remark the post in user/posts (to show this post in user profile) and feed/user (to show this post in this user feed)
-            SavorData.FireBase.rootReference.updateChildValues(["people/\(uid)/posts/\(postID)": timestamp,
-                                                                "feed/\(uid)/\(postID)": timestamp])
+            // remark the post in people/user/posts (to show this post in user profile)
+            let latitude = self.business?.coordinates?.latitude ?? 0.0
+            let longitude = self.business?.coordinates?.longitude ?? 0.0
+            
+            let value = ["timestamp": timestamp,
+                        "rating": self.rating,
+                        "latitude": latitude,
+                        "longitude": longitude] as [String: Any]
+            
+            SavorData.FireBase.rootReference.updateChildValues(["people/\(uid)/posts/\(postID)": value])
+            
+            // remark the post in geo_posts and geo_feed (to show this post in this user feed)
+            let key = CompoundKey.init(timestamp: timestamp, rating: self.rating, postID: postID).key
+            let location = CLLocation.init(latitude: latitude, longitude: longitude)
+            
+            APIs.GeoPosts.geoFire.setLocation(location, forKey: key)
+            APIs.GeoFeed.geoFire(ofUser: uid).setLocation(location, forKey: key)
+            
             // remark the food savored as rating (calculate total rating, add postID)
             APIs.Savored.savored(foodID: foodID, in: restaurantID, postID: postID, rating: self.rating, timestamp: timestamp) { (error) in
                 if let error = error {

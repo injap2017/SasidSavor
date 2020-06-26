@@ -7,6 +7,7 @@
 //
 
 import Firebase
+import CoreLocation
 
 class PeopleAPI {
     var peopleReference = Database.database().reference().child("people")
@@ -128,8 +129,17 @@ class PeopleAPI {
             let items = snapshot.children.allObjects as! [DataSnapshot]
             for item in items {
                 let postID = item.key
-                let timestamp = item.value as? Double ?? 0.0
-                APIs.Feed.feedReference.child(fromUserID).child(postID).setValue(timestamp)
+                let value = item.value as! [String: Any]
+                
+                let timestamp = value["timestamp"] as? Double ?? 0.0
+                let rating = value["rating"] as? Double ?? 0.0
+                let latitude = value["latitude"] as? Double ?? 0.0
+                let longitude = value["longitude"] as? Double ?? 0.0
+                
+                let key = CompoundKey.init(timestamp: timestamp, rating: rating, postID: postID).key
+                let location = CLLocation.init(latitude: latitude, longitude: longitude)
+                
+                APIs.GeoFeed.geoFire(ofUser: fromUserID).setLocation(location, forKey: key)
             }
         }
         peopleReference.child(fromUserID).child("followings").child(userID).setValue(true)
@@ -142,7 +152,14 @@ class PeopleAPI {
             let items = snapshot.children.allObjects as! [DataSnapshot]
             for item in items {
                 let postID = item.key
-                APIs.Feed.feedReference.child(fromUserID).child(postID).setValue(nil)
+                let value = item.value as! [String: Any]
+                
+                let timestamp = value["timestamp"] as? Double ?? 0.0
+                let rating = value["rating"] as? Double ?? 0.0
+                
+                let key = CompoundKey.init(timestamp: timestamp, rating: rating, postID: postID).key
+                
+                APIs.GeoFeed.geoFire(ofUser: fromUserID).removeKey(key)
             }
         }
         peopleReference.child(fromUserID).child("followings").child(userID).removeValue()

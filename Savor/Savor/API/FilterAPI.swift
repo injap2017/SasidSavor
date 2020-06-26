@@ -20,6 +20,12 @@ class CompoundKey {
         self.postID = post.postID
     }
     
+    init(timestamp: Double, rating: Double, postID: String) {
+        self.timestamp = timestamp
+        self.rating = rating
+        self.postID = postID
+    }
+    
     init?(key: String) {
         let subKeys = key.split(separator: ";")
         guard subKeys.count == 3 else {
@@ -49,7 +55,7 @@ class CompoundKey {
 
 class FilterAPI {
     
-    func getPosts(source: FeedSource, minimumRating: Float, areaOfInterest: Double, at center: CLLocation?, completion: @escaping ([String]) -> Void) {
+    func getPosts(source: FeedSource, minimumRating: Float, areaOfInterest: Double, at center: CLLocation?, completion: @escaping (_ posts: [String]) -> Void) {
         
         // select georef
         // if areaofinterest
@@ -65,10 +71,10 @@ class FilterAPI {
         // sort keys by Timestamp
         // return with all IDs
         
-        let geoPostsReference = Database.database().reference().child("geo_posts")
+        let geoPostsReference = APIs.GeoPosts.geoPostsReference
         
         let userID = SSUser.authCurrentUser.uid
-        let geoFeedReference = Database.database().reference().child("geo_feed").child(userID)
+        let geoFeedReference = APIs.GeoFeed.geoFeedReference(ofUser: userID)
         
         var geoFireReference: DatabaseReference
         switch source {

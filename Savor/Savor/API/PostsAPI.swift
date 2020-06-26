@@ -90,9 +90,13 @@ class PostsAPI {
             let update = [ "people/\(userID)/posts/\(postID)": NSNull(),
                            "comments/\(postID)": NSNull(),
                            "likes/\(postID)": NSNull(),
-                           "posts/\(postID)": NSNull(),
-                           "feed/\(userID)/\(postID)": NSNull()]
+                           "posts/\(postID)": NSNull()]
             SavorData.FireBase.rootReference.updateChildValues(update)
+            
+            // remove associated values from geo_posts and geo_feed
+            let key = CompoundKey.init(post: post).key
+            APIs.GeoPosts.geoFire.removeKey(key)
+            APIs.GeoFeed.geoFire(ofUser: userID).removeKey(key)
             
             // remove photos from storage
             let storage = Storage.storage()

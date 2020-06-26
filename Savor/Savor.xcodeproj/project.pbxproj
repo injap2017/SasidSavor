@@ -78,6 +78,8 @@
 		4BBA3FC62461A58000D844D6 /* CommentsLikes.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BBA3FC52461A58000D844D6 /* CommentsLikes.storyboard */; };
 		4BBA3FC82461A64B00D844D6 /* CommentsLikesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA3FC72461A64B00D844D6 /* CommentsLikesViewController.swift */; };
 		4BC0868E248D44670081D07A /* FeedAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC0868D248D44670081D07A /* FeedAPI.swift */; };
+		4BE2A1C724A59CD300259E42 /* GeoPostsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE2A1C624A59CD300259E42 /* GeoPostsAPI.swift */; };
+		4BE2A1C924A59CE300259E42 /* GeoFeedAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE2A1C824A59CE300259E42 /* GeoFeedAPI.swift */; };
 		4BECB945244DB68200662AE4 /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BECB943244DB68200662AE4 /* DetailCell.swift */; };
 		4BECB946244DB68200662AE4 /* DetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BECB944244DB68200662AE4 /* DetailCell.xib */; };
 		4BECB949244DD57A00662AE4 /* FeedDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BECB947244DD57A00662AE4 /* FeedDetailCell.swift */; };
@@ -171,6 +173,8 @@
 		4BBA3FC52461A58000D844D6 /* CommentsLikes.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CommentsLikes.storyboard; sourceTree = "<group>"; };
 		4BBA3FC72461A64B00D844D6 /* CommentsLikesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsLikesViewController.swift; sourceTree = "<group>"; };
 		4BC0868D248D44670081D07A /* FeedAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedAPI.swift; sourceTree = "<group>"; };
+		4BE2A1C624A59CD300259E42 /* GeoPostsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoPostsAPI.swift; sourceTree = "<group>"; };
+		4BE2A1C824A59CE300259E42 /* GeoFeedAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFeedAPI.swift; sourceTree = "<group>"; };
 		4BECB943244DB68200662AE4 /* DetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCell.swift; sourceTree = "<group>"; };
 		4BECB944244DB68200662AE4 /* DetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailCell.xib; sourceTree = "<group>"; };
 		4BECB947244DD57A00662AE4 /* FeedDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailCell.swift; sourceTree = "<group>"; };
@@ -234,6 +238,8 @@
 				4B2AA22A246E3C76008E1AFA /* UsersAPI.swift */,
 				4B3975052487549A00385398 /* ProfilePicturesAPI.swift */,
 				4B0C7A3324A4E5260060DDD5 /* FilterAPI.swift */,
+				4BE2A1C624A59CD300259E42 /* GeoPostsAPI.swift */,
+				4BE2A1C824A59CE300259E42 /* GeoFeedAPI.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -603,6 +609,7 @@
 				4BB353BA246A9A69002F679C /* PeopleAPI.swift in Sources */,
 				4B22744A2434AAD600EEA3CF /* SSRestaurant.swift in Sources */,
 				4BF7E607247D5F4900242446 /* ProfilePostCell.swift in Sources */,
+				4BE2A1C724A59CD300259E42 /* GeoPostsAPI.swift in Sources */,
 				4BB52A3323FF92F9006647FF /* InputFieldCell.swift in Sources */,
 				4BB998BC23CF4DF6008E9BD8 /* NewPostPlaceHolderViewController.swift in Sources */,
 				4B19031B246AE25500F5085C /* CommentCollectionAPI.swift in Sources */,
@@ -622,6 +629,7 @@
 				4BF7E60B247D5FBE00242446 /* FollowCell.swift in Sources */,
 				4B915CB42451A74B00895E4D /* SavoredAPI.swift in Sources */,
 				4BF7E600247D5DB500242446 /* ProfileViewController.swift in Sources */,
+				4BE2A1C924A59CE300259E42 /* GeoFeedAPI.swift in Sources */,
 				4B3381592428B63000ED6EB6 /* Debouncer.swift in Sources */,
 				4B758A782485530400867175 /* EditProfileViewController.swift in Sources */,
 				4B2E9CF8239FF3BB008508CD /* ExploreViewController.swift in Sources */,
