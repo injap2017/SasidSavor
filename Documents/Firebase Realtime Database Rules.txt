@@ -1,0 +1,59 @@
+{
+  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
+  "rules": {
+    "posts": {
+      ".read": true,
+      ".write": "auth.uid != null",
+      ".indexOn": ["timestamp"]
+    },
+    "people": {
+      ".read": true,
+      ".write": "auth.uid != null",
+      "$uid": {
+        "posts": {
+          ".indexOn": ".value"
+        }
+      }
+    },
+    "savored": {
+      ".read": true,
+      ".write": "auth.uid != null"
+    },
+    "foods": {
+      ".read": true,
+      ".write": false /*temporary writable if initialize*/
+    },
+    "restaurants": {
+      ".read": true,
+      ".write": "auth.uid != null"
+    },
+    "likes": {
+      ".read": true,
+      ".write": "auth.uid != null"
+    },
+    "comments": {
+      ".read": true,
+      ".write": "auth.uid != null"
+    },
+    "comment_collection": {
+      ".read": true,
+      ".write": "auth.uid != null"
+    },
+    "users": {
+      ".read": true,
+      ".write": "auth.uid != null"
+    },
+    "geo_posts": {
+      ".read": true,
+      ".write": "auth.uid != null",
+      ".indexOn": "g" /*geofire*/
+    },
+    "geo_feed": {
+      ".read": true,
+      ".write": "auth.uid != null",
+      "$uid": {
+        ".indexOn": "g" /*geofire*/
+      }
+    }
+  }
+}
