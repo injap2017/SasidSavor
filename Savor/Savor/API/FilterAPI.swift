@@ -32,8 +32,8 @@ class CompoundKey {
             return nil
         }
         
-        let timestampText = String(subKeys[0])
-        let ratingText = String(subKeys[1])
+        let timestampText = subKeys[0].replacingOccurrences(of: "*", with: ".")
+        let ratingText = String(subKeys[1]).replacingOccurrences(of: "*", with: ".")
         let postID = String(subKeys[2])
         
         guard let timestamp = Double(timestampText),
@@ -48,7 +48,9 @@ class CompoundKey {
     
     var key: String {
         get {
-            return "\(timestamp)" + ";" + "\(rating)" + ";" + postID
+            let timestampText = "\(timestamp)".replacingOccurrences(of: ".", with: "*")
+            let ratingText = "\(rating)".replacingOccurrences(of: ".", with: "*")
+            return timestampText + ";" + ratingText + ";" + postID
         }
     }
 }
@@ -71,17 +73,13 @@ class FilterAPI {
         // sort keys by Timestamp
         // return with all IDs
         
-        let geoPostsReference = APIs.GeoPosts.geoPostsReference
-        
-        let userID = SSUser.authCurrentUser.uid
-        let geoFeedReference = APIs.GeoFeed.geoFeedReference(ofUser: userID)
-        
         var geoFireReference: DatabaseReference
         switch source {
         case .allPosts:
-            geoFireReference = geoPostsReference
+            geoFireReference = APIs.GeoPosts.geoPostsReference
         default:
-            geoFireReference = geoFeedReference
+            let userID = SSUser.authCurrentUser.uid
+            geoFireReference = APIs.GeoFeed.geoFeedReference(ofUser: userID)
         }
         
         let dispatchGroup = DispatchGroup()
@@ -101,7 +99,9 @@ class FilterAPI {
         } else if let center = center {
             dispatchGroup.enter()
             let geoFire = GeoFire.init(firebaseRef: geoFireReference)
-            let geoQuery = geoFire.query(at: center, withRadius: areaOfInterest)
+            let miles = Measurement.init(value: areaOfInterest, unit: UnitLength.miles)
+            let kilometers = miles.converted(to: UnitLength.kilometers)
+            let geoQuery = geoFire.query(at: center, withRadius: kilometers.value)
             let queryHandle = geoQuery.observe(.keyEntered, with: { (key, location) in
                 keys.append(key)
             })
