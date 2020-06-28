@@ -10,7 +10,6 @@ import Foundation
 
 struct APIs {
     static var Posts = PostsAPI()
-    static var Feed = FeedAPI()
     static var Restaurants = RestaurantsAPI()
     static var Savored = SavoredAPI()
     static var Foods = FoodsAPI()
