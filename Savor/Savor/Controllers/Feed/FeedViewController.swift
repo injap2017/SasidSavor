@@ -12,6 +12,8 @@ import KUIPopOver
 import SVProgressHUD
 import PullToRefreshKit
 import Firebase
+import CoreLocation
+import SwiftLocation
 
 enum FeedViewMode: Int {
     case list
@@ -61,6 +63,7 @@ class FeedViewController: UIViewController {
             self.pullToRefreshAction()
         }
     }
+    var currentLocation: CLLocation?
     var areaOfInterest: Double = -1 {
         didSet {
             // try pull to refresh
@@ -219,7 +222,7 @@ extension FeedViewController {
         print("pull loading true")
         SVProgressHUD.show(withStatus: "Loading...")
         
-        APIs.Filter.getPosts(source: source, minimumRating: minimumRating, areaOfInterest: areaOfInterest, at: nil) { (postIDs) in
+        APIs.Filter.getPosts(source: source, minimumRating: minimumRating, areaOfInterest: areaOfInterest, at: currentLocation) { (postIDs) in
             
             self.postIDs = postIDs
             
@@ -524,7 +527,31 @@ extension FeedViewController: FeedFilterModePopUpDelegate {
     }
     
     func didSelectAreaOfInterest(_ areaOfInterest: Double) {
-        self.areaOfInterest = areaOfInterest
+        
+        if areaOfInterest == -1 {
+            self.areaOfInterest = areaOfInterest
+            return
+        }
+        
+        // if current location nil, then try to get
+        if self.currentLocation == nil {
+            self.askPermissionIfOKThenGetCurrentLocation { (location) in
+                if let location = location {
+                    DispatchQueue.main.async {
+                        
+                        // store location
+                        self.currentLocation = location
+                        
+                        // setup area of interest to find the posts
+                        self.areaOfInterest = areaOfInterest
+                    }
+                }
+            }
+        } else {
+            
+            // setup area of interest to find the posts
+            self.areaOfInterest = areaOfInterest
+        }
     }
 }
 
@@ -552,5 +579,27 @@ extension FeedViewController {
         alertController.addAction(signIn)
         alertController.addAction(cancel)
         self.present(alertController, animated: true, completion: nil)
+    }
+}
+
+// MARK: - GPS
+extension FeedViewController {
+    
+    func askPermissionIfOKThenGetCurrentLocation(completion: @escaping (_ location: CLLocation?) -> Void) {
+        SavorData.Permission.locationWhenInUse.manage { (status) in
+            if status == .authorized {
+                LocationManager.shared.locateFromGPS(.oneShot, accuracy: .house) { result in
+                    switch result {
+                    case .success(let location):
+                        completion(location)
+                    case .failure(let reason):
+                        print(reason)
+                        completion(nil)
+                    }
+                }
+            } else {
+                completion(nil)
+            }
+        }
     }
 }

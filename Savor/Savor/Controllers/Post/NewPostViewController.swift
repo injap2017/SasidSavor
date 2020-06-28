@@ -529,7 +529,7 @@ extension NewPostViewController {
     func askPermissionIfOKThenGetCurrentLocation(completion: @escaping (_ location: CLLocation?) -> Void) {
         SavorData.Permission.locationWhenInUse.manage { (status) in
             if status == .authorized {
-                LocationManager.shared.locateFromGPS(.oneShot, accuracy: .room) { result in
+                LocationManager.shared.locateFromGPS(.oneShot, accuracy: .house) { result in
                     switch result {
                     case .success(let location):
                         completion(location)
