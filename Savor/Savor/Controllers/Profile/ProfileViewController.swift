@@ -184,7 +184,7 @@ extension ProfileViewController {
         
         // header
         let width = UIScreen.main.bounds.size.width /* full screen width */
-        let height = CGFloat(152)
+        let height = CGFloat(160)
         let frame = CGRect.init(x: 0, y: 0, width: width, height: height)
         let profileHeader = ProfileHeader.init(frame: frame)
         profileHeader.delegate = self
