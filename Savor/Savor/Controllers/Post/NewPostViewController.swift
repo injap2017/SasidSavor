@@ -124,8 +124,10 @@ extension NewPostViewController {
         // cosmos view for iOS 13
         self.cosmosView.settings.disablePanGestures = true
         self.cosmosView.rating = rating
+        self.cosmosView.text = String(format: "%.01lf", rating)
         self.cosmosView.didFinishTouchingCosmos = { rating in
             self.rating = rating
+            self.cosmosView.text = String(format: "%.01lf", rating)
             // post available or not
             self.valueChanged()
         }
