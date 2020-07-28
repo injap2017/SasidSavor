@@ -190,9 +190,9 @@ extension RestaurantDetailViewController: UITableViewDataSource, UITableViewDele
     }
     
     func homePageCell(_ tableView: UITableView) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: DetailCell.identifier) as! DetailCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: ActionCell.identifier) as! ActionCell
         cell.title = "Home Page"
-        cell.detail = self.restaurant!.url
+        cell.isEnabled = true
         return cell
     }
     
