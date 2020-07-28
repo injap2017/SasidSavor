@@ -30,6 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
         
         SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.setMinimumDismissTimeInterval(1.0)
         
         /*Initialize Food Database, remind foods rule writable*/
 //        APIs.Foods.initializeDatabase()
