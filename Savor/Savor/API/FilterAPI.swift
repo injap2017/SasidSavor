@@ -59,6 +59,9 @@ class FilterAPI {
     
     func getPosts(source: FeedSource, minimumRating: Float, areaOfInterest: Double, at center: CLLocation?, completion: @escaping (_ posts: [String]) -> Void) {
         
+        // 5 score rating means higher than 4.5
+        let adjustedMinimumRating = minimumRating >= 4.5 ? 4.5 : minimumRating
+        
         // select georef
         // if areaofinterest
         //      create geoquery
@@ -69,7 +72,7 @@ class FilterAPI {
         //      get all keys
         //      return with all keys
         // break keys into Timestamp + Rating + ID
-        // get keys whose Rating is higher than minimumRating
+        // get keys whose Rating is higher than adjustedMinimumRating
         // sort keys by Timestamp
         // return with all IDs
         
@@ -116,7 +119,7 @@ class FilterAPI {
             var keysRating: [CompoundKey] = []
             for key in keys {
                 if let compoundKey = CompoundKey.init(key: key),
-                    compoundKey.rating >= Double(minimumRating) {
+                    compoundKey.rating >= Double(adjustedMinimumRating) {
                     keysRating.append(compoundKey)
                 }
             }
