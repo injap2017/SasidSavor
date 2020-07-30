@@ -237,7 +237,10 @@ extension RestaurantDetailViewController {
         let coordinate = self.restaurant!.coordinates
         let latitude = coordinate!.latitude
         let longitude = coordinate!.longitude
-        SavorData.Accessories.navigate(latitude: latitude, longitude: longitude, on: self)
+        
+        let displayAddress = self.restaurant!.displayAddress()
+        
+        SavorData.Accessories.navigate(latitude: latitude, longitude: longitude, displayAddress: displayAddress, on: self)
     }
     
     func didSelectItem(_ item: (SSFood, Double, [String], SSPost)) {

@@ -114,9 +114,12 @@ class SavorData {
             mapItem.openInMaps(launchOptions: options)
         }
         
-        class func navigate(latitude: Double, longitude: Double, on viewController: UIViewController) {
-            let appleURL = "http://maps.apple.com/?daddr=\(latitude),\(longitude)"
-            let googleURL = "comgooglemaps://?daddr=\(latitude),\(longitude)&directionsmode=driving"
+        class func navigate(latitude: Double, longitude: Double, displayAddress: String, on viewController: UIViewController) {
+            let destinationAddressForApple = displayAddress.replacingOccurrences(of: "\n", with: "%20").replacingOccurrences(of: " ", with: "%20")
+            let destinationAddressForGoogle = displayAddress.replacingOccurrences(of: "\n", with: "+").replacingOccurrences(of: " ", with: "+")
+            
+            let appleURL = "http://maps.apple.com/?daddr=\(destinationAddressForApple)"
+            let googleURL = "comgooglemaps://?daddr=\(destinationAddressForGoogle)&directionsmode=driving"
             let wazeURL = "waze://?ll=\(latitude),\(longitude)&navigate=false"
             
             let googleItem = ("Google Map", URL(string:googleURL)!)
